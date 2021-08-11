@@ -5,8 +5,8 @@ WORKDIR /app
 COPY go.mod ./
 COPY go.sum ./
 
-COPY cmd/ .
+COPY cmd/ ./cmd
 
-RUN go build -o /mebook -v main.go
+RUN go build -o /mebook -v cmd/main.go
 
 CMD [ "/mebook" ]
