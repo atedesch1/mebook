@@ -1,10 +1,10 @@
-name: GitHub Actions Demo
+name: Deploy to Heroku
 on:
   push:
     tags:        
       - prod
 jobs:
-  Explore-GitHub-Actions:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

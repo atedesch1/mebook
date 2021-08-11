@@ -4,10 +4,9 @@ WORKDIR /app
 
 COPY go.mod ./
 COPY go.sum ./
-RUN go mod download
 
-COPY cmd .
+COPY cmd/ .
 
-RUN go build -o /mebook -v cmd/main.go
+RUN go build -o /mebook -v main.go
 
 CMD [ "/mebook" ]
