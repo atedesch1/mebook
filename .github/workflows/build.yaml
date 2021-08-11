@@ -1,5 +1,6 @@
 name: GitHub Actions Demo
 push:
+  on:
     tags:        
       - prod
 jobs:
