@@ -1,0 +1,43 @@
+version: '3.7'
+
+networks:
+  mebook: { }
+
+services:
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: mebook
+    # log all queries to stdout
+    command: [ "postgres", "-c", "log_statement=all" ]
+    ports:
+      - "5432:5432/tcp"
+    restart: always
+    networks:
+      - mebook
+
+  mebook:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - db
+    environment:
+      ENV: development
+      DB_TYPE: postgres
+      DB_HOST: db
+      DB_NAME: mebook
+      DB_USER: root
+      DB_PASSWORD: root
+      DSN: postgres://root:root@db:5432/mebook
+    ports:
+      - "4000:4000/tcp"
+    restart: always
+    networks:
+      - mebook
+    volumes:
+      - .:/app
+      - ./.cache:/go/mod/pkg
+
