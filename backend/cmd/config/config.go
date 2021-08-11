@@ -32,8 +32,8 @@ func LoadConfig(configPaths ...string) error {
 	v.AutomaticEnv()
 
 	Config.DSN = v.Get("DATABASE_URL").(string)
-	// Config.DSN = "postgres://root:root@db:5432/mebook?sslmode=disable"
-	v.SetDefault("server_port", 4000)
+	port := v.Get("PORT").(string)
+	v.SetDefault("server_port", port)
 
 	for _, path := range configPaths {
 		v.AddConfigPath(path)
