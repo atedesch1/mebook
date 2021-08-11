@@ -29,10 +29,10 @@ func LoadConfig(configPaths ...string) error {
 	v := viper.New()  
 	v.SetConfigName("example")
 	v.SetConfigType("yaml")
-	v.SetEnvPrefix("blueprint")
 	v.AutomaticEnv()
 
-	Config.DSN = "postgres://root:root@db:5432/mebook?sslmode=disable"
+	Config.DSN = v.Get("DATABASE_URL").(string)
+	// Config.DSN = "postgres://root:root@db:5432/mebook?sslmode=disable"
 	v.SetDefault("server_port", 4000)
 
 	for _, path := range configPaths {

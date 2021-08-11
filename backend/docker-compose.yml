@@ -31,7 +31,7 @@ services:
       DB_NAME: mebook
       DB_USER: root
       DB_PASSWORD: root
-      DSN: postgres://root:root@db:5432/mebook
+      DATABASE_URL: postgres://root:root@db:5432/mebook?sslmode=disable
     ports:
       - "4000:4000/tcp"
     restart: always
