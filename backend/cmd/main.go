@@ -1,10 +1,20 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
+	"net/http"
+	"strings"
+
 	"github.com/atedesch1/mebook/cmd/apis"
 	"github.com/atedesch1/mebook/cmd/config"
 	"github.com/atedesch1/mebook/cmd/models"
+	"github.com/atedesch1/mebook/cmd/httputil"
+
+	"firebase.google.com/go/auth"
+	"firebase.google.com/go"
+	"google.golang.org/api/option"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -13,6 +23,7 @@ import (
 
 	swaggerFiles "github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
+
 
 	_ "github.com/atedesch1/mebook/cmd/docs"
 )
@@ -52,9 +63,20 @@ func main() {
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	ctx := context.Background()
+	app, err := firebase.NewApp(ctx, nil, option.WithCredentialsJSON(config.Config.FirebaseCredentials))
+	if err != nil {
+		log.Fatalf("error initializing app: %v\n", err)
+	}
+	firebaseClient, err := app.Auth(ctx)
+	if err != nil {
+		log.Fatalf("error getting Auth client: %v\n", err)
+	}
+
+
 	v1 := r.Group("/api/v1")
 	{
-		v1.Use(auth())
+		v1.Use(authorize(firebaseClient))
 		v1.GET("/users/:id", apis.GetUser)
 		v1.GET("/health-check", apis.HealthCheck)
 	}
@@ -73,8 +95,31 @@ func main() {
 	r.Run(fmt.Sprintf(":%v", config.Config.ServerPort))
 }
 
-func auth() gin.HandlerFunc {
+func authorize(firebaseClient *auth.Client) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		authHeader := c.GetHeader("Authorization")
+		jwtString := strings.Split(authHeader, "Bearer ")
+		if len(jwtString) < 2 {
+			httputil.NewError(c, http.StatusUnauthorized, errors.New("Authorization is required Header"))
+			c.Abort()
+			return
+		}
+		idToken := jwtString[1]
+
+		token, err := firebaseClient.VerifyIDToken(c, idToken)
+		if err != nil {
+			httputil.NewError(c, http.StatusUnauthorized, errors.New("could not authenticate"))
+			c.Abort()
+			return
+		}
+		user, err := firebaseClient.GetUser(c, token.UID)
+		if err != nil {
+			httputil.NewError(c, http.StatusUnauthorized, errors.New("could not get user"))
+			c.Abort()
+			return
+		}
+		c.Set("email", user.Email)
+		log.Printf("acess from %s", user.Email)
 		c.Next()
 	}
 }

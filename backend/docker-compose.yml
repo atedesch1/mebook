@@ -22,6 +22,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    env_file:
+      .env
     depends_on:
       - db
     environment:
@@ -40,5 +42,5 @@ services:
       - mebook
     volumes:
       - .:/app
-      - ./.cache:/go/mod/pkg
+      - ./.cache:/go/pkg/mod
 

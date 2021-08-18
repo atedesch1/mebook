@@ -22,6 +22,8 @@ type appConfig struct {
 	CertFile string `mapstructure:"cert_file"`
 	// Private key file for HTTPS
 	KeyFile string `mapstructure:"key_file"`
+
+	FirebaseCredentials []byte
 }
 
 // LoadConfig loads config from files
@@ -31,6 +33,8 @@ func LoadConfig(configPaths ...string) error {
 	v.SetConfigType("yaml")
 	v.AutomaticEnv()
 
+	credentials := v.Get("FIREBASE_CREDENTIALS").(string)
+	Config.FirebaseCredentials = []byte(credentials)
 	Config.DSN = v.Get("DATABASE_URL").(string)
 	port := v.Get("PORT").(string)
 	v.SetDefault("server_port", port)
