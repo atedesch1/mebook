@@ -13,7 +13,7 @@ import (
 // Initializes application config and SQLite database used for testing
 func init() {
 	// the test may be started from the home directory or a subdirectory
-	err := config.LoadConfig("/config") // on host use absolute path
+	err := config.LoadConfig("/app/config") // on host use absolute path
 	if err != nil {
 		panic(err)
 	}
@@ -37,11 +37,11 @@ func ResetDB() *gorm.DB {
 }
 
 func getSQLFile() string {
-	return "/test_data/db.sql" // on host use absolute path
+	return "/app/cmd/test_data/db.sql" // on host use absolute path
 }
 
 func GetTestCaseFolder() string {
-	return "/test_data/test_case_data" // on host use absolute path
+	return "/app/cmd/test_data/test_case_data" // on host use absolute path
 }
 
 // Executes SQL file specified by file argument

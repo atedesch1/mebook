@@ -1,0 +1,9 @@
+mode: atomic
+github.com/atedesch1/mebook/backend/cmd/services/user.go:14.47,16.2 1 2
+github.com/atedesch1/mebook/backend/cmd/services/user.go:19.58,21.2 1 2
+github.com/atedesch1/mebook/backend/cmd/daos/user.go:12.28,14.2 1 2
+github.com/atedesch1/mebook/backend/cmd/daos/user.go:17.56,35.2 3 2
+github.com/atedesch1/mebook/backend/cmd/apis/user.go:19.30,22.46 3 2
+github.com/atedesch1/mebook/backend/cmd/apis/user.go:22.46,25.3 2 1
+github.com/atedesch1/mebook/backend/cmd/apis/user.go:25.8,27.3 1 1
+github.com/atedesch1/mebook/backend/cmd/apis/user.go:30.34,34.2 1 0
