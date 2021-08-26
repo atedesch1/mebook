@@ -23,13 +23,25 @@ func init() {
 		panic(config.Config.DBErr)
 	}
 
-	config.Config.DB.AutoMigrate(&models.User{})
+	config.Config.DB.AutoMigrate(
+		&models.CalendarEvent{},
+		&models.Calendar{},
+		&models.User{},
+	)
 }
 
 // Resets testing database - deletes all tables, creates new ones using GORM migration and populates them using `db.sql` file
 func ResetDB() *gorm.DB {
-	config.Config.DB.DropTableIfExists(&models.User{}) // Note: Order matters
-	config.Config.DB.AutoMigrate(&models.User{})
+	config.Config.DB.DropTableIfExists(
+		&models.CalendarEvent{},
+		&models.Calendar{},
+		&models.User{},
+	) // Note: Order matters
+	config.Config.DB.AutoMigrate(
+		&models.CalendarEvent{},
+		&models.Calendar{},
+		&models.User{},
+	)
 	if err := runSQLFile(config.Config.DB, getSQLFile()); err != nil {
 		panic(fmt.Errorf("error while initializing test database: %s", err))
 	}

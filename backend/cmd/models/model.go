@@ -20,3 +20,24 @@ type User struct {
 	Address   string `gorm:"column:address" json:"address"`
 	Email     string `gorm:"column:email" json:"email"`
 }
+
+// Calendar Model
+type Calendar struct {
+	Model
+	Title       string `gorm:"column:title" json:"title"`
+	Description string `gorm:"column:description" json:"description"`
+	TimeZone    string `gorm:"column:time_zone" json:"time_zone"`
+	UserID      uint   `gorm:"column:user_id" json:"user_id"`
+	User        User   `gorm:"constraint:OnDelete:CASCADE"`
+}
+
+// CalendarEvent Model
+type CalendarEvent struct {
+	Model
+	Title      string    `gorm:"column:title" json:"title"`
+	StartTime  time.Time `gorm:"column:start_time" json:"start_time"`
+	EndTime    time.Time `gorm:"column:end_time" json:"end_time"`
+	MeetLink   string    `gorm:"column:meet_link" json:"meet_link"`
+	CalendarID uint      `gorm:"column:calendar_id" json:"calendar_id"`
+	Calendar   Calendar  `gorm:"constraint:OnDelete:CASCADE"`
+}

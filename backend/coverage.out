@@ -1,6 +1,10 @@
 mode: atomic
 github.com/atedesch1/mebook/backend/cmd/services/user.go:14.47,16.2 1 2
 github.com/atedesch1/mebook/backend/cmd/services/user.go:19.58,21.2 1 2
+github.com/atedesch1/mebook/backend/cmd/daos/calendar.go:12.36,14.2 1 2
+github.com/atedesch1/mebook/backend/cmd/daos/calendar.go:17.64,26.2 3 2
+github.com/atedesch1/mebook/backend/cmd/daos/calendar_event.go:12.46,14.2 1 2
+github.com/atedesch1/mebook/backend/cmd/daos/calendar_event.go:17.74,26.2 3 2
 github.com/atedesch1/mebook/backend/cmd/daos/user.go:12.28,14.2 1 2
 github.com/atedesch1/mebook/backend/cmd/daos/user.go:17.56,35.2 3 2
 github.com/atedesch1/mebook/backend/cmd/apis/user.go:19.30,22.46 3 2
