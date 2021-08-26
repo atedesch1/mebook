@@ -9,11 +9,11 @@ import (
 
 	"github.com/atedesch1/mebook/backend/cmd/apis"
 	"github.com/atedesch1/mebook/backend/cmd/config"
-	"github.com/atedesch1/mebook/backend/cmd/models"
 	"github.com/atedesch1/mebook/backend/cmd/httputil"
+	"github.com/atedesch1/mebook/backend/cmd/models"
 
-	"firebase.google.com/go/auth"
 	"firebase.google.com/go"
+	"firebase.google.com/go/auth"
 	"google.golang.org/api/option"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +23,6 @@ import (
 
 	swaggerFiles "github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
-
 
 	_ "github.com/atedesch1/mebook/backend/cmd/docs"
 )

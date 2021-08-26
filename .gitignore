@@ -26,3 +26,4 @@ doc/api/
 .tool-versions
 
 mobile/android/google-services.json
+*.swp
