@@ -26,7 +26,7 @@ info:
   description: Swagger API for Golang Project Blueprint.
   license:
     name: MIT
-    url: https://github.com/atedesch1/mebook/blob/master/LICENSE
+    url: https://github.com/atedesch1/mebook/backend/blob/master/LICENSE
   termsOfService: http://swagger.io/terms/
   title: Blueprint Swagger API
   version: "1.0"

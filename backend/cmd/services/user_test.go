@@ -2,7 +2,7 @@ package services
 
 import (
 	"errors"
-	"github.com/atedesch1/mebook/cmd/models"
+	"github.com/atedesch1/mebook/backend/cmd/models"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

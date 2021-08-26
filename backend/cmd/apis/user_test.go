@@ -1,7 +1,7 @@
 package apis
 
 import (
-	"github.com/atedesch1/mebook/cmd/test_data"
+	"github.com/atedesch1/mebook/backend/cmd/test_data"
 	"net/http"
 	"testing"
 )

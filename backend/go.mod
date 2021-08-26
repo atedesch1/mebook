@@ -1,4 +1,4 @@
-module github.com/atedesch1/mebook
+module github.com/atedesch1/mebook/backend
 
 go 1.16
 

@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/atedesch1/mebook/cmd/apis"
-	"github.com/atedesch1/mebook/cmd/config"
-	"github.com/atedesch1/mebook/cmd/models"
-	"github.com/atedesch1/mebook/cmd/httputil"
+	"github.com/atedesch1/mebook/backend/cmd/apis"
+	"github.com/atedesch1/mebook/backend/cmd/config"
+	"github.com/atedesch1/mebook/backend/cmd/models"
+	"github.com/atedesch1/mebook/backend/cmd/httputil"
 
 	"firebase.google.com/go/auth"
 	"firebase.google.com/go"
@@ -25,7 +25,7 @@ import (
 	"github.com/swaggo/gin-swagger"
 
 
-	_ "github.com/atedesch1/mebook/cmd/docs"
+	_ "github.com/atedesch1/mebook/backend/cmd/docs"
 )
 
 // @title Blueprint Swagger API
@@ -37,7 +37,7 @@ import (
 // @contact.email martin7.heinz@gmail.com
 
 // @license.name MIT
-// @license.url https://github.com/atedesch1/mebook/blob/master/LICENSE
+// @license.url https://github.com/atedesch1/mebook/backend/blob/master/LICENSE
 
 // @BasePath /api/v1
 

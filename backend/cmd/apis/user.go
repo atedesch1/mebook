@@ -1,8 +1,8 @@
 package apis
 
 import (
-	"github.com/atedesch1/mebook/cmd/daos"
-	"github.com/atedesch1/mebook/cmd/services"
+	"github.com/atedesch1/mebook/backend/cmd/daos"
+	"github.com/atedesch1/mebook/backend/cmd/services"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"

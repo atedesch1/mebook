@@ -1,6 +1,6 @@
 package services
 
-import "github.com/atedesch1/mebook/cmd/models"
+import "github.com/atedesch1/mebook/backend/cmd/models"
 
 type userDAO interface {
 	Get(id uint) (*models.User, error)

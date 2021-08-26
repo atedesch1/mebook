@@ -26,7 +26,7 @@ var doc = `{
         },
         "license": {
             "name": "MIT",
-            "url": "https://github.com/atedesch1/mebook/blob/master/LICENSE"
+            "url": "https://github.com/atedesch1/mebook/backend/blob/master/LICENSE"
         },
         "version": "{{.Version}}"
     },

@@ -1,8 +1,8 @@
 package daos
 
 import (
-	"github.com/atedesch1/mebook/cmd/config"
-	"github.com/atedesch1/mebook/cmd/models"
+	"github.com/atedesch1/mebook/backend/cmd/config"
+	"github.com/atedesch1/mebook/backend/cmd/models"
 )
 
 // UserDAO persists user data in database

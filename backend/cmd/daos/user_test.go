@@ -1,8 +1,8 @@
 package daos
 
 import (
-	"github.com/atedesch1/mebook/cmd/config"
-	"github.com/atedesch1/mebook/cmd/test_data"
+	"github.com/atedesch1/mebook/backend/cmd/config"
+	"github.com/atedesch1/mebook/backend/cmd/test_data"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

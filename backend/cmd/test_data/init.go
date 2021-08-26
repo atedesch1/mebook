@@ -2,8 +2,8 @@ package test_data
 
 import (
 	"fmt"
-	"github.com/atedesch1/mebook/cmd/config"
-	"github.com/atedesch1/mebook/cmd/models"
+	"github.com/atedesch1/mebook/backend/cmd/config"
+	"github.com/atedesch1/mebook/backend/cmd/models"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"io/ioutil"
