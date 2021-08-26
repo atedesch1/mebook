@@ -24,3 +24,5 @@ doc/api/
 .idea
 
 .tool-versions
+
+mobile/android/google-services.json

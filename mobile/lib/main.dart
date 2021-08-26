@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'screens/sign_in_screen.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -9,7 +11,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'mebook',
-      home: HomePage(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+        brightness: Brightness.dark,
+      ),
+      home: SignInScreen(),
     );
   }
 }
