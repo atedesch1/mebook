@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:mebook/screens/user_info_screen.dart';
 import 'package:mebook/utils/authentication.dart';
 
-class GoogleSignInButton extends StatefulWidget {
+class AnonymousSignInButton extends StatefulWidget {
   @override
-  _GoogleSignInButtonState createState() => _GoogleSignInButtonState();
+  _AnonymousSignInButtonState createState() => _AnonymousSignInButtonState();
 }
 
-class _GoogleSignInButtonState extends State<GoogleSignInButton> {
+class _AnonymousSignInButtonState extends State<AnonymousSignInButton> {
   bool _isSigningIn = false;
 
   @override
@@ -34,14 +34,13 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                 });
                 var credentialCode = CredentialCode("");
                 User? user =
-                    await Authentication.signInWithGoogle(context: context, credentialCode: credentialCode);
+                    await Authentication.signInAnonymously(context: context, credentialCode: credentialCode);
 
                 setState(() {
                   _isSigningIn = false;
                 });
 
                 if (user != null) {
-                  print(user);
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => UserInfoScreen(
@@ -58,14 +57,10 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Image(
-                      image: AssetImage("assets/google_logo.png"),
-                      height: 35.0,
-                    ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Text(
-                        'Sign in with Google',
+                        'Guest Login',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.black54,

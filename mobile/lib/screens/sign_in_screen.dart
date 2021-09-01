@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mebook/res/custom_colors.dart';
 import 'package:mebook/utils/authentication.dart';
 import 'package:mebook/widgets/google_sign_in_button.dart';
+import 'package:mebook/widgets/anonymous_sign_in_button.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -61,6 +62,21 @@ class _SignInScreenState extends State<SignInScreen> {
                     return Text('Error initializing Firebase');
                   } else if (snapshot.connectionState == ConnectionState.done) {
                     return GoogleSignInButton();
+                  }
+                  return CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      CustomColors.firebaseOrange,
+                    ),
+                  );
+                },
+              ),
+              FutureBuilder(
+                future: Authentication.initializeFirebase(context: context),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error initializing Firebase');
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    return AnonymousSignInButton();
                   }
                   return CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(

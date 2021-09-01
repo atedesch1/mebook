@@ -4,6 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:mebook/screens/user_info_screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:googleapis/calendar/v3.dart' as calendar;
+import 'package:http/http.dart' as http;
+import "package:googleapis_auth/googleapis_auth.dart" as gauth;
+import 'package:mebook/utils/google_http_client.dart';
+import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
+
+class CredentialCode {
+  var code;
+  CredentialCode(this.code);
+}
 
 class Authentication {
   static SnackBar customSnackBar({required String content}) {
@@ -28,6 +38,7 @@ class Authentication {
         MaterialPageRoute(
           builder: (context) => UserInfoScreen(
             user: user,
+            credentialCode: CredentialCode("UNKNOWN"),
           ),
         ),
       );
@@ -36,7 +47,14 @@ class Authentication {
     return firebaseApp;
   }
 
-  static Future<User?> signInWithGoogle({required BuildContext context}) async {
+  static Future<User?> signInAnonymously({required BuildContext context, required CredentialCode credentialCode}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    UserCredential userCredential = await auth.signInAnonymously();
+
+    return userCredential.user;
+  }
+
+  static Future<User?> signInWithGoogle({required BuildContext context, required CredentialCode credentialCode}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
 
@@ -52,7 +70,14 @@ class Authentication {
         print(e);
       }
     } else {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        scopes: <String>[
+          'email',
+          'https://www.googleapis.com/auth/calendar',
+          'https://www.googleapis.com/auth/calendar.events'
+        
+        ],
+      );
 
       final GoogleSignInAccount? googleSignInAccount =
           await googleSignIn.signIn();
@@ -65,6 +90,13 @@ class Authentication {
           accessToken: googleSignInAuthentication.accessToken,
           idToken: googleSignInAuthentication.idToken,
         );
+        credentialCode.code = googleSignInAuthentication.serverAuthCode;
+
+          final authClient = await googleSignIn.authenticatedClient();
+          final cAPI = calendar.CalendarApi(authClient!);
+          final cList = await cAPI.calendarList.list();
+          print('calendars:');
+          print(cList.items![0].toJson());
 
         try {
           final UserCredential userCredential =
