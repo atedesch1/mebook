@@ -5,6 +5,9 @@ deploy: check-uncommited-changes
 	git tag prod
 	git push origin prod
 
+test:
+	go test --short --race -v -coverprofile=coverage.out ./...
+
 check-uncommited-changes:
 	git update-index --refresh
 	git diff-index --quiet HEAD --

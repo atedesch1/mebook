@@ -72,7 +72,6 @@ func main() {
 		log.Fatalf("error getting Auth client: %v\n", err)
 	}
 
-
 	v1 := r.Group("/api/v1")
 	{
 		v1.Use(authorize(firebaseClient))
@@ -85,7 +84,11 @@ func main() {
 		panic(config.Config.DBErr)
 	}
 
-	config.Config.DB.AutoMigrate(&models.User{}) // This is needed for generation of schema for postgres image.
+	config.Config.DB.AutoMigrate(
+		&models.CalendarEvent{},
+		&models.Calendar{},
+		&models.User{},
+	) // This is needed for generation of schema for postgres image.
 
 	defer config.Config.DB.Close()
 
