@@ -29,11 +29,7 @@ class AuthService {
         message = err.message;
       }
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Theme.of(context).errorColor,
-        ),
+        SnackBar(content: Text(message)),
       );
       return null;
     }
@@ -55,11 +51,7 @@ class AuthService {
         message = err.message;
       }
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Theme.of(context).errorColor,
-        ),
+        SnackBar(content: Text(message)),
       );
       return null;
     }
@@ -86,11 +78,7 @@ class AuthService {
         message = err.message;
       }
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Theme.of(context).errorColor,
-        ),
+        SnackBar(content: Text(message)),
       );
       return null;
     }
