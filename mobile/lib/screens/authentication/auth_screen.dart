@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:mebook/widgets/auth_form.dart';
+import 'package:mebook/widgets/bottom_card.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -72,28 +73,8 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
-                        spreadRadius: 3,
-                        blurRadius: 10,
-                        offset: Offset(0, -5), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  padding: EdgeInsets.only(
-                    top: 50,
-                    bottom: 50,
-                    left: 25,
-                    right: 25,
-                  ),
+                BottomCard(
+                  backgroundColor: Theme.of(context).primaryColor,
                   child: AuthForm(_isSigningIn),
                 ),
               ],

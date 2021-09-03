@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mebook/widgets/bottom_card.dart';
 import 'package:mebook/widgets/mebook_logo.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -14,29 +15,8 @@ class WelcomeScreen extends StatelessWidget {
                 child: MebookLogo(),
               ),
             ),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
-                    spreadRadius: 3,
-                    blurRadius: 10,
-                    offset: Offset(0, -5), // changes position of shadow
-                  ),
-                ],
-                color: Theme.of(context).backgroundColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
-                ),
-              ),
-              padding: EdgeInsets.only(
-                top: 50,
-                bottom: 50,
-                left: 25,
-                right: 25,
-              ),
+            BottomCard(
+              backgroundColor: Theme.of(context).backgroundColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
