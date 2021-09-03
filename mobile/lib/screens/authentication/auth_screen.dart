@@ -16,10 +16,11 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     if (!_hasChanged)
       _isSigningIn = ModalRoute.of(context).settings.arguments as bool;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        body: CustomScrollView(slivers: [
+    return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: SafeArea(
+        // TODO: Make Stack work with scroll view
+        child: CustomScrollView(slivers: [
           SliverFillRemaining(
             hasScrollBody: false,
             child: Column(

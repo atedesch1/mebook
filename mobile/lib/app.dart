@@ -70,7 +70,6 @@ class _MebookAppState extends State<MebookApp> {
 
 class AuthWrapper extends StatelessWidget {
   // FIX: Need to pop screens after build, for now simple delay works...
-  // FIX: Auth page is popped even if user is not authorized, also popped when authorized before redirecting to Home
 
   Future<void> popScreens(BuildContext context) async {
     Future.delayed(Duration(milliseconds: 100), () {
@@ -82,11 +81,11 @@ class AuthWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
 
+    if (Navigator.of(context).canPop()) popScreens(context);
+
     if (firebaseUser != null) {
       return MenuScreen();
     }
-
-    if (Navigator.of(context).canPop()) popScreens(context);
 
     return WelcomeScreen();
   }

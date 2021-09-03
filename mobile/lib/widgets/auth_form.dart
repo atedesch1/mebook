@@ -23,7 +23,6 @@ class _AuthFormState extends State<AuthForm> {
     context.read<AuthService>().googleSignIn(
           context: ctx,
         );
-    Navigator.of(context).pop();
   }
 
   void tryEmailSignIn(ctx) {
@@ -32,7 +31,6 @@ class _AuthFormState extends State<AuthForm> {
       _formKey.currentState.save();
       context.read<AuthService>().emailSignIn(
           context: ctx, email: _userEmail, password: _userPassword);
-      Navigator.of(context).pop();
     }
   }
 
@@ -45,7 +43,6 @@ class _AuthFormState extends State<AuthForm> {
           email: _userEmail,
           username: _userName,
           password: _userPassword);
-      Navigator.of(context).pop();
     }
   }
 
