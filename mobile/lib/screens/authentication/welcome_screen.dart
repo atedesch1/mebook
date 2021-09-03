@@ -42,6 +42,9 @@ class WelcomeScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: ElevatedButton(
+                          style: ButtonStyle(
+                            elevation: MaterialStateProperty.all<double>(8),
+                          ),
                           onPressed: () {
                             Navigator.of(context)
                                 .pushNamed('/auth', arguments: true);
