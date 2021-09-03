@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class MebookTheme {
   ThemeData get themeData => ThemeData(
         primaryColor: Colors.white,
-        primarySwatch: Colors.cyan,
-        backgroundColor: Colors.cyan,
+        primarySwatch: Colors.amber,
+        backgroundColor: Colors.amber,
         fontFamily: 'TruenoRound',
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(

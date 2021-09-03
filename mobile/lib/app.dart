@@ -69,13 +69,21 @@ class _MebookAppState extends State<MebookApp> {
 }
 
 class AuthWrapper extends StatelessWidget {
+  // TODO: Need to pop screens after build, for now simple delay works...
+
+  Future<void> popScreens(BuildContext context) async {
+    Future.delayed(Duration(milliseconds: 100), () {
+      Navigator.of(context).popUntil(ModalRoute.withName('/'));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
     if (firebaseUser != null) {
       return MenuScreen();
     }
-    Navigator.of(context).popUntil(ModalRoute.withName('/'));
+    popScreens(context);
     return WelcomeScreen();
   }
 }
