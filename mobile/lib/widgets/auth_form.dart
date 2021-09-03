@@ -18,29 +18,33 @@ class _AuthFormState extends State<AuthForm> {
   String _userName = '';
   String _userPassword = '';
 
-  void tryGoogleSignIn() {
+  void tryGoogleSignIn(ctx) {
     FocusScope.of(context).unfocus();
-    context.read<AuthService>().googleSignIn();
+    context.read<AuthService>().googleSignIn(
+          context: ctx,
+        );
     Navigator.of(context).pop();
   }
 
-  void tryEmailSignIn() {
+  void tryEmailSignIn(ctx) {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      context
-          .read<AuthService>()
-          .emailSignIn(email: _userEmail, password: _userPassword);
+      context.read<AuthService>().emailSignIn(
+          context: ctx, email: _userEmail, password: _userPassword);
       Navigator.of(context).pop();
     }
   }
 
-  void tryEmailSignUp() {
+  void tryEmailSignUp(ctx) {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       context.read<AuthService>().emailSignUp(
-          email: _userEmail, username: _userName, password: _userPassword);
+          context: ctx,
+          email: _userEmail,
+          username: _userName,
+          password: _userPassword);
       Navigator.of(context).pop();
     }
   }
@@ -113,8 +117,13 @@ class _AuthFormState extends State<AuthForm> {
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed:
-                      widget.isSigningIn ? tryEmailSignIn : tryEmailSignUp,
+                  onPressed: widget.isSigningIn
+                      ? () {
+                          tryEmailSignIn(context);
+                        }
+                      : () {
+                          tryEmailSignUp(context);
+                        },
                   child: Text(widget.isSigningIn ? 'Sign In' : 'Sign Up'),
                 ),
               )
@@ -128,7 +137,9 @@ class _AuthFormState extends State<AuthForm> {
             ThirdPartySignIn(
               logo: AssetImage('assets/google_logo.png'),
               serviceName: 'Google',
-              signIn: tryGoogleSignIn,
+              signIn: () {
+                tryGoogleSignIn(context);
+              },
             ),
           ],
         ],

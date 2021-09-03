@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -15,7 +16,8 @@ class AuthService {
     await _firebaseAuth.signOut();
   }
 
-  Future<UserCredential> emailSignIn({String email, String password}) async {
+  Future<UserCredential> emailSignIn(
+      {BuildContext context, String email, String password}) async {
     UserCredential userCredential;
     try {
       userCredential = await _firebaseAuth.signInWithEmailAndPassword(
@@ -26,13 +28,22 @@ class AuthService {
       if (err.message != null) {
         message = err.message;
       }
-      print(message); // TODO: Add SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Theme.of(context).errorColor,
+        ),
+      );
       return null;
     }
   }
 
   Future<UserCredential> emailSignUp(
-      {String email, String username, String password}) async {
+      {BuildContext context,
+      String email,
+      String username,
+      String password}) async {
     UserCredential userCredential;
     try {
       userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
@@ -43,12 +54,20 @@ class AuthService {
       if (err.message != null) {
         message = err.message;
       }
-      print(message); // TODO: Add SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Theme.of(context).errorColor,
+        ),
+      );
       return null;
     }
   }
 
-  Future<UserCredential> googleSignIn() async {
+  Future<UserCredential> googleSignIn({
+    BuildContext context,
+  }) async {
     UserCredential userCredential;
     try {
       final GoogleSignInAccount googleUser = await _googleAuth.signIn();
@@ -65,8 +84,14 @@ class AuthService {
 
       if (err.message != null) {
         message = err.message;
-        print(message);
       }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Theme.of(context).errorColor,
+        ),
+      );
       return null;
     }
   }
