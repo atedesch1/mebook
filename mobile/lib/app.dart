@@ -51,6 +51,7 @@ class _MebookAppState extends State<MebookApp> {
         }
         if (snapshot.hasError) {
           return MaterialApp(
+            theme: MebookTheme().themeData,
             home: Scaffold(
               body: Center(
                 child: Text('Something went wrong'),
@@ -59,6 +60,7 @@ class _MebookAppState extends State<MebookApp> {
           );
         }
         return MaterialApp(
+          theme: MebookTheme().themeData,
           home: SplashScreen(),
         );
       },
