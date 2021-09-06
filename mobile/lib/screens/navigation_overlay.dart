@@ -8,12 +8,12 @@ import 'package:mebook/screens/notes_screen.dart';
 import 'package:mebook/screens/finances_screen.dart';
 import 'package:mebook/screens/profile_screen.dart';
 
-class MenuScreen extends StatefulWidget {
+class NavigationOverlay extends StatefulWidget {
   @override
-  _MenuScreenState createState() => _MenuScreenState();
+  _NavigationOverlayState createState() => _NavigationOverlayState();
 }
 
-class _MenuScreenState extends State<MenuScreen> {
+class _NavigationOverlayState extends State<NavigationOverlay> {
   final List<Widget> _screens = [
     HomeScreen(),
     ScheduleScreen(),

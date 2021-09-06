@@ -121,7 +121,9 @@ class _AuthFormState extends State<AuthForm> {
                   Container(
                     alignment: Alignment.topRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        print('Not yet implemented!');
+                      }, // TODO: Implement Forgot Password.
                       child: Text('Forgot Password?'),
                     ),
                   ),
