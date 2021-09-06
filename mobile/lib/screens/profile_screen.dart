@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class NotesScreen extends StatelessWidget {
+class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Notes'),
+        child: Text('Profile'),
       ),
     );
   }

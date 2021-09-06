@@ -6,18 +6,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ElevatedButton(
-              child: Text('Logout'),
-              onPressed: context.read<AuthService>().signOut,
-            ),
-            Text('Home'),
-          ],
-        ),
+        child: Text('Home'),
       ),
     );
   }
