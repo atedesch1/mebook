@@ -11,6 +11,19 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   bool _isSigningIn = true;
   bool _hasChanged = false;
+  bool _isLoading = false;
+
+  void _trySubmit() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
+  void _failedFallback() {
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +89,8 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
                 BottomCard(
                   backgroundColor: Theme.of(context).primaryColor,
-                  child: AuthForm(_isSigningIn),
+                  child: AuthForm(
+                      _isLoading, _isSigningIn, _trySubmit, _failedFallback),
                 ),
               ],
             ),

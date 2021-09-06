@@ -17,13 +17,19 @@ class AuthService {
   }
 
   Future<UserCredential> emailSignIn(
-      {BuildContext context, String email, String password}) async {
+      {BuildContext context,
+      Function trySignIn,
+      Function failedSignIn,
+      String email,
+      String password}) async {
     UserCredential userCredential;
     try {
+      trySignIn();
       userCredential = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
       return userCredential;
     } catch (err) {
+      failedSignIn();
       var message = 'Please verify your credentials!';
       if (err.message != null) {
         message = err.message;
@@ -37,15 +43,19 @@ class AuthService {
 
   Future<UserCredential> emailSignUp(
       {BuildContext context,
+      Function trySignUp,
+      Function failedSignUp,
       String email,
       String username,
       String password}) async {
     UserCredential userCredential;
     try {
+      trySignUp();
       userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       return userCredential;
     } catch (err) {
+      failedSignUp();
       var message = 'Please verify your credentials!';
       if (err.message != null) {
         message = err.message;
@@ -59,9 +69,12 @@ class AuthService {
 
   Future<UserCredential> googleSignIn({
     BuildContext context,
+    Function trySignIn,
+    Function failedSignIn,
   }) async {
     UserCredential userCredential;
     try {
+      trySignIn();
       final GoogleSignInAccount googleUser = await _googleAuth.signIn();
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
@@ -72,6 +85,7 @@ class AuthService {
       userCredential = await _firebaseAuth.signInWithCredential(credential);
       return userCredential;
     } catch (err) {
+      failedSignIn();
       var message = 'An error occurred, please check your credentials!';
 
       if (err.message != null) {
