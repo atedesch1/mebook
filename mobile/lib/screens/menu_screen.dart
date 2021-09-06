@@ -40,6 +40,8 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final profilePictureURL = context.read<AuthService>().currentUser.photoURL;
+
     return Scaffold(
       body: _screens[_selectedScreenIndex],
       appBar: AppBar(
@@ -77,7 +79,12 @@ class _MenuScreenState extends State<MenuScreen> {
             label: 'Finances',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: profilePictureURL != null
+                ? CircleAvatar(
+                    radius: 13,
+                    backgroundImage: NetworkImage(profilePictureURL),
+                  )
+                : Icon(Icons.person),
             label: 'Profile',
           ),
         ],
