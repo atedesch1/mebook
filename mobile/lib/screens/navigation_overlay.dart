@@ -14,20 +14,27 @@ class NavigationOverlay extends StatefulWidget {
 }
 
 class _NavigationOverlayState extends State<NavigationOverlay> {
-  final List<Widget> _screens = [
-    HomeScreen(),
-    ScheduleScreen(),
-    NotesScreen(),
-    FinancesScreen(),
-    ProfileScreen(),
-  ];
-
-  final List<String> _screenName = [
-    'Home',
-    'Schedule',
-    'Notes',
-    'Finances',
-    'Profile',
+  final List<Map<String, Object>> _screens = [
+    {
+      'name': 'Home',
+      'screen': HomeScreen(),
+    },
+    {
+      'name': 'Schedule',
+      'screen': ScheduleScreen(),
+    },
+    {
+      'name': 'Notes',
+      'screen': NotesScreen(),
+    },
+    {
+      'name': 'Finances',
+      'screen': FinancesScreen(),
+    },
+    {
+      'name': 'Profile',
+      'screen': ProfileScreen(),
+    },
   ];
 
   int _selectedScreenIndex = 0;
@@ -43,9 +50,9 @@ class _NavigationOverlayState extends State<NavigationOverlay> {
     final profilePictureURL = context.read<AuthService>().currentUser.photoURL;
 
     return Scaffold(
-      body: _screens[_selectedScreenIndex],
+      body: _screens[_selectedScreenIndex]['screen'],
       appBar: AppBar(
-        title: Text(_screenName[_selectedScreenIndex]),
+        title: Text(_screens[_selectedScreenIndex]['name']),
         actions: [
           IconButton(
               onPressed: context.read<AuthService>().signOut,
