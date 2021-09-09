@@ -27,7 +27,7 @@ class _NewsTileState extends State<NewsTile> {
             onTap: _expandTile,
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 8),
-              height: 110,
+              height: 130,
               child: Row(
                 children: [
                   Padding(
@@ -36,7 +36,6 @@ class _NewsTileState extends State<NewsTile> {
                       height: 30,
                       width: 30,
                       decoration: BoxDecoration(
-                        // border: Border.all(width: 1),
                         image: DecorationImage(
                           image: NetworkImage(widget._article['icon']),
                         ),
@@ -51,7 +50,7 @@ class _NewsTileState extends State<NewsTile> {
                         Text(
                           widget._article['title'],
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 16,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
@@ -67,7 +66,7 @@ class _NewsTileState extends State<NewsTile> {
                             fontSize: 10,
                             color: Colors.grey,
                           ),
-                          maxLines: 3,
+                          maxLines: 4,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
@@ -92,11 +91,14 @@ class _NewsTileState extends State<NewsTile> {
                 child: Text(
                   widget._article['body'],
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 14,
                   ),
                 ),
               ),
             ),
+          Divider(
+            height: 1,
+          ),
         ],
       ),
     );
