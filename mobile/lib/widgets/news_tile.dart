@@ -20,6 +20,7 @@ class _NewsTileState extends State<NewsTile> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Theme.of(context).primaryColor,
       child: Column(
         children: [
           InkWell(
@@ -83,7 +84,7 @@ class _NewsTileState extends State<NewsTile> {
           ),
           if (_isExpanded)
             Container(
-              color: Colors.grey[200],
+              color: Colors.grey[100],
               constraints: BoxConstraints(maxHeight: 300),
               padding: EdgeInsets.all(8),
               child: SingleChildScrollView(
