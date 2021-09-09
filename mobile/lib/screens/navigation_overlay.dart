@@ -49,10 +49,16 @@ class _NavigationOverlayState extends State<NavigationOverlay> {
   Widget build(BuildContext context) {
     final profilePictureURL = context.read<AuthService>().currentUser.photoURL;
 
+    var circleAvatar = CircleAvatar(
+      radius: 13,
+      backgroundImage: NetworkImage(profilePictureURL),
+    );
+
     return Scaffold(
       body: _screens[_selectedScreenIndex]['screen'],
       appBar: AppBar(
         title: Text(_screens[_selectedScreenIndex]['name']),
+        // elevation: 0,
         actions: [
           IconButton(
               onPressed: context.read<AuthService>().signOut,
@@ -87,11 +93,18 @@ class _NavigationOverlayState extends State<NavigationOverlay> {
           ),
           BottomNavigationBarItem(
             icon: profilePictureURL != null
-                ? CircleAvatar(
-                    radius: 13,
-                    backgroundImage: NetworkImage(profilePictureURL),
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(13),
+                    child: ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        Colors.grey,
+                        BlendMode.saturation,
+                      ),
+                      child: circleAvatar,
+                    ),
                   )
                 : Icon(Icons.person),
+            activeIcon: circleAvatar,
             label: 'Profile',
           ),
         ],
