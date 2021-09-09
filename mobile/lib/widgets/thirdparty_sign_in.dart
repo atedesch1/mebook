@@ -13,41 +13,35 @@ class ThirdPartySignIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: signIn,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              spreadRadius: 3,
-              blurRadius: 10,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
-          borderRadius: BorderRadius.circular(100),
-        ),
-        padding: EdgeInsets.all(14),
-        child: Row(
-          children: [
-            Image(
-              image: logo,
-              height: 20,
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            Expanded(
-              child: Text(
-                'Continue with $serviceName',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+    return Material(
+      borderRadius: BorderRadius.circular(100),
+      elevation: 8,
+      color: Colors.white,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(100),
+        onTap: signIn,
+        child: Padding(
+          padding: EdgeInsets.all(14),
+          child: Row(
+            children: [
+              Image(
+                image: logo,
+                height: 20,
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: Text(
+                  'Continue with $serviceName',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            Icon(Icons.arrow_forward_sharp),
-          ],
+              Icon(Icons.arrow_forward_sharp),
+            ],
+          ),
         ),
       ),
     );
