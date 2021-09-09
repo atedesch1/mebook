@@ -1,0 +1,103 @@
+import 'package:flutter/material.dart';
+
+class NewsTile extends StatefulWidget {
+  NewsTile(this._article);
+  final _article;
+
+  @override
+  _NewsTileState createState() => _NewsTileState();
+}
+
+class _NewsTileState extends State<NewsTile> {
+  bool _isExpanded = false;
+
+  void _expandTile() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: Column(
+        children: [
+          InkWell(
+            onTap: _expandTile,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              height: 110,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Container(
+                      height: 30,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        // border: Border.all(width: 1),
+                        image: DecorationImage(
+                          image: NetworkImage(widget._article['icon']),
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          widget._article['title'],
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          widget._article['subtitle'],
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey,
+                          ),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Icon(
+                        _isExpanded ? Icons.expand_less : Icons.expand_more),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (_isExpanded)
+            Container(
+              color: Colors.grey[200],
+              constraints: BoxConstraints(maxHeight: 300),
+              padding: EdgeInsets.all(8),
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Text(
+                  widget._article['body'],
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
