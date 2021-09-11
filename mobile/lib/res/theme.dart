@@ -4,8 +4,8 @@ class MebookTheme {
   ThemeData get themeData => ThemeData(
         primaryColor: Colors.white,
         accentColor: Colors.grey,
-        // primarySwatch: Colors.amber,
-        backgroundColor: Colors.amber,
+        primarySwatch: Colors.cyan,
+        backgroundColor: Colors.cyan,
         fontFamily: 'TruenoRound',
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(

@@ -10,8 +10,6 @@ class HomeScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           NewsCard(),
-          NewsCard(),
-          NewsCard(),
         ],
       ),
     );

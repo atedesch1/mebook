@@ -47,7 +47,8 @@ class _NavigationOverlayState extends State<NavigationOverlay> {
 
   @override
   Widget build(BuildContext context) {
-    final profilePictureURL = context.read<AuthService>().currentUser.photoURL;
+    final profilePictureURL =
+        context.read<AuthService>().currentUser.photoURL ?? null;
 
     var circleAvatar = CircleAvatar(
       radius: 13,
@@ -57,6 +58,7 @@ class _NavigationOverlayState extends State<NavigationOverlay> {
     return Scaffold(
       body: _screens[_selectedScreenIndex]['screen'],
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text(_screens[_selectedScreenIndex]['name']),
         // elevation: 0,
         actions: [

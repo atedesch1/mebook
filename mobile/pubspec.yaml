@@ -1,21 +1,22 @@
 name: mebook
 description: A new Flutter project.
 
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.11.0 <3.0.0"
+  sdk: '>=2.11.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  cloud_firestore: ^2.5.1
-  firebase_auth: ^3.1.0
+  cloud_firestore: ^2.5.2
+  firebase_auth: ^3.1.1
   firebase_core: ^1.6.0
-  google_sign_in: ^5.0.7
-  provider: ^6.0.0
+  google_sign_in: ^5.1.0
+  provider: ^5.0.0 # Update after deleting device_preview
+  device_preview: ^0.7.4 # Used for testing in different devices, delete when app is ready.
 
 dev_dependencies:
   flutter_test:
