@@ -3,41 +3,26 @@ import 'package:flutter/material.dart';
 class MebookLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double deviceWidth = MediaQuery.of(context).size.width;
-    double deviceHeight = MediaQuery.of(context).size.height;
-
-    return Material(
-      elevation: 8,
-      borderRadius: BorderRadius.circular(deviceWidth * 0.6),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).backgroundColor,
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.black, width: 4),
-        ),
-        width: deviceWidth * 0.6,
-        height: deviceWidth * 0.6,
-        child: Center(
-          child: Stack(children: [
-            Text(
-              'me',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 103,
-                fontWeight: FontWeight.bold,
-                color: Colors.white38,
-              ),
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.6,
+      height: MediaQuery.of(context).size.width * 0.6,
+      decoration: BoxDecoration(
+        color: Theme.of(context).backgroundColor,
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.black, width: 4),
+      ),
+      child: FittedBox(
+        fit: BoxFit.fitWidth,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 2),
+          child: Text(
+            'me',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
-            Text(
-              'me',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 100,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ]),
+          ),
         ),
       ),
     );

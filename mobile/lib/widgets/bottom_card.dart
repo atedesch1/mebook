@@ -26,7 +26,7 @@ class BottomCard extends StatelessWidget {
       ),
       padding: EdgeInsets.only(
         top: 50,
-        bottom: 50,
+        bottom: 25,
         left: 25,
         right: 25,
       ),

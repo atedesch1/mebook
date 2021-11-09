@@ -20,11 +20,16 @@ class WelcomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Welcome',
-                    style: TextStyle(
-                      fontSize: 34,
-                      fontWeight: FontWeight.bold,
+                  FractionallySizedBox(
+                    widthFactor: 0.6,
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(
+                        'Welcome',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -32,7 +37,6 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   Text(
                     'This app is supposed to be very good, if you don\'t like it then you can go flutter yourself!',
-                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                   SizedBox(
                     height: 30,
