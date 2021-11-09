@@ -27,6 +27,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - .env
     - assets/google_logo.png
     - assets/firebase_logo.png
 
