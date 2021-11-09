@@ -62,12 +62,7 @@ class NewsCard extends StatelessWidget {
                     return ListView.builder(
                         itemCount: news.length,
                         itemBuilder: (context, index) {
-                          var article = news[index];
-                          if (article.content != null &&
-                              article.description != null) {
-                            return NewsTile(news[index]);
-                          }
-                          return null;
+                          return NewsTile(news[index]);
                         });
                   } else {
                     return Center(
