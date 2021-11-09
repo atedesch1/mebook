@@ -10,10 +10,10 @@ class NewsCard extends StatelessWidget {
 
     return Container(
       height: 450,
-      margin: EdgeInsets.only(top: 10),
+      margin: EdgeInsets.only(top: 10, left: 5, right: 5),
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
         color: Theme.of(context).primaryColor,
-        // borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.15),
@@ -42,6 +42,7 @@ class NewsCard extends StatelessWidget {
                   ),
                 ),
                 Material(
+                  borderRadius: BorderRadius.circular(20),
                   color: Colors.white,
                   child: IconButton(
                     onPressed: () {},

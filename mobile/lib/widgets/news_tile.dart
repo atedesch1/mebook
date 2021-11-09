@@ -35,20 +35,23 @@ class _NewsTileState extends State<NewsTile> {
                     height: 130,
                     child: Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(widget._article.urlToImage),
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
-                            ),
-                          ),
+                        SizedBox(
+                          width: 15,
                         ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(horizontal: 15),
+                        //   child: Container(
+                        //     height: 30,
+                        //     width: 30,
+                        //     decoration: BoxDecoration(
+                        //       image: DecorationImage(
+                        //         image: NetworkImage(widget._article.urlToImage),
+                        //       ),
+                        //       borderRadius:
+                        //           BorderRadius.all(Radius.circular(5)),
+                        //     ),
+                        //   ),
+                        // ),
                         Expanded(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -90,16 +93,26 @@ class _NewsTileState extends State<NewsTile> {
                 ),
                 if (_isExpanded)
                   Container(
-                    color: Colors.grey[100],
-                    constraints: BoxConstraints(maxHeight: 300),
+                    color: Colors.grey[50],
+                    // constraints: BoxConstraints(maxHeight: 300),
                     padding: EdgeInsets.all(8),
                     child: SingleChildScrollView(
                       physics: BouncingScrollPhysics(),
-                      child: Text(
-                        widget._article.content,
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
+                      child: Column(
+                        children: [
+                          Image(
+                            image: NetworkImage(widget._article.urlToImage),
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Text(
+                            widget._article.content,
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
