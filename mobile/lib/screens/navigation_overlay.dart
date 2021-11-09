@@ -50,10 +50,12 @@ class _NavigationOverlayState extends State<NavigationOverlay> {
     final profilePictureURL =
         context.read<AuthService>().currentUser.photoURL ?? null;
 
-    var circleAvatar = CircleAvatar(
-      radius: 13,
-      backgroundImage: NetworkImage(profilePictureURL),
-    );
+    var circleAvatar = profilePictureURL != null
+        ? CircleAvatar(
+            radius: 13,
+            backgroundImage: NetworkImage(profilePictureURL),
+          )
+        : null;
 
     return Scaffold(
       body: _screens[_selectedScreenIndex]['screen'],
