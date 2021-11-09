@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mebook/models/news_model.dart';
 
 class NewsTile extends StatefulWidget {
   NewsTile(this._article);
-  final _article;
+  final News _article;
 
   @override
   _NewsTileState createState() => _NewsTileState();
@@ -37,7 +38,7 @@ class _NewsTileState extends State<NewsTile> {
                       width: 30,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(widget._article['icon']),
+                          image: NetworkImage(widget._article.urlToImage),
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),
@@ -48,7 +49,7 @@ class _NewsTileState extends State<NewsTile> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          widget._article['title'],
+                          widget._article.title,
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black,
@@ -61,7 +62,7 @@ class _NewsTileState extends State<NewsTile> {
                           height: 4,
                         ),
                         Text(
-                          widget._article['subtitle'],
+                          widget._article.description,
                           style: TextStyle(
                             fontSize: 10,
                             color: Colors.grey,
@@ -89,7 +90,7 @@ class _NewsTileState extends State<NewsTile> {
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Text(
-                  widget._article['body'],
+                  widget._article.content,
                   style: TextStyle(
                     fontSize: 14,
                   ),
