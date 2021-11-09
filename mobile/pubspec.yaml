@@ -14,6 +14,7 @@ dependencies:
   cloud_firestore: ^2.5.2
   firebase_auth: ^3.1.1
   firebase_core: ^1.6.0
+  flutter_dotenv: ^5.0.2
   google_sign_in: ^5.1.0
   provider: ^5.0.0 # Update after deleting device_preview
   device_preview: ^0.7.4 # Used for testing in different devices, delete when app is ready.
