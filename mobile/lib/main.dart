@@ -7,9 +7,11 @@ import 'package:mebook/app.dart';
 Future main() async {
   await dotenv.load(fileName: '.env');
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(DevicePreview(
-      builder: (context) =>
-          MebookApp())); // Remove Device Preview when app is finished
+  runApp(MebookApp()
+      // DevicePreview(
+      //   builder: (context) =>
+      //       MebookApp())
+      ); // Remove Device Preview when app is finished
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
