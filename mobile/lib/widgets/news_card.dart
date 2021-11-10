@@ -10,7 +10,7 @@ class NewsCard extends StatelessWidget {
 
     return Container(
       height: 450,
-      margin: EdgeInsets.only(top: 10, left: 5, right: 5),
+      margin: EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Theme.of(context).primaryColor,
@@ -61,6 +61,7 @@ class NewsCard extends StatelessWidget {
                   if (snapshot.hasData) {
                     List<News> news = snapshot.data;
                     return ListView.builder(
+                        padding: EdgeInsets.all(0),
                         itemCount: news.length,
                         itemBuilder: (context, index) {
                           return NewsTile(news[index]);

@@ -50,7 +50,7 @@ class _NavigationOverlayState extends State<NavigationOverlay> {
     final profilePictureURL =
         context.read<AuthService>().currentUser.photoURL ?? null;
 
-    var circleAvatar = profilePictureURL != null
+    final circleAvatar = profilePictureURL != null
         ? CircleAvatar(
             radius: 13,
             backgroundImage: NetworkImage(profilePictureURL),
@@ -58,15 +58,27 @@ class _NavigationOverlayState extends State<NavigationOverlay> {
         : null;
 
     return Scaffold(
-      body: _screens[_selectedScreenIndex]['screen'],
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text(_screens[_selectedScreenIndex]['name']),
-        // elevation: 0,
-        actions: [
-          IconButton(
-              onPressed: context.read<AuthService>().signOut,
-              icon: Icon(Icons.logout))
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics()),
+        slivers: [
+          SliverAppBar(
+            stretch: true,
+            onStretchTrigger: () {
+              return Future<void>.value();
+            },
+            backgroundColor: Theme.of(context).primaryColor,
+            title: Text(
+              _screens[_selectedScreenIndex]['name'],
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            actions: [
+              IconButton(
+                  onPressed: context.read<AuthService>().signOut,
+                  icon: Icon(Icons.logout))
+            ],
+          ),
+          _screens[_selectedScreenIndex]['screen'],
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
