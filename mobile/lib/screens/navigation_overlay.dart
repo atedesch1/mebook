@@ -58,32 +58,7 @@ class _NavigationOverlayState extends State<NavigationOverlay> {
         : null;
 
     return Scaffold(
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics()),
-        slivers: [
-          SliverAppBar(
-            stretch: true,
-            onStretchTrigger: () {
-              return Future<void>.value();
-            },
-            backgroundColor: Theme.of(context).primaryColor,
-            title: Text(
-              _screens[_selectedScreenIndex]['name'],
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            actions: [
-              IconButton(
-                  onPressed: context.read<AuthService>().signOut,
-                  icon: Icon(Icons.logout))
-            ],
-          ),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            sliver: _screens[_selectedScreenIndex]['screen'],
-          ),
-        ],
-      ),
+      body: _screens[_selectedScreenIndex]['screen'],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
         unselectedItemColor: Colors.black54,
