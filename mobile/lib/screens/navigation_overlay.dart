@@ -78,7 +78,10 @@ class _NavigationOverlayState extends State<NavigationOverlay> {
                   icon: Icon(Icons.logout))
             ],
           ),
-          _screens[_selectedScreenIndex]['screen'],
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            sliver: _screens[_selectedScreenIndex]['screen'],
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

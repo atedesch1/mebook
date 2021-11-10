@@ -9,7 +9,7 @@ class HomeScreen extends StatelessWidget {
       delegate: SliverChildListDelegate(
         [
           Padding(
-            padding: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(top: 5),
             child: NewsCard(),
           ),
         ],
