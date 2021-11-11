@@ -65,6 +65,7 @@ class _EditNoteState extends State<EditNote> {
                   fontSize: 20,
                 ),
                 decoration: InputDecoration(
+                  border: InputBorder.none,
                   filled: false,
                   contentPadding: EdgeInsets.all(0),
                   hintText: 'Title',
@@ -95,23 +96,21 @@ class _EditNoteState extends State<EditNote> {
           ),
           SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: 5),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  TextField(
-                    maxLines: null,
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                    decoration: InputDecoration(
-                      filled: false,
-                      contentPadding: EdgeInsets.all(15),
-                      hintText: 'Content',
-                    ),
-                    controller: _contentController,
-                    onSubmitted: (_) => _submitData(),
-                  ),
-                ],
+            sliver: SliverToBoxAdapter(
+              child: TextField(
+                minLines: 10,
+                maxLines: null,
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  filled: false,
+                  contentPadding: EdgeInsets.all(15),
+                  hintText: 'Content',
+                ),
+                controller: _contentController,
+                onSubmitted: (_) => _submitData(),
               ),
             ),
           ),
