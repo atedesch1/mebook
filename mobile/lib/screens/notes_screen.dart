@@ -15,6 +15,18 @@ class _NotesScreenState extends State<NotesScreen> {
   final List<Map<String, Object>> _notes = NotesMock().notes;
   final List<int> _selectedToDelete = [];
 
+  void _pushAddNotePage(context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) {
+          return EditNote(
+            editNote: _editNote,
+          );
+        },
+      ),
+    );
+  }
+
   void _editNote({int id, @required String title, @required String content}) {
     final editedNote = {
       'id': id ?? Random().nextInt(100),
@@ -32,7 +44,7 @@ class _NotesScreenState extends State<NotesScreen> {
     });
   }
 
-  void _toggleDeletingSelect(int id) {
+  void _toggleSelectedForDelete(int id) {
     setState(() {
       if (_selectedToDelete.contains(id)) {
         _selectedToDelete.remove(id);
@@ -67,6 +79,11 @@ class _NotesScreenState extends State<NotesScreen> {
         .toList();
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _pushAddNotePage(context),
+        backgroundColor: Colors.cyan,
+        child: Icon(Icons.add),
+      ),
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
@@ -83,15 +100,7 @@ class _NotesScreenState extends State<NotesScreen> {
             ),
             actions: [
               IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) {
-                      return EditNote(
-                        editNote: _editNote,
-                      );
-                    },
-                  ));
-                },
+                onPressed: () => _pushAddNotePage(context),
                 icon: Icon(Icons.add),
               ),
               if (!_selectedToDelete.isEmpty)
@@ -111,10 +120,10 @@ class _NotesScreenState extends State<NotesScreen> {
                           notes[index],
                           _selectedToDelete.contains(notes[index].id)
                               ? Colors.grey
-                              : Colors.cyan[300],
+                              : Colors.white,
                           _editNote,
                           _deleteNote,
-                          _toggleDeletingSelect,
+                          _toggleSelectedForDelete,
                         ),
                     childCount: notes.length),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

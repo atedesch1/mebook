@@ -5,7 +5,7 @@ import 'package:mebook/widgets/edit_note.dart';
 
 class NoteCard extends StatelessWidget {
   final Color _color;
-  final Function _toggleDeletingSelect;
+  final Function _toggleSelectedForDelete;
   final Function _deleteNote;
   final Function _editNote;
   final Note _note;
@@ -15,8 +15,24 @@ class NoteCard extends StatelessWidget {
     this._color,
     this._editNote,
     this._deleteNote,
-    this._toggleDeletingSelect,
+    this._toggleSelectedForDelete,
   );
+
+  void _pushEditPage(context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) {
+          return EditNote(
+            id: _note.id,
+            oldTitle: _note.title,
+            oldContent: _note.content,
+            editNote: _editNote,
+            deleteNote: _deleteNote,
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,33 +41,23 @@ class NoteCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       elevation: 6,
       child: InkWell(
-        onLongPress: () => _toggleDeletingSelect(_note.id),
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) {
-              return EditNote(
-                id: _note.id,
-                oldTitle: _note.title,
-                oldContent: _note.content,
-                editNote: _editNote,
-                deleteNote: _deleteNote,
-              );
-            },
-          ));
-        },
+        onLongPress: () => _toggleSelectedForDelete(_note.id),
+        onTap: () => _pushEditPage(context),
         child: Container(
           padding: EdgeInsets.all(15),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 _note.title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(
                 height: 10,
