@@ -49,7 +49,7 @@ class NoteCard extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.bold),
               ),
@@ -61,7 +61,7 @@ class NoteCard extends StatelessWidget {
                 maxLines: 4,
                 overflow: TextOverflow.clip,
                 style: TextStyle(
-                  color: Colors.grey[100],
+                  color: Colors.black54,
                   fontSize: 14,
                 ),
               ),

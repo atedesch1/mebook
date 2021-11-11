@@ -111,7 +111,7 @@ class _NotesScreenState extends State<NotesScreen> {
                           notes[index],
                           _selectedToDelete.contains(notes[index].id)
                               ? Colors.grey
-                              : Colors.cyan,
+                              : Colors.cyan[300],
                           _editNote,
                           _deleteNote,
                           _toggleDeletingSelect,
