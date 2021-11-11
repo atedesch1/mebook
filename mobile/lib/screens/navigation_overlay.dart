@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:mebook/utils/auth_service.dart';
+import 'package:mebook/services/auth_service.dart';
 import 'package:mebook/screens/home_screen.dart';
 import 'package:mebook/screens/schedule_screen.dart';
 import 'package:mebook/screens/notes_screen.dart';

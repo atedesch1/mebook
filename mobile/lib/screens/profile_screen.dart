@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:mebook/utils/auth_service.dart';
+import 'package:mebook/services/auth_service.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override

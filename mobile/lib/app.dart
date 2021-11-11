@@ -5,7 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mebook/res/theme.dart';
-import 'package:mebook/utils/auth_service.dart';
+import 'package:mebook/services/auth_service.dart';
 import 'package:mebook/screens/splash_screen.dart';
 import 'package:mebook/screens/authentication/auth_screen.dart';
 import 'package:mebook/screens/authentication/welcome_screen.dart';
