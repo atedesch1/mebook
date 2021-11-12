@@ -3,8 +3,26 @@ import 'package:mebook/widgets/popup_rect_tween.dart';
 
 const String _CalendarEventPopUp = 'calendar-event-pop-up';
 
-class CalendarEventCard extends StatelessWidget {
-  const CalendarEventCard({Key key}) : super(key: key);
+class CalendarEventCard extends StatefulWidget {
+  @override
+  _CalendarEventCardState createState() => _CalendarEventCardState();
+}
+
+class _CalendarEventCardState extends State<CalendarEventCard> {
+  TimeOfDay startTime = TimeOfDay(hour: 0, minute: 0);
+  TimeOfDay endTime = TimeOfDay(hour: 0, minute: 0);
+
+  void _selectTime(currentTime) async {
+    final TimeOfDay newTime = await showTimePicker(
+      context: context,
+      initialTime: currentTime,
+    );
+    if (newTime != null) {
+      setState(() {
+        currentTime = newTime;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +45,25 @@ class CalendarEventCard extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // TODO: calendar event card
+                    TextField(
+                      maxLines: null,
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                      decoration: InputDecoration(
+                        filled: false,
+                        contentPadding: EdgeInsets.all(15),
+                        hintText: 'event name placeholder',
+                      ),
+                      // controller: _contentController,
+                      // onSubmitted: (_) => _submitData(),
+                    ),
+                    IconButton(
+                        onPressed: () => {_selectTime(startTime)},
+                        icon: Icon(Icons.timer)),
+                    IconButton(
+                        onPressed: () => {_selectTime(endTime)},
+                        icon: Icon(Icons.timer)),
                   ],
                 ),
               ),

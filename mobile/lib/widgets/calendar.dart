@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:mebook/widgets/calendar_event_route.dart';
-import 'package:mebook/widgets/calendar_event_card.dart';
 
 final today = DateTime.now();
 final calendarFirstDay = DateTime(today.year, today.month - 2, 1);
@@ -53,11 +51,6 @@ class _CalendarState extends State<Calendar> {
             child: Text(date.day.toString(),
                 style: TextStyle(color: Colors.white))),
       ),
-      onDayLongPressed: (selectedDay, focusedDay) {
-        Navigator.of(context).push(ChangeEventRoute(builder: (context) {
-          return CalendarEventCard();
-        }));
-      },
       onDaySelected: (selectedDay, focusedDay) {
         if (!isSameDay(_selectedDay, selectedDay)) {
           // Call `setState()` when updating the selected day
