@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:mebook/mock/events_mock.dart';
+import 'package:mebook/models/event_model.dart';
 import 'package:mebook/widgets/calendar.dart';
+import 'package:mebook/widgets/event_preview_tile.dart';
 
 class ScheduleScreen extends StatelessWidget {
+  final List<Event> _events = EventsMock()
+      .events
+      .map(
+        (e) => Event(
+          id: e['id'],
+          title: e['title'],
+          startTime: DateTime.parse(e['startTime']),
+          endTime: DateTime.parse(e['endTime']),
+          notify: e['notify'],
+        ),
+      )
+      .toList();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +45,30 @@ class ScheduleScreen extends StatelessWidget {
           SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: 5),
             sliver: SliverToBoxAdapter(
-              child: Calendar(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Theme.of(context).primaryColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        spreadRadius: 3,
+                        blurRadius: 10,
+                        offset: Offset(2, 3),
+                      ),
+                    ],
+                  ),
+                  child: Calendar(),
+                ),
+              ),
             ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+              return EventPreviewTile(_events[index]);
+            }, childCount: _events.length),
           ),
         ],
       ),
