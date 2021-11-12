@@ -42,12 +42,12 @@ class ScheduleScreen extends StatelessWidget {
               ),
             ],
           ),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            sliver: SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Container(
+          SliverFillRemaining(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  margin: EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Theme.of(context).primaryColor,
@@ -62,14 +62,45 @@ class ScheduleScreen extends StatelessWidget {
                   ),
                   child: Calendar(),
                 ),
-              ),
+                Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.all(0),
+                    itemBuilder: (context, index) =>
+                        EventPreviewTile(_events[index]),
+                    itemCount: _events.length,
+                  ),
+                ),
+              ],
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-              return EventPreviewTile(_events[index]);
-            }, childCount: _events.length),
-          ),
+          // SliverPadding(
+          //   padding: EdgeInsets.symmetric(horizontal: 5),
+          //   sliver: SliverToBoxAdapter(
+          //     child: Padding(
+          //       padding: const EdgeInsets.symmetric(vertical: 8.0),
+          //       child: Container(
+          //         decoration: BoxDecoration(
+          //           borderRadius: BorderRadius.circular(20),
+          //           color: Theme.of(context).primaryColor,
+          //           boxShadow: [
+          //             BoxShadow(
+          //               color: Colors.black.withOpacity(0.05),
+          //               spreadRadius: 3,
+          //               blurRadius: 10,
+          //               offset: Offset(2, 3),
+          //             ),
+          //           ],
+          //         ),
+          //         child: Calendar(),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // SliverList(
+          //   delegate: SliverChildBuilderDelegate((context, index) {
+          //     return EventPreviewTile(_events[index]);
+          //   }, childCount: _events.length),
+          // ),
         ],
       ),
     );
