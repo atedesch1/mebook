@@ -38,5 +38,5 @@ class ChangeEventRoute<T> extends PageRoute<T> {
   }
 
   @override
-  String get barrierLabel => 'calendar change event open';
+  String get barrierLabel => 'Change event open';
 }

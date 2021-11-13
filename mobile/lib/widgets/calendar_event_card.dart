@@ -32,7 +32,7 @@ class _CalendarEventCardState extends State<CalendarEventCard> {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Hero(
           tag: _CalendarEventPopUp,
           createRectTween: (begin, end) {
@@ -46,55 +46,58 @@ class _CalendarEventCardState extends State<CalendarEventCard> {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  Row(
-                    children: [
-                      Expanded(
-                          child: Text(
-                        'Edit Event',
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                      )),
-                      IconButton(
-                        alignment: Alignment.centerRight,
-                        padding: EdgeInsets.all(0),
-                        onPressed: () => Navigator.of(context).pop(),
-                        icon: Icon(Icons.close),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Text(
+                          'Edit Event',
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
+                        )),
+                        IconButton(
+                          alignment: Alignment.centerRight,
+                          padding: EdgeInsets.all(0),
+                          onPressed: () => Navigator.of(context).pop(),
+                          icon: Icon(Icons.close),
+                        ),
+                      ],
+                    ),
+                    TextField(
+                      style: TextStyle(
+                        fontSize: 20,
                       ),
-                    ],
-                  ),
-                  TextField(
-                    style: TextStyle(
-                      fontSize: 20,
+                      decoration: InputDecoration(
+                        filled: false,
+                        contentPadding: EdgeInsets.all(0),
+                        hintText: 'Event Name',
+                      ),
+                      // controller: _contentController,
+                      // onSubmitted: (_) => _submitData(),
                     ),
-                    decoration: InputDecoration(
-                      filled: false,
-                      contentPadding: EdgeInsets.all(0),
-                      hintText: 'Event Name',
+                    TimeRow(
+                      iconColor: Colors.green,
+                      timeText: 'Start Time',
+                      selectTime: () => _selectTime(true),
+                      time: startTime,
                     ),
-                    // controller: _contentController,
-                    // onSubmitted: (_) => _submitData(),
-                  ),
-                  TimeRow(
-                    iconColor: Colors.green,
-                    timeText: 'Start Time',
-                    selectTime: () => _selectTime(true),
-                    time: startTime,
-                  ),
-                  TimeRow(
-                    iconColor: Colors.redAccent,
-                    timeText: 'End Time',
-                    selectTime: () => _selectTime(false),
-                    time: endTime,
-                  ),
-                  IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: Icon(
-                      Icons.check,
-                      color: Colors.green,
+                    TimeRow(
+                      iconColor: Colors.redAccent,
+                      timeText: 'End Time',
+                      selectTime: () => _selectTime(false),
+                      time: endTime,
                     ),
-                  ),
-                ]),
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(
+                        Icons.check,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
