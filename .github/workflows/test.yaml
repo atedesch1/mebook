@@ -15,10 +15,6 @@ jobs:
             cd mobile
             echo "NEWS_API_KEY=${{ secrets.NEWS_API_KEY }}" > .env
             flutter pub get
-      - name: Analyze
-        run: |
-            cd mobile
-            flutter analyze
       - name: Run tests
         run: |
             cd mobile
