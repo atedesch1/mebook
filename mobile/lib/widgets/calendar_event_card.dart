@@ -12,14 +12,18 @@ class _CalendarEventCardState extends State<CalendarEventCard> {
   TimeOfDay startTime = TimeOfDay(hour: 0, minute: 0);
   TimeOfDay endTime = TimeOfDay(hour: 0, minute: 0);
 
-  void _selectTime(currentTime) async {
+  void _selectTime(bool isStartTime) async {
     final TimeOfDay newTime = await showTimePicker(
       context: context,
-      initialTime: currentTime,
+      initialTime: isStartTime ? startTime : endTime,
     );
+
     if (newTime != null) {
       setState(() {
-        currentTime = newTime;
+        if (isStartTime)
+          startTime = newTime;
+        else
+          endTime = newTime;
       });
     }
   }
@@ -38,7 +42,7 @@ class _CalendarEventCardState extends State<CalendarEventCard> {
             color: Theme.of(context).backgroundColor,
             elevation: 2,
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -53,16 +57,16 @@ class _CalendarEventCardState extends State<CalendarEventCard> {
                       decoration: InputDecoration(
                         filled: false,
                         contentPadding: EdgeInsets.all(15),
-                        hintText: 'event name placeholder',
+                        hintText: 'Event',
                       ),
                       // controller: _contentController,
                       // onSubmitted: (_) => _submitData(),
                     ),
                     IconButton(
-                        onPressed: () => {_selectTime(startTime)},
+                        onPressed: () => _selectTime(true),
                         icon: Icon(Icons.timer)),
                     IconButton(
-                        onPressed: () => {_selectTime(endTime)},
+                        onPressed: () => _selectTime(false),
                         icon: Icon(Icons.timer)),
                   ],
                 ),
