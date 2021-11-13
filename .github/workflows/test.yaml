@@ -4,7 +4,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-	  - name: Checkout the code
+      - name: Checkout the code
         uses: action/checkout@v2
       - name: Change directory to mobile
         run: cd mobile
