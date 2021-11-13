@@ -102,6 +102,8 @@ class _NotesScreenState extends State<NotesScreen> {
                         ),
                       );
                     }
+                    notes.sort(
+                        (noteA, noteB) => noteB.time.compareTo(noteA.time));
                     return SliverGrid(
                       delegate: SliverChildBuilderDelegate(
                           (context, index) => NoteCard(
