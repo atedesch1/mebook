@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mebook/widgets/calendar_event_route.dart';
+import 'package:mebook/widgets/finances/edit_transaction_card.dart';
 
 class FinancesScreen extends StatelessWidget {
   @override
@@ -18,18 +20,22 @@ class FinancesScreen extends StatelessWidget {
               'Finances',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            actions: [],
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(ChangeEventRoute(builder: (context) {
+                      return EditTransactionCard();
+                    }));
+                  },
+                  icon: Icon(Icons.add_circle_outline))
+            ],
           ),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.all(8),
             sliver: SliverList(
               delegate: SliverChildListDelegate(
-                [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Text('Finances'),
-                  ),
-                ],
+                [],
               ),
             ),
           ),
