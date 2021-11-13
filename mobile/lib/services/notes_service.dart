@@ -31,6 +31,7 @@ class NotesService {
     var ref = _db.collection('notes').doc(_currentUser.uid).collection('items');
 
     Map<String, dynamic> data = {
+      'time': DateTime.now(),
       'title': title,
       'content': content,
     };

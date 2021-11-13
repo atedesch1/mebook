@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:mebook/models/note_model.dart';
 import 'package:mebook/widgets/edit_note.dart';
 
@@ -62,14 +63,20 @@ class NoteCard extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              Text(
-                _note.content,
-                maxLines: 4,
-                overflow: TextOverflow.clip,
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 14,
+              Expanded(
+                child: Text(
+                  _note.content,
+                  maxLines: 4,
+                  overflow: TextOverflow.clip,
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 14,
+                  ),
                 ),
+              ),
+              Text(
+                DateFormat(DateFormat.YEAR_ABBR_MONTH_DAY).format(_note.time),
+                style: TextStyle(color: Colors.black54, fontSize: 12),
               ),
             ],
           ),
