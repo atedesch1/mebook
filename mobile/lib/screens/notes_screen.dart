@@ -84,54 +84,52 @@ class _NotesScreenState extends State<NotesScreen> {
             ],
           ),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            sliver: SliverPadding(
-              padding: EdgeInsets.only(top: 5),
-              sliver: StreamBuilder<List<Note>>(
-                stream: NotesService(context).getNotes(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    var notes = snapshot.data;
-                    if (notes.isEmpty) {
-                      return SliverFillRemaining(
-                        child: Center(
-                          child: Text(
-                            'You have no notes!',
-                            style: TextStyle(fontSize: 22),
-                          ),
-                        ),
-                      );
-                    }
-                    notes.sort(
-                        (noteA, noteB) => noteB.time.compareTo(noteA.time));
-                    return SliverGrid(
-                      delegate: SliverChildBuilderDelegate(
-                          (context, index) => NoteCard(
-                                notes[index],
-                                _selectedToDelete.contains(notes[index].id)
-                                    ? Colors.grey
-                                    : Colors.white,
-                                notesService.createOrUpdateNote,
-                                notesService.deleteNote,
-                                _toggleSelectedForDelete,
-                              ),
-                          childCount: notes.length),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.9,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 5,
-                        mainAxisSpacing: 5,
-                      ),
-                    );
-                  } else {
+            padding: EdgeInsets.all(8),
+            sliver: StreamBuilder<List<Note>>(
+              stream: NotesService(context).getNotes(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  var notes = snapshot.data;
+                  if (notes.isEmpty) {
                     return SliverFillRemaining(
                       child: Center(
-                        child: CircularProgressIndicator(),
+                        child: Text(
+                          'You have no notes!',
+                          style: TextStyle(fontSize: 22),
+                        ),
                       ),
                     );
                   }
-                },
-              ),
+                  notes
+                      .sort((noteA, noteB) => noteB.time.compareTo(noteA.time));
+
+                  return SliverGrid(
+                    delegate: SliverChildBuilderDelegate(
+                        (context, index) => NoteCard(
+                              notes[index],
+                              _selectedToDelete.contains(notes[index].id)
+                                  ? Colors.grey
+                                  : Colors.white,
+                              notesService.createOrUpdateNote,
+                              notesService.deleteNote,
+                              _toggleSelectedForDelete,
+                            ),
+                        childCount: notes.length),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 0.9,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
+                    ),
+                  );
+                } else {
+                  return SliverFillRemaining(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+              },
             ),
           ),
         ],

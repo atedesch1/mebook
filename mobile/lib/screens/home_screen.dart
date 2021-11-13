@@ -23,14 +23,11 @@ class HomeScreen extends StatelessWidget {
             actions: [],
           ),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.all(8),
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: NewsCard(),
-                  ),
+                  NewsCard(),
                 ],
               ),
             ),

@@ -47,7 +47,7 @@ class ScheduleScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  margin: EdgeInsets.all(8.0),
+                  margin: EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Theme.of(context).primaryColor,
