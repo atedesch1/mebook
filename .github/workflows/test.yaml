@@ -28,5 +28,5 @@ jobs:
             cd mobile
             curl -Os https://uploader.codecov.io/v0.1.0_4653/linux/codecov
             chmod +x codecov
-            ./codecov -t ${{ secrets.CODECOV_TOKEN }}
+            ./codecov -t ${{ secrets.CODECOV_TOKEN }} --report-on=lib/
         shell: bash

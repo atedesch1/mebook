@@ -25,5 +25,7 @@ doc/api/
 
 .tool-versions
 
+mobile/codecov
 mobile/android/google-services.json
+mobile/android/app/local.properties
 *.swp
