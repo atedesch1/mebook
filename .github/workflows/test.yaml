@@ -9,7 +9,7 @@ jobs:
       - name: Change directory to mobile
         run: cd mobile
       - name: Install and set Flutter version
-        uses: subosito/flutter-action@v1.4.0
+        uses: subosito/flutter-action@v1.5.3
         with:
           flutter-version: '2.5.3'
       - name: Restore packages
