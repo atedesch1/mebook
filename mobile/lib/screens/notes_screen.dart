@@ -1,8 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:mebook/mock/notes_mock.dart';
 import 'package:mebook/models/note_model.dart';
+import 'package:mebook/services/notes_service.dart';
 import 'package:mebook/widgets/edit_note.dart';
 import 'package:mebook/widgets/note_card.dart';
 
@@ -12,39 +10,20 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  final List<Map<String, Object>> _notes = NotesMock().notes;
-  final List<int> _selectedToDelete = [];
+  final List<String> _selectedToDelete = [];
 
-  void _pushAddNotePage(context) {
+  void _pushAddNotePage({
+    NotesService notesService,
+    BuildContext context,
+  }) {
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) {
-          return EditNote(
-            editNote: _editNote,
-          );
-        },
-      ),
+      MaterialPageRoute(builder: (_) {
+        return EditNote(editNote: notesService.createOrUpdateNote);
+      }),
     );
   }
 
-  void _editNote({int id, @required String title, @required String content}) {
-    final editedNote = {
-      'id': id ?? Random().nextInt(100),
-      'title': title,
-      'content': content,
-    };
-
-    setState(() {
-      if (id == null) {
-        _notes.add(editedNote);
-      } else {
-        _notes.removeWhere((element) => element['id'] == id);
-        _notes.add(editedNote);
-      }
-    });
-  }
-
-  void _toggleSelectedForDelete(int id) {
+  void _toggleSelectedForDelete(String id) {
     setState(() {
       if (_selectedToDelete.contains(id)) {
         _selectedToDelete.remove(id);
@@ -54,33 +33,24 @@ class _NotesScreenState extends State<NotesScreen> {
     });
   }
 
-  void _deleteNotes() {
-    setState(() {
-      _notes
-          .removeWhere((element) => _selectedToDelete.contains(element['id']));
-    });
-    _selectedToDelete.clear();
-  }
+  void _deleteNotes(NotesService notesService) {
+    for (var id in _selectedToDelete) notesService.deleteNote(id);
 
-  void _deleteNote(int id) {
     setState(() {
-      _notes.removeWhere((element) => element['id'] == id);
+      _selectedToDelete.clear();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<Note> notes = _notes
-        .map((item) => Note(
-              id: item['id'],
-              title: item['title'],
-              content: item['content'],
-            ))
-        .toList();
+    final NotesService notesService = NotesService(context);
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _pushAddNotePage(context),
+        onPressed: () => _pushAddNotePage(
+          notesService: notesService,
+          context: context,
+        ),
         backgroundColor: Colors.cyan,
         child: Icon(Icons.add),
       ),
@@ -100,12 +70,15 @@ class _NotesScreenState extends State<NotesScreen> {
             ),
             actions: [
               IconButton(
-                onPressed: () => _pushAddNotePage(context),
+                onPressed: () => _pushAddNotePage(
+                  notesService: notesService,
+                  context: context,
+                ),
                 icon: Icon(Icons.add),
               ),
               if (!_selectedToDelete.isEmpty)
                 IconButton(
-                  onPressed: _deleteNotes,
+                  onPressed: () => _deleteNotes(notesService),
                   icon: Icon(Icons.delete),
                 )
             ],
@@ -114,24 +87,48 @@ class _NotesScreenState extends State<NotesScreen> {
             padding: EdgeInsets.symmetric(horizontal: 5),
             sliver: SliverPadding(
               padding: EdgeInsets.only(top: 5),
-              sliver: SliverGrid(
-                delegate: SliverChildBuilderDelegate(
-                    (context, index) => NoteCard(
-                          notes[index],
-                          _selectedToDelete.contains(notes[index].id)
-                              ? Colors.grey
-                              : Colors.white,
-                          _editNote,
-                          _deleteNote,
-                          _toggleSelectedForDelete,
+              sliver: StreamBuilder<List<Note>>(
+                stream: NotesService(context).getNotes(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    var notes = snapshot.data;
+                    if (notes.isEmpty) {
+                      return SliverFillRemaining(
+                        child: Center(
+                          child: Text(
+                            'You have no notes!',
+                            style: TextStyle(fontSize: 22),
+                          ),
                         ),
-                    childCount: notes.length),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 0.9,
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5,
-                ),
+                      );
+                    }
+                    return SliverGrid(
+                      delegate: SliverChildBuilderDelegate(
+                          (context, index) => NoteCard(
+                                notes[index],
+                                _selectedToDelete.contains(notes[index].id)
+                                    ? Colors.grey
+                                    : Colors.white,
+                                notesService.createOrUpdateNote,
+                                notesService.deleteNote,
+                                _toggleSelectedForDelete,
+                              ),
+                          childCount: notes.length),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 0.9,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 5,
+                      ),
+                    );
+                  } else {
+                    return SliverFillRemaining(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mebook/services/notes_service.dart';
 
 class EditNote extends StatefulWidget {
-  final int id;
+  final String id;
   final String oldTitle;
   final String oldContent;
   final Function editNote;
@@ -39,7 +40,7 @@ class _EditNoteState extends State<EditNote> {
     }
 
     widget.editNote(
-      id: widget.id,
+      docId: widget.id,
       title: enteredTitle,
       content: enteredContent,
     );
