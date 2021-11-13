@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mebook/models/event_model.dart';
-import 'package:mebook/widgets/calendar_event_route.dart';
+import 'package:mebook/widgets/event_route.dart';
 import 'package:mebook/widgets/calendar_event_card.dart';
 import 'package:intl/intl.dart';
 
