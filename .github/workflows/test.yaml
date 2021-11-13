@@ -25,8 +25,7 @@ jobs:
             flutter test --coverage
       - name: Upload coverage to codecov
         run: |
-            cd mobile
             curl -Os https://uploader.codecov.io/v0.1.0_4653/linux/codecov
             chmod +x codecov
-            ./codecov -t ${{ secrets.CODECOV_TOKEN }} -s lib/ -Z
+            ./codecov -t ${{ secrets.CODECOV_TOKEN }} -R mobile/ -s lib/ -Z
         shell: bash
