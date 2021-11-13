@@ -44,31 +44,36 @@ class _CalendarEventCardState extends State<CalendarEventCard> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                          decoration: InputDecoration(
-                            filled: false,
-                            contentPadding: EdgeInsets.all(0),
-                            hintText: 'Event',
-                          ),
-                          // controller: _contentController,
-                          // onSubmitted: (_) => _submitData(),
-                        ),
-                      ),
+                          child: Text(
+                        'Edit Event',
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
+                      )),
                       IconButton(
-                        alignment: Alignment.topRight,
+                        alignment: Alignment.centerRight,
                         padding: EdgeInsets.all(0),
                         onPressed: () => Navigator.of(context).pop(),
                         icon: Icon(Icons.close),
                       ),
                     ],
+                  ),
+                  TextField(
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                    decoration: InputDecoration(
+                      filled: false,
+                      contentPadding: EdgeInsets.all(0),
+                      hintText: 'Event Name',
+                    ),
+                    // controller: _contentController,
+                    // onSubmitted: (_) => _submitData(),
                   ),
                   TimeRow(
                     iconColor: Colors.green,
