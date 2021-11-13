@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
-        uses: action/checkout@v2
+        uses: actions/checkout@v2
       - name: Change directory to mobile
         run: cd mobile
       - name: Install and set Flutter version
