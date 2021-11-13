@@ -39,42 +39,103 @@ class _CalendarEventCardState extends State<CalendarEventCard> {
             return PopUpRectTween(begin: begin, end: end);
           },
           child: Material(
-            color: Theme.of(context).backgroundColor,
-            elevation: 2,
+            elevation: 6,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextField(
-                      maxLines: null,
-                      style: TextStyle(
-                        fontSize: 18,
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                          decoration: InputDecoration(
+                            filled: false,
+                            contentPadding: EdgeInsets.all(0),
+                            hintText: 'Event',
+                          ),
+                          // controller: _contentController,
+                          // onSubmitted: (_) => _submitData(),
+                        ),
                       ),
-                      decoration: InputDecoration(
-                        filled: false,
-                        contentPadding: EdgeInsets.all(15),
-                        hintText: 'Event',
+                      IconButton(
+                        alignment: Alignment.topRight,
+                        padding: EdgeInsets.all(0),
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: Icon(Icons.close),
                       ),
-                      // controller: _contentController,
-                      // onSubmitted: (_) => _submitData(),
+                    ],
+                  ),
+                  TimeRow(
+                    iconColor: Colors.green,
+                    timeText: 'Start Time',
+                    selectTime: () => _selectTime(true),
+                    time: startTime,
+                  ),
+                  TimeRow(
+                    iconColor: Colors.redAccent,
+                    timeText: 'End Time',
+                    selectTime: () => _selectTime(false),
+                    time: endTime,
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: Icon(
+                      Icons.check,
+                      color: Colors.green,
                     ),
-                    IconButton(
-                        onPressed: () => _selectTime(true),
-                        icon: Icon(Icons.timer)),
-                    IconButton(
-                        onPressed: () => _selectTime(false),
-                        icon: Icon(Icons.timer)),
-                  ],
-                ),
+                  ),
+                ]),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class TimeRow extends StatelessWidget {
+  final Color iconColor;
+  final String timeText;
+  final Function selectTime;
+  final TimeOfDay time;
+
+  TimeRow({this.iconColor, this.selectTime, this.timeText, this.time});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 5),
+          child: Icon(
+            Icons.access_time_filled_rounded,
+            color: iconColor,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            timeText,
+            style: TextStyle(
+              fontSize: 18,
+            ),
+          ),
+        ),
+        TextButton(
+          style: ButtonStyle(
+            minimumSize: MaterialStateProperty.all<Size>(Size(100, 0)),
+            elevation: MaterialStateProperty.all<double>(2),
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          ),
+          onPressed: selectTime,
+          child: Text('${time.format(context)}'),
+        ),
+      ],
     );
   }
 }
