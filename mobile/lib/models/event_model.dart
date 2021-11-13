@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class Event {
-  final int id;
+  final String id;
   final String title;
   final DateTime startTime;
   final DateTime endTime;
@@ -16,7 +16,7 @@ class Event {
 
   factory Event.fromJson(Map<String, dynamic> json) {
     return Event(
-        id: json['id'] as int,
+        id: json['id'] as String,
         title: json['title'] as String,
         startTime: json['startTime'] as DateTime,
         endTime: json['endTime'] as DateTime,
