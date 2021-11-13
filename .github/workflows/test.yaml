@@ -1,0 +1,26 @@
+name: Tests
+on: [pull_request]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Install and set Flutter version
+        uses: subosito/flutter-action@v1.5.3
+        with:
+          flutter-version: '2.5.3'
+      - name: Restore packages
+        run: |
+            cd mobile
+            echo "NEWS_API_KEY=${{ secrets.NEWS_API_KEY }}" > .env
+            flutter pub get
+      - name: Run tests
+        run: |
+            cd mobile
+            flutter test --coverage
+      - name: Upload coverage to codecov
+        run: |
+            cd mobile
+            curl -s https://codecov.io/bash
+        shell: bash
