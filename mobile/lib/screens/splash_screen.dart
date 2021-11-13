@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:mebook/widgets/mebook_logo.dart';
+import 'package:mebook/widgets/misc/mebook_logo.dart';
 
 // TODO: Get the logo right and add a proper Splash Screen internally (Android and iOS).
 class SplashScreen extends StatelessWidget {

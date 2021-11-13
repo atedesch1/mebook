@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:mebook/widgets/news_card.dart';
+import 'package:mebook/widgets/news/news_card.dart';
 
 class HomeScreen extends StatelessWidget {
   @override

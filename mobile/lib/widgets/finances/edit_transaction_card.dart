@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mebook/widgets/popup_rect_tween.dart';
+import 'package:mebook/widgets/misc/popup_rect_tween.dart';
 
 class EditTransactionCard extends StatefulWidget {
   final String id;

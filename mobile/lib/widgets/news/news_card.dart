@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mebook/models/news_model.dart';
 import 'package:mebook/services/news_service.dart';
-import 'package:mebook/widgets/news_tile.dart';
+import 'package:mebook/widgets/news/news_tile.dart';
 
 class NewsCard extends StatelessWidget {
   @override
@@ -51,13 +51,51 @@ class NewsCard extends StatelessWidget {
               ],
             ),
           ),
+
+          // Expanded(
+          //   child: CustomScrollView(
+          //     physics: const BouncingScrollPhysics(
+          //         parent: AlwaysScrollableScrollPhysics()),
+          //     slivers: [
+          //       FutureBuilder(
+          //         future: newsService.getNews(),
+          //         builder: (BuildContext context,
+          //             AsyncSnapshot<List<News>> snapshot) {
+          //           if (snapshot.hasData) {
+          //             List<News> news = snapshot.data;
+          //             return SliverList(
+          //               delegate: SliverChildBuilderDelegate(
+          //                 (context, index) => Text('hello'),
+          //                 childCount: news.length,
+          //               ),
+          //             );
+
+          //             // ListView.builder(
+          //             //     padding: EdgeInsets.all(0),
+          //             //     itemCount: news.length,
+          //             //     itemBuilder: (context, index) {
+          //             //       return NewsTile(news[index]);
+          //             //     });
+          //           } else {
+          //             return SliverToBoxAdapter(
+          //               child: Center(
+          //                 child: CircularProgressIndicator(),
+          //               ),
+          //             );
+          //           }
+          //         },
+          //       ),
+          //     ],
+          //   ),
+          // ),
+
           Expanded(
             child: Scrollbar(
               child: FutureBuilder(
                 future: newsService.getNews(),
                 builder:
                     (BuildContext context, AsyncSnapshot<List<News>> snapshot) {
-                  if (snapshot.hasData) {
+                  if (snapshot.connectionState == ConnectionState.done) {
                     List<News> news = snapshot.data;
                     return ListView.builder(
                         padding: EdgeInsets.all(0),
@@ -74,6 +112,7 @@ class NewsCard extends StatelessWidget {
               ),
             ),
           ),
+
           SizedBox(
             height: 16,
           ),

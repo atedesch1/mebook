@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mebook/widgets/bottom_card.dart';
-import 'package:mebook/widgets/mebook_logo.dart';
+import 'package:mebook/widgets/misc/bottom_card.dart';
+import 'package:mebook/widgets/misc/mebook_logo.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override

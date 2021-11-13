@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:mebook/widgets/auth_form.dart';
-import 'package:mebook/widgets/bottom_card.dart';
+import 'package:mebook/widgets/authentication/auth_form.dart';
+import 'package:mebook/widgets/misc/bottom_card.dart';
 
 class AuthScreen extends StatefulWidget {
   @override

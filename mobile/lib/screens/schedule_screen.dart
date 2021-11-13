@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mebook/mock/events_mock.dart';
 import 'package:mebook/models/event_model.dart';
-import 'package:mebook/widgets/calendar.dart';
-import 'package:mebook/widgets/event_preview_tile.dart';
+import 'package:mebook/widgets/schedule/calendar.dart';
+import 'package:mebook/widgets/schedule/event_preview_tile.dart';
 
 class ScheduleScreen extends StatelessWidget {
   final List<Event> _events = EventsMock()

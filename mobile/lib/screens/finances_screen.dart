@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mebook/widgets/event_route.dart';
+import 'package:mebook/widgets/misc/event_route.dart';
 import 'package:mebook/widgets/finances/edit_transaction_card.dart';
 
 class FinancesScreen extends StatelessWidget {

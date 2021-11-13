@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mebook/widgets/popup_rect_tween.dart';
+import 'package:mebook/widgets/misc/popup_rect_tween.dart';
 
 const String _CalendarEventPopUp = 'calendar-event-pop-up';
 

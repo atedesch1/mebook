@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mebook/models/note_model.dart';
 import 'package:mebook/services/notes_service.dart';
-import 'package:mebook/widgets/edit_note.dart';
-import 'package:mebook/widgets/note_card.dart';
+import 'package:mebook/widgets/notes/edit_note.dart';
+import 'package:mebook/widgets/notes/note_card.dart';
 
 class NotesScreen extends StatefulWidget {
   @override

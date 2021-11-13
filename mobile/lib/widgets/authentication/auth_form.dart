@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mebook/services/auth_service.dart';
-import 'package:mebook/widgets/thirdparty_sign_in.dart';
+import 'package:mebook/widgets/misc/thirdparty_sign_in.dart';
 
 class AuthForm extends StatefulWidget {
   final bool isLoading;

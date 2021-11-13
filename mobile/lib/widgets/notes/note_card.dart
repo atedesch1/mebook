@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:mebook/models/note_model.dart';
-import 'package:mebook/widgets/edit_note.dart';
+import 'package:mebook/widgets/notes/edit_note.dart';
 
 class NoteCard extends StatelessWidget {
   final Color _color;
