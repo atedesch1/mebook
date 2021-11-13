@@ -6,20 +6,24 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
-      - name: Change directory to mobile
-        run: cd mobile
       - name: Install and set Flutter version
         uses: subosito/flutter-action@v1.5.3
         with:
           flutter-version: '2.5.3'
-      - name: Check directory
-        run: ls
       - name: Restore packages
-        run: flutter pub get
+        run: |
+            cd mobile
+            flutter pub get
       - name: Analyze
-        run: flutter analyze
+        run: |
+            cd mobile
+            flutter analyze
       - name: Run tests
-        run: flutter test --coverage
+        run: |
+            cd mobile
+            flutter test --coverage
       - name: Upload coverage to codecov
-        run: curl -s https://codecov.io/bash
+        run: |
+            cd mobile
+            curl -s https://codecov.io/bash
         shell: bash
