@@ -13,6 +13,7 @@ jobs:
       - name: Restore packages
         run: |
             cd mobile
+            echo "NEWS_API_KEY=${{ secrets.NEWS_API_KEY }}" > .env
             flutter pub get
       - name: Analyze
         run: |
