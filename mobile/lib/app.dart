@@ -7,8 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:mebook/res/theme.dart';
 import 'package:mebook/services/auth_service.dart';
 import 'package:mebook/screens/splash_screen.dart';
-import 'package:mebook/screens/authentication/auth_screen.dart';
-import 'package:mebook/screens/authentication/welcome_screen.dart';
+import 'package:mebook/screens/auth_screen.dart';
+import 'package:mebook/screens/welcome_screen.dart';
 import 'package:mebook/screens/navigation_overlay.dart';
 
 class MebookApp extends StatefulWidget {
