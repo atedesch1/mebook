@@ -38,6 +38,6 @@ jobs:
         run: lcov --remove mobile/coverage/lcov.info 'lib/*/*.freezed.dart' 'lib/*/*.g.dart' 'lib/*/*.part.dart' 'lib/generated/*.dart' 'lib/generated/*/*.dart' -o mobile/coverage/lcov.info
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v2
-        with
+        with:
           file: mobile/coverage/lcov.info
           token: "${{ secrets.CODECOV_TOKEN }}"
