@@ -34,8 +34,8 @@ jobs:
             flutter test --coverage
       - name: Install lcov
         run: sudo apt-get install -y lcov
-      - name: Remove generated files from code coverage report
-        run: lcov --remove mobile/coverage/lcov.info 'lib/*/*.freezed.dart' 'lib/*/*.g.dart' 'lib/*/*.part.dart' 'lib/generated/*.dart' 'lib/generated/*/*.dart' -o mobile/coverage/lcov.info
+#      - name: Remove generated files from code coverage report
+#        run: lcov --remove mobile/coverage/lcov.info 'lib/*/*.freezed.dart' 'lib/*/*.g.dart' 'lib/*/*.part.dart' 'lib/generated/*.dart' 'lib/generated/*/*.dart' -o mobile/coverage/lcov.info
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v2
         with:
