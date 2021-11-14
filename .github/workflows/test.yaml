@@ -1,5 +1,9 @@
 name: Tests
-on: [pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -15,12 +19,25 @@ jobs:
             cd mobile
             echo "NEWS_API_KEY=${{ secrets.NEWS_API_KEY }}" > .env
             flutter pub get
+      - name: Add file to indicate dart files to codecov
+        run: |
+            cd mobile
+            file=test/coverage_helper_test.dart
+            echo "// Helper file to make coverage work for all dart files\n" > $file
+            echo "// ignore_for_file: unused_import" >> $file
+            find lib '!' -path '*generated*/*' '!' -name '*.g.dart' '!' -name '*.part.dart' '!' -name '*.freezed.dart' -name '*.dart' | cut -c4- | awk -v package=$1 '{printf "import '\''package:mebook%s%s'\'';\n", package, $1}' >> $file
+            echo "void main(){}" >> $file
+            cat $file
       - name: Run tests
         run: |
             cd mobile
             flutter test --coverage
+      - name: Install lcov
+        run: sudo apt-get install -y lcov
+      - name: Remove generated files from code coverage report
+        run: lcov --remove mobile/coverage/lcov.info 'lib/*/*.freezed.dart' 'lib/*/*.g.dart' 'lib/*/*.part.dart' 'lib/generated/*.dart' 'lib/generated/*/*.dart' -o mobile/coverage/lcov.info
       - name: Upload coverage to codecov
-        run: |
-            cd mobile
-            curl -s https://codecov.io/bash
-        shell: bash
+        uses: codecov/codecov-action@v2
+        with:
+          file: mobile/coverage/lcov.info
+          token: "${{ secrets.CODECOV_TOKEN }}"
