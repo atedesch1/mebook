@@ -3,12 +3,14 @@ import 'package:intl/intl.dart';
 import 'package:mebook/widgets/misc/popup_rect_tween.dart';
 
 class EditTransactionCard extends StatefulWidget {
+  final Function editTransaction;
   final String id;
   final String previousTitle;
   final DateTime previousDate;
   final double previousAmount;
 
   EditTransactionCard({
+    this.editTransaction,
     this.id,
     this.previousTitle,
     this.previousDate,
@@ -38,6 +40,13 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
 
     final enteredTitle = _titleController.text;
     final enteredAmount = double.parse(_amountController.text);
+
+    widget.editTransaction(
+      docId: widget.id,
+      title: enteredTitle,
+      date: _selectedDate,
+      amount: enteredAmount,
+    );
 
     Navigator.of(context).pop();
   }

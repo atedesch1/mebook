@@ -15,12 +15,14 @@ class FinancesService {
 
   Future<void> createOrUpdateTransaction({
     String docId,
-    @required title,
-    @required date,
-    @required amount,
+    @required String title,
+    @required DateTime date,
+    @required double amount,
   }) {
-    final ref =
-        _db.collection('transaction').doc(_currentUser.uid).collection('items');
+    final ref = _db
+        .collection('transactions')
+        .doc(_currentUser.uid)
+        .collection('items');
 
     Map<String, dynamic> data = {
       'title': title,
