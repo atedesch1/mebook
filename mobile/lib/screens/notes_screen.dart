@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mebook/models/note_model.dart';
 import 'package:mebook/services/notes_service.dart';
+import 'package:mebook/widgets/misc/overlay_app_bar.dart';
 import 'package:mebook/widgets/notes/edit_note.dart';
 import 'package:mebook/widgets/notes/note_card.dart';
 
@@ -58,16 +59,8 @@ class _NotesScreenState extends State<NotesScreen> {
         physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
         slivers: [
-          SliverAppBar(
-            stretch: true,
-            onStretchTrigger: () {
-              return Future<void>.value();
-            },
-            backgroundColor: Theme.of(context).primaryColor,
-            title: Text(
-              'Notes',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
+          OverlayAppBar(
+            title: 'Notes',
             actions: [
               IconButton(
                 onPressed: () => _pushAddNotePage(
@@ -80,7 +73,7 @@ class _NotesScreenState extends State<NotesScreen> {
                 IconButton(
                   onPressed: () => _deleteNotes(notesService),
                   icon: Icon(Icons.delete),
-                )
+                ),
             ],
           ),
           SliverPadding(

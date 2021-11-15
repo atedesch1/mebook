@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mebook/widgets/misc/overlay_app_bar.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mebook/services/auth_service.dart';
@@ -11,16 +12,8 @@ class ProfileScreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
         slivers: [
-          SliverAppBar(
-            stretch: true,
-            onStretchTrigger: () {
-              return Future<void>.value();
-            },
-            backgroundColor: Theme.of(context).primaryColor,
-            title: Text(
-              'Profile',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
+          OverlayAppBar(
+            title: 'Profile',
             actions: [
               IconButton(
                 onPressed: context.read<AuthService>().signOut,
