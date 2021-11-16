@@ -16,6 +16,7 @@ class FinancesService {
   Future<void> createOrUpdateTransaction({
     String docId,
     @required String title,
+    @required String category,
     @required DateTime date,
     @required double amount,
   }) {
@@ -26,6 +27,7 @@ class FinancesService {
 
     Map<String, dynamic> data = {
       'title': title,
+      'category': category,
       'date': date,
       'amount': amount,
     };

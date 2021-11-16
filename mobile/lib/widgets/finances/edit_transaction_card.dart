@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mebook/models/transaction_model.dart';
 import 'package:mebook/widgets/misc/popup_rect_tween.dart';
 
 class EditTransactionCard extends StatefulWidget {
   final Function editTransaction;
   final String id;
   final String previousTitle;
+  final String previousCategory;
   final DateTime previousDate;
   final double previousAmount;
 
@@ -13,6 +15,7 @@ class EditTransactionCard extends StatefulWidget {
     this.editTransaction,
     this.id,
     this.previousTitle,
+    this.previousCategory,
     this.previousDate,
     this.previousAmount,
   });
@@ -24,11 +27,13 @@ class EditTransactionCard extends StatefulWidget {
 class _EditTransactionCardState extends State<EditTransactionCard> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
+  String _selectedCategory;
   DateTime _selectedDate;
 
   @override
   void initState() {
     _titleController.text = widget.previousTitle;
+    _selectedCategory = widget.previousCategory;
     _selectedDate = widget.previousDate;
     _amountController.text =
         widget.previousAmount != null ? widget.previousAmount.toString() : null;
@@ -36,7 +41,9 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
   }
 
   void _submitData() {
-    if (_titleController.text.isEmpty || _amountController.text.isEmpty) return;
+    if (_titleController.text.isEmpty ||
+        _amountController.text.isEmpty ||
+        _selectedCategory == null) return;
 
     final enteredTitle = _titleController.text;
     final enteredAmount = double.parse(_amountController.text);
@@ -44,6 +51,7 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
     widget.editTransaction(
       docId: widget.id,
       title: enteredTitle,
+      category: _selectedCategory,
       date: _selectedDate,
       amount: enteredAmount,
     );
@@ -84,6 +92,7 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
@@ -114,6 +123,21 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
                     style: TextStyle(fontSize: 20),
                     controller: _titleController,
                     onSubmitted: (_) => _submitData(),
+                  ),
+                  DropdownButton(
+                    items: TransactionCategories()
+                        .categories
+                        .map((e) => DropdownMenuItem(child: Text(e), value: e))
+                        .toList(),
+                    elevation: 6,
+                    borderRadius: BorderRadius.circular(20),
+                    value: _selectedCategory,
+                    hint: Text('Category'),
+                    onChanged: (category) {
+                      setState(() {
+                        _selectedCategory = category;
+                      });
+                    },
                   ),
                   TextField(
                     decoration: InputDecoration(
