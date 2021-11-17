@@ -109,18 +109,22 @@ class FinancesWheel extends StatelessWidget {
             ],
           ),
         ),
-        if (categoryTiles.isNotEmpty)
+        if (categoryTiles.isNotEmpty) ...[
+          SizedBox(
+            width: 5,
+          ),
           Expanded(
             child: Container(
               height: diameter + strokeWidth,
               child: ListWheelScrollView(
-                perspective: 0.002,
-                itemExtent: 80,
-                squeeze: .95,
+                perspective: 0.0015,
+                itemExtent: 75,
+                squeeze: .9,
                 children: categoryTiles,
               ),
             ),
           ),
+        ]
       ],
     );
   }

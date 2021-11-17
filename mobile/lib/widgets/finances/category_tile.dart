@@ -11,18 +11,17 @@ class CategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(5),
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      width: 170,
+      margin: EdgeInsets.symmetric(horizontal: 5),
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      constraints: BoxConstraints(minWidth: 150, maxWidth: 180),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
+            color: Colors.black.withOpacity(0.1),
             spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(2, 3),
+            blurRadius: 3,
           ),
         ],
       ),

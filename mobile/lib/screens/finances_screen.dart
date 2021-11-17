@@ -67,10 +67,10 @@ class _FinancesScreenState extends State<FinancesScreen> {
                     return Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          padding: const EdgeInsets.only(left: 10, right: 5),
                           child: FinancesWheel(
                             transactions: transactions,
-                            diameter: 160.0,
+                            diameter: MediaQuery.of(context).size.width * 0.45,
                             strokeWidth: 25.0,
                           ),
                         ),
