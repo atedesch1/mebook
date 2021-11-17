@@ -39,10 +39,27 @@ class Transaction {
       amount: data['amount'] ?? 0.0,
     );
   }
+
+  static List<Transaction> sortByRecent(List<Transaction> transactions) {
+    transactions.sort((t1, t2) => t2.date.compareTo(t1.date));
+    return transactions;
+  }
+
+  static List<Transaction> filter({
+    @required List<Transaction> transactions,
+    int month,
+    int year,
+  }) {
+    if (month == null) return [];
+    if (year == null) year = DateTime.now().year;
+    return transactions.where((element) {
+      return element.date.year == year && element.date.month == month;
+    }).toList();
+  }
 }
 
 class TransactionCategories {
-  final categories = [
+  static List<String> categories = [
     'Housing',
     'Transportation',
     'Food',
@@ -51,7 +68,7 @@ class TransactionCategories {
     'Investing'
   ];
 
-  final categoryColor = {
+  static Map<String, MaterialColor> categoryColor = {
     'Housing': Colors.red,
     'Transportation': Colors.blue,
     'Food': Colors.green,
@@ -60,18 +77,30 @@ class TransactionCategories {
     'Investing': Colors.purple,
   };
 
-  double getTotalExpense(List<Transaction> transactions) {
+  static Map<String, IconData> categoryIcon = {
+    'Housing': Icons.house,
+    'Transportation': Icons.commute,
+    'Food': Icons.restaurant,
+    'Shopping': Icons.local_mall,
+    'Saving': Icons.savings,
+    'Investing': Icons.trending_up,
+  };
+
+  static double getTotalExpense(List<Transaction> transactions) {
     return transactions.fold(0, (value, element) => value + element.amount);
   }
 
-  Map<String, List<Transaction>> groupByCategory(
+  static Map<String, List<Transaction>> groupByCategory(
       List<Transaction> transactions) {
     return groupBy(transactions, (Transaction t) => t.category);
   }
 
-  Map<String, double> getExpenseByCategory(List<Transaction> transactions) {
+  static Map<String, double> getExpenseByCategory(
+      List<Transaction> transactions) {
     var map = groupByCategory(transactions);
     return map.map((key, value) => MapEntry(
-        key, value.fold(0, (previousValue, element) => element.amount)));
+        key,
+        value.fold(
+            0, (previousValue, element) => previousValue + element.amount)));
   }
 }
