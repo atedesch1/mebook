@@ -5,6 +5,7 @@ import 'package:mebook/widgets/misc/popup_rect_tween.dart';
 
 class EditTransactionCard extends StatefulWidget {
   final Function editTransaction;
+  final Function deleteTransaction;
   final String id;
   final String previousTitle;
   final String previousCategory;
@@ -13,6 +14,7 @@ class EditTransactionCard extends StatefulWidget {
 
   EditTransactionCard({
     this.editTransaction,
+    this.deleteTransaction,
     this.id,
     this.previousTitle,
     this.previousCategory,
@@ -45,7 +47,7 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
         _amountController.text.isEmpty ||
         _selectedCategory == null) return;
 
-    final enteredTitle = _titleController.text;
+    final enteredTitle = toBeginningOfSentenceCase(_titleController.text);
     final enteredAmount = double.parse(_amountController.text);
 
     widget.editTransaction(
@@ -125,8 +127,7 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
                     onSubmitted: (_) => _submitData(),
                   ),
                   DropdownButton(
-                    items: TransactionCategories()
-                        .categories
+                    items: TransactionCategories.categories
                         .map((e) => DropdownMenuItem(child: Text(e), value: e))
                         .toList(),
                     elevation: 6,
@@ -180,10 +181,34 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
                     children: [
                       Expanded(
                         child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.green)),
                           onPressed: _submitData,
-                          child: Text('Add Transaction'),
+                          child: Text(
+                            widget.id == null ? 'Add' : 'Edit',
+                          ),
                         ),
                       ),
+                      if (widget.id != null) ...[
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.red)),
+                            onPressed: () {
+                              widget.deleteTransaction(widget.id);
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              'Delete',
+                            ),
+                          ),
+                        ),
+                      ]
                     ],
                   ),
                 ],
