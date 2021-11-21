@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mebook/widgets/notes/edit_note.dart';
 
 void main() {
-  testWidgets("Edit Note Widget Testing", (WidgetTester tester) async {
+  testWidgets("Edit Note Widget Test", (WidgetTester tester) async {
     Widget testWidget = new MediaQuery(
         data: new MediaQueryData(),
         child: new MaterialApp(home: new EditNote(editNote: () {})));
@@ -15,7 +15,6 @@ void main() {
     expect(find.text('Content'), findsOneWidget);
     expect(find.text('0/40'), findsOneWidget);
     expect(find.byIcon(Icons.check), findsOneWidget);
-    // expect(find.byIcon(Icons.delete), findsOneWidget);
 
     // writes a new title with less than 40 characters
     const String title = "My note title";
@@ -43,7 +42,6 @@ void main() {
     // writes in content text field
     String content = "Meeting at 13:00 PM";
     await tester.enterText(find.widgetWithText(TextField, "Content"), content);
-    await tester.pump();
     expect(find.text(content), findsOneWidget);
   });
 }
