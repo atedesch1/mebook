@@ -16,6 +16,8 @@ dependencies:
   firebase_core: ^1.6.0
   flutter_dotenv: ^5.0.2
   google_sign_in: ^5.1.0
+  googleapis_auth: ^1.2.0
+  googleapis: ^7.0.0
   provider: ^5.0.0
   device_preview: ^0.8.0
   http: ^0.13.4
@@ -23,8 +25,12 @@ dependencies:
   intl: ^0.17.0
 
 dev_dependencies:
+  flutter_driver:
+    sdk: flutter
   flutter_test:
     sdk: flutter
+  test: ^1.16.0
+  mockito: ^5.0.16
 
 flutter:
   uses-material-design: true

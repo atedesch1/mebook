@@ -59,6 +59,7 @@ class _EditNoteState extends State<EditNote> {
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: EdgeInsets.symmetric(horizontal: 20),
               title: TextField(
+                key: ValueKey('titleEditNote'),
                 maxLines: null,
                 maxLength: 40,
                 style: TextStyle(
@@ -90,6 +91,7 @@ class _EditNoteState extends State<EditNote> {
                   icon: Icon(Icons.delete),
                 ),
               IconButton(
+                key: ValueKey("addEditNoteIcon"),
                 onPressed: _submitData,
                 icon: Icon(Icons.check),
               )
@@ -99,6 +101,7 @@ class _EditNoteState extends State<EditNote> {
             padding: EdgeInsets.symmetric(horizontal: 5),
             sliver: SliverToBoxAdapter(
               child: TextField(
+                key: ValueKey('contentEditNote'),
                 minLines: 10,
                 maxLines: null,
                 style: TextStyle(
