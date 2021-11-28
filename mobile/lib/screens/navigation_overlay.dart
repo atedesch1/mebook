@@ -60,6 +60,7 @@ class _NavigationOverlayState extends State<NavigationOverlay> {
     return Scaffold(
       body: _screens[_selectedScreenIndex]['screen'],
       bottomNavigationBar: BottomNavigationBar(
+        key: Key('bottomNavigationBar'),
         backgroundColor: Theme.of(context).primaryColor,
         unselectedItemColor: Colors.black54,
         selectedItemColor: Colors.black,

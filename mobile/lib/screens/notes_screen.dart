@@ -63,6 +63,7 @@ class _NotesScreenState extends State<NotesScreen> {
             title: 'Notes',
             actions: [
               IconButton(
+                key: ValueKey("addNoteButton"),
                 onPressed: () => _pushAddNotePage(
                   notesService: notesService,
                   context: context,
@@ -71,6 +72,7 @@ class _NotesScreenState extends State<NotesScreen> {
               ),
               if (!_selectedToDelete.isEmpty)
                 IconButton(
+                  key: ValueKey("deleteNoteButton"),
                   onPressed: () => _deleteNotes(notesService),
                   icon: Icon(Icons.delete),
                 ),
@@ -118,7 +120,8 @@ class _NotesScreenState extends State<NotesScreen> {
                 } else {
                   return SliverFillRemaining(
                     child: Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                          key: ValueKey("noteScreenLoading")),
                     ),
                   );
                 }

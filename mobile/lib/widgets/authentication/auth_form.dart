@@ -132,6 +132,7 @@ class _AuthFormState extends State<AuthForm> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
+                        key: ValueKey("finishAuthFormButton"),
                         onPressed: widget.isSigningIn
                             ? () {
                                 tryEmailSignIn(context);
