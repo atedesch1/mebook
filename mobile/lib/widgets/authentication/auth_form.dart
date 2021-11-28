@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:mebook/services/auth_service.dart';
 import 'package:mebook/widgets/misc/thirdparty_sign_in.dart';
+import 'package:mebook/widgets/authentication/validators.dart';
 
 class AuthForm extends StatefulWidget {
   final bool isLoading;
@@ -70,12 +71,7 @@ class _AuthFormState extends State<AuthForm> {
               children: [
                 TextFormField(
                   key: ValueKey('email'),
-                  validator: (value) {
-                    if (value.isEmpty || !value.contains('@')) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
+                  validator: FieldValidators.validateEmail,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(labelText: 'Email address'),
                   onSaved: (value) {
@@ -88,12 +84,7 @@ class _AuthFormState extends State<AuthForm> {
                 if (!widget.isSigningIn) ...[
                   TextFormField(
                     key: ValueKey('username'),
-                    validator: (value) {
-                      if (value.isEmpty || value.length < 4) {
-                        return 'Please enter at least 4 characters.';
-                      }
-                      return null;
-                    },
+                    validator: FieldValidators.validateUsername,
                     decoration: InputDecoration(labelText: 'Username'),
                     onSaved: (value) {
                       _userName = value;
@@ -105,12 +96,7 @@ class _AuthFormState extends State<AuthForm> {
                 ],
                 TextFormField(
                   key: ValueKey('password'),
-                  validator: (value) {
-                    if (value.isEmpty || value.length < 7) {
-                      return 'Password must be at least 7 characters long.';
-                    }
-                    return null;
-                  },
+                  validator: FieldValidators.validatePassword,
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,
                   onSaved: (value) {
