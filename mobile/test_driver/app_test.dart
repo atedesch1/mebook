@@ -70,9 +70,11 @@ void main() {
       await driver.waitFor(find.text('Do not delete'));
       await driver.tap(find.byValueKey('addEditNoteIcon'));
 
-      // long press first note
+      // long press the two notes and press delete button
       await driver.scroll(
           find.text('Mebook meeting'), 0, 0, Duration(milliseconds: 2000));
+      await driver.scroll(
+          find.text('Most Important Note'), 0, 0, Duration(milliseconds: 2000));
       await driver.tap(find.byValueKey("deleteNoteButton"));
 
       // sign out from application
@@ -99,19 +101,25 @@ void main() {
       await driver.waitFor(find.byValueKey('bottomNavigationBar'));
       await driver.tap(find.text('Notes'));
 
-      // verify if previous note remains on the screen
-      await driver.waitForAbsent(find.byValueKey("noteScreenLoading"));
-      await driver.waitFor(find.text("Most Important Note"));
-      await driver.waitFor(find.text('Do not delete'));
+      // add a new note
+      await driver.tap(find.byValueKey('addNoteButton'));
+      await driver.tap(find.byValueKey('titleEditNote'));
+      await driver.waitFor(find.text(''));
+      await driver.enterText('This is a note');
+      await driver.waitFor(find.text('This is a note'));
+      await driver.tap(find.byValueKey('contentEditNote'));
+      await driver.enterText('My content');
+      await driver.waitFor(find.text('My content'));
+      await driver.tap(find.byValueKey('addEditNoteIcon'));
 
       // edit previous note
       await driver.scroll(
-          find.text('Most Important Note'), 0, 0, Duration(milliseconds: 300));
+          find.text('This is a note'), 0, 0, Duration(milliseconds: 300));
       await driver.tap(find.byValueKey('titleEditNote'));
-      await driver.waitFor(find.text('Most Important Note'));
+      await driver.waitFor(find.text('This is a note'));
       await driver.enterText('Edited note');
       await driver.tap(find.byValueKey('contentEditNote'));
-      await driver.waitFor(find.text('Do not delete'));
+      await driver.waitFor(find.text('My content'));
       await driver.enterText('edited content');
       await driver.waitFor(find.text('edited content'));
       await driver.tap(find.byValueKey('addEditNoteIcon'));
