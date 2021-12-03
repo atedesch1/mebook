@@ -18,69 +18,70 @@ class TransactionsOverviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: double.infinity,
-          height: 45,
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.symmetric(horizontal: 15),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                spreadRadius: 3,
-                blurRadius: 10,
-                offset: Offset(2, 3),
-              ),
-            ],
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            spreadRadius: 3,
+            blurRadius: 10,
+            offset: Offset(0, -2),
           ),
-          child: Row(
-            children: [
-              Expanded(
-                  child: Text('Transactions',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ))),
-              Text(
-                selectedYear.toString(),
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            height: 45,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              children: [
+                Expanded(
+                    child: Text('Transactions',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ))),
+                Text(
+                  selectedYear.toString(),
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        Divider(
-          height: 1,
-        ),
-        if (transactions.isEmpty)
-          Expanded(
-            child: Center(
-              child: Text(
-                'No transactions in $selectedMonthName',
-                style: TextStyle(fontSize: 20),
-              ),
+              ],
             ),
           ),
-        if (transactions.isNotEmpty)
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.all(0),
-              itemBuilder: (context, index) => TransactionTile(
-                transaction: transactions[index],
-                editTransaction: financesService.createOrUpdateTransaction,
-                deleteTransaction: financesService.deleteTransaction,
-              ),
-              itemCount: transactions.length,
-            ),
+          Divider(
+            height: 1,
           ),
-      ],
+          Expanded(
+            child: transactions.isEmpty
+                ? Center(
+                    child: Text(
+                      'No transactions in $selectedMonthName',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: EdgeInsets.all(0),
+                    itemBuilder: (context, index) => TransactionTile(
+                      transaction: transactions[index],
+                      editTransaction:
+                          financesService.createOrUpdateTransaction,
+                      deleteTransaction: financesService.deleteTransaction,
+                    ),
+                    itemCount: transactions.length,
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }

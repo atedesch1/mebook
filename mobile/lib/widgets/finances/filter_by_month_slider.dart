@@ -91,16 +91,27 @@ class _FilterByMonthSliderState extends State<FilterByMonthSlider> {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: isEdgeItem(index) ? null : BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 5,
+              // offset: Offset(0, 0),
+            ),
+          ],
           color: Colors.white,
           shape: isEdgeItem(index) ? BoxShape.circle : BoxShape.rectangle,
         ),
         child: isEdgeItem(index)
-            ? Icon(index == 0 ? Icons.arrow_back : Icons.arrow_forward)
+            ? Icon(
+                index == 0 ? Icons.arrow_back : Icons.arrow_forward,
+                color: Colors.black54,
+              )
             : Text(
                 getText(monthsAbbr, index),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: index == _selectedMonth ? Colors.cyan : Colors.black,
+                  color: index == _selectedMonth ? Colors.cyan : Colors.black54,
                 ),
               ),
       );
@@ -111,7 +122,6 @@ class _FilterByMonthSliderState extends State<FilterByMonthSlider> {
       height: 65,
       alignment: Alignment.center,
       child: ListWheelScrollViewHorizontal(
-        overAndUnderCenterOpacity: .6,
         scrollDirection: Axis.horizontal,
         controller:
             FixedExtentScrollController(initialItem: widget.initialMonth),

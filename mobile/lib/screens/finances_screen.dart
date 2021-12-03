@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mebook/models/transaction_model.dart';
 import 'package:mebook/services/finances_service.dart';
 import 'package:mebook/widgets/finances/filter_by_month_slider.dart';
-import 'package:mebook/widgets/finances/finances_wheel.dart';
+import 'package:mebook/widgets/finances/finances_summary_card.dart';
 import 'package:mebook/widgets/finances/transaction_tile.dart';
 import 'package:mebook/widgets/finances/transactions_overview_card.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
@@ -74,10 +74,11 @@ class _FinancesScreenState extends State<FinancesScreen> {
                     transactions.sort((t1, t2) => t2.date.compareTo(t1.date));
 
                     return Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 5),
-                          child: FinancesWheel(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: FinancesSummaryCard(
                             transactions: transactions,
                             diameter: MediaQuery.of(context).size.width * 0.45,
                             strokeWidth: 25.0,
