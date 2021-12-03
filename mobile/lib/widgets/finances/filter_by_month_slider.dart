@@ -5,11 +5,14 @@ class FilterByMonthSlider extends StatefulWidget {
   final int initialMonth;
   final Key key;
   final Function emitSelectedMonth;
+  final int selectedYear;
 
-  FilterByMonthSlider(
-      {@required this.emitSelectedMonth,
-      @required this.initialMonth,
-      @required this.key});
+  FilterByMonthSlider({
+    @required this.emitSelectedMonth,
+    @required this.initialMonth,
+    @required this.key,
+    @required this.selectedYear,
+  });
 
   @override
   State<FilterByMonthSlider> createState() => _FilterByMonthSliderState();
@@ -79,7 +82,7 @@ class _FilterByMonthSliderState extends State<FilterByMonthSlider> {
   String getText(monthList, index) {
     int idx = getMonthIndex(index);
     if (idx == -1) {
-      return index == 0 ? '<-' : '->';
+      return index == 0 ? 'the past' : 'the future...';
     }
     return monthList[idx];
   }
@@ -134,7 +137,8 @@ class _FilterByMonthSliderState extends State<FilterByMonthSlider> {
           if (index == 0) {
             selectedMonth = monthsAbbrToIndex['Dec'];
             changeYear = -1;
-          } else if (index == months.length + 1) {
+          } else if (index == months.length + 1 &&
+              widget.selectedYear != DateTime.now().year) {
             selectedMonth = monthsAbbrToIndex['Jan'];
             changeYear = 1;
           }

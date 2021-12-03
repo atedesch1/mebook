@@ -98,6 +98,7 @@ class _FinancesScreenState extends State<FinancesScreen> {
                         FilterByMonthSlider(
                           emitSelectedMonth: updateMonthFilter,
                           initialMonth: _selectedMonth,
+                          selectedYear: _selectedYear,
                           key: ValueKey(_selectedYear),
                         ),
                         Expanded(
