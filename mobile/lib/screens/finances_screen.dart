@@ -4,6 +4,7 @@ import 'package:mebook/services/finances_service.dart';
 import 'package:mebook/widgets/finances/filter_by_month_slider.dart';
 import 'package:mebook/widgets/finances/finances_wheel.dart';
 import 'package:mebook/widgets/finances/transaction_tile.dart';
+import 'package:mebook/widgets/finances/transactions_overview_card.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
 import 'package:mebook/widgets/finances/edit_transaction_card.dart';
 import 'package:mebook/widgets/misc/overlay_app_bar.dart';
@@ -87,60 +88,14 @@ class _FinancesScreenState extends State<FinancesScreen> {
                           initialMonth: _selectedMonth,
                           key: ValueKey(_selectedYear),
                         ),
-                        Container(
-                          width: double.infinity,
-                          height: 45,
-                          alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20))),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: Text('Transactions',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ))),
-                              Text(
-                                _selectedYear.toString(),
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                        Expanded(
+                          child: TransactionsOverviewCard(
+                            transactions: transactions,
+                            financesService: financesService,
+                            selectedYear: _selectedYear,
+                            selectedMonthName: _selectedMonthName,
                           ),
                         ),
-                        Divider(
-                          height: 1,
-                        ),
-                        if (transactions.isEmpty)
-                          Expanded(
-                            child: Center(
-                              child: Text(
-                                'No transactions in $_selectedMonthName',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ),
-                          ),
-                        if (transactions.isNotEmpty)
-                          Expanded(
-                            child: ListView.builder(
-                              padding: EdgeInsets.all(0),
-                              itemBuilder: (context, index) => TransactionTile(
-                                transaction: transactions[index],
-                                editTransaction:
-                                    financesService.createOrUpdateTransaction,
-                                deleteTransaction:
-                                    financesService.deleteTransaction,
-                              ),
-                              itemCount: transactions.length,
-                            ),
-                          ),
                       ],
                     );
                   } else {
