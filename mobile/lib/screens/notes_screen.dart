@@ -90,7 +90,7 @@ class _NotesScreenState extends State<NotesScreen> {
                       child: Center(
                         child: Text(
                           'You have no notes!',
-                          style: TextStyle(fontSize: 22),
+                          style: TextStyle(fontSize: 20),
                         ),
                       ),
                     );

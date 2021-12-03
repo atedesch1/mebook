@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mebook/models/transaction_model.dart';
 import 'package:mebook/widgets/misc/popup_rect_tween.dart';
 
 class EditTransactionCard extends StatefulWidget {
   final Function editTransaction;
+  final Function deleteTransaction;
   final String id;
   final String previousTitle;
+  final String previousCategory;
   final DateTime previousDate;
   final double previousAmount;
 
   EditTransactionCard({
     this.editTransaction,
+    this.deleteTransaction,
     this.id,
     this.previousTitle,
+    this.previousCategory,
     this.previousDate,
     this.previousAmount,
   });
@@ -24,11 +29,13 @@ class EditTransactionCard extends StatefulWidget {
 class _EditTransactionCardState extends State<EditTransactionCard> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
+  String _selectedCategory;
   DateTime _selectedDate;
 
   @override
   void initState() {
     _titleController.text = widget.previousTitle;
+    _selectedCategory = widget.previousCategory;
     _selectedDate = widget.previousDate;
     _amountController.text =
         widget.previousAmount != null ? widget.previousAmount.toString() : null;
@@ -36,14 +43,17 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
   }
 
   void _submitData() {
-    if (_titleController.text.isEmpty || _amountController.text.isEmpty) return;
+    if (_titleController.text.isEmpty ||
+        _amountController.text.isEmpty ||
+        _selectedCategory == null) return;
 
-    final enteredTitle = _titleController.text;
+    final enteredTitle = toBeginningOfSentenceCase(_titleController.text);
     final enteredAmount = double.parse(_amountController.text);
 
     widget.editTransaction(
       docId: widget.id,
       title: enteredTitle,
+      category: _selectedCategory,
       date: _selectedDate,
       amount: enteredAmount,
     );
@@ -55,7 +65,7 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
     showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year),
+      firstDate: DateTime.parse("2000-01-01 00:00:00Z"),
       lastDate: DateTime.now(),
     ).then((pickedDate) {
       if (pickedDate == null) {
@@ -84,6 +94,7 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
@@ -114,6 +125,20 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
                     style: TextStyle(fontSize: 20),
                     controller: _titleController,
                     onSubmitted: (_) => _submitData(),
+                  ),
+                  DropdownButton(
+                    items: TransactionCategories.categories
+                        .map((e) => DropdownMenuItem(child: Text(e), value: e))
+                        .toList(),
+                    elevation: 6,
+                    borderRadius: BorderRadius.circular(20),
+                    value: _selectedCategory,
+                    hint: Text('Category'),
+                    onChanged: (category) {
+                      setState(() {
+                        _selectedCategory = category;
+                      });
+                    },
                   ),
                   TextField(
                     decoration: InputDecoration(
@@ -156,10 +181,34 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
                     children: [
                       Expanded(
                         child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.green)),
                           onPressed: _submitData,
-                          child: Text('Add Transaction'),
+                          child: Text(
+                            widget.id == null ? 'Add' : 'Edit',
+                          ),
                         ),
                       ),
+                      if (widget.id != null) ...[
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.red)),
+                            onPressed: () {
+                              widget.deleteTransaction(widget.id);
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              'Delete',
+                            ),
+                          ),
+                        ),
+                      ]
                     ],
                   ),
                 ],
