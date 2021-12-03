@@ -87,47 +87,47 @@ class _FinancesScreenState extends State<FinancesScreen> {
                           initialMonth: _selectedMonth,
                           key: ValueKey(_selectedYear),
                         ),
+                        Container(
+                          width: double.infinity,
+                          height: 45,
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20))),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: Text('Transactions',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ))),
+                              Text(
+                                _selectedYear.toString(),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Divider(
+                          height: 1,
+                        ),
                         if (transactions.isEmpty)
                           Expanded(
                             child: Center(
                               child: Text(
-                                'No transactions in $_selectedMonthName, $_selectedYear',
+                                'No transactions in $_selectedMonthName',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                           ),
-                        if (transactions.isNotEmpty) ...[
-                          Container(
-                            width: double.infinity,
-                            height: 45,
-                            alignment: Alignment.centerLeft,
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20))),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    child: Text('Transactions',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ))),
-                                Text(
-                                  _selectedYear.toString(),
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Divider(
-                            height: 1,
-                          ),
+                        if (transactions.isNotEmpty)
                           Expanded(
                             child: ListView.builder(
                               padding: EdgeInsets.all(0),
@@ -141,7 +141,6 @@ class _FinancesScreenState extends State<FinancesScreen> {
                               itemCount: transactions.length,
                             ),
                           ),
-                        ]
                       ],
                     );
                   } else {
