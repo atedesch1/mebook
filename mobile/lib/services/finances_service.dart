@@ -57,11 +57,8 @@ class FinancesService {
         .doc(_currentUser.uid)
         .collection('items');
 
-    return ref.snapshots().map((list) => list.docs.map(
-          (doc) {
-            return Transaction.fromFirestore(doc);
-          },
-        ).toList());
+    return ref.snapshots().map((list) =>
+        list.docs.map((doc) => Transaction.fromFirestore(doc)).toList());
   }
 
   Future<void> deleteTransaction(String docId) async {
