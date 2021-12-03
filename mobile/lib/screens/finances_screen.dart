@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mebook/models/transaction_model.dart';
 import 'package:mebook/services/finances_service.dart';
 import 'package:mebook/widgets/finances/filter_by_month_slider.dart';
-import 'package:mebook/widgets/finances/finances_summary_card.dart';
-import 'package:mebook/widgets/finances/transaction_tile.dart';
+import 'package:mebook/widgets/finances/finances_summary.dart';
 import 'package:mebook/widgets/finances/transactions_overview_card.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
 import 'package:mebook/widgets/finances/edit_transaction_card.dart';
@@ -76,9 +75,21 @@ class _FinancesScreenState extends State<FinancesScreen> {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: FinancesSummaryCard(
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Theme.of(context).primaryColor,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.15),
+                                spreadRadius: 3,
+                                blurRadius: 10,
+                                offset: Offset(2, 3),
+                              ),
+                            ],
+                          ),
+                          child: FinancesSummary(
                             transactions: transactions,
                             diameter: MediaQuery.of(context).size.width * 0.45,
                             strokeWidth: 25.0,
