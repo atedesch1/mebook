@@ -65,7 +65,7 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
     showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year),
+      firstDate: DateTime.parse("2000-01-01 00:00:00Z"),
       lastDate: DateTime.now(),
     ).then((pickedDate) {
       if (pickedDate == null) {
