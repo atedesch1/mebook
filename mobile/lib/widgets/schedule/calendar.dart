@@ -6,6 +6,9 @@ final calendarFirstDay = DateTime(today.year, today.month - 2, 1);
 final calendarLastDay = DateTime(today.year, today.month + 6, 0);
 
 class Calendar extends StatefulWidget {
+  final Function updateMonth = (DateTime newMonth) {};
+  Calendar({@required updateMonth});
+
   @override
   _CalendarState createState() => _CalendarState();
 }
@@ -63,6 +66,7 @@ class _CalendarState extends State<Calendar> {
       onPageChanged: (focusedDay) {
         // No need to call `setState()` here
         _focusedDay = focusedDay;
+        widget.updateMonth(focusedDay);
       },
     );
   }

@@ -21,6 +21,11 @@ class ScheduleScreen extends StatelessWidget {
       )
       .toList();
 
+  DateTime _selectedMonth = DateTime.now();
+  void setSelectedMonth(DateTime newMonth) {
+    _selectedMonth = newMonth;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +54,8 @@ class ScheduleScreen extends StatelessWidget {
                       if (snapshot.hasData) {
                         print(snapshot.data);
                         googleApis.Events events = snapshot.data;
-                        events.items.forEach((e) => print(e.created));
+                        events.items.forEach((e) => print(e.start.dateTime));
+                        print(_selectedMonth);
                         return Text('LOADED');
                       }
                       return Center(
@@ -72,7 +78,7 @@ class ScheduleScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Calendar(),
+                  child: Calendar(updateMonth: setSelectedMonth),
                 ),
                 Expanded(
                   child: ListView.builder(
