@@ -30,7 +30,10 @@ class _MebookAppState extends State<MebookApp> {
               Provider<AuthService>(
                 create: (_) => AuthService(
                   FirebaseAuth.instance,
-                  GoogleSignIn(scopes: [CalendarApi.calendarScope]),
+                  GoogleSignIn(scopes: <String>[
+                    'email',
+                    CalendarApi.calendarScope
+                  ]),
                 ),
               ),
               StreamProvider(
