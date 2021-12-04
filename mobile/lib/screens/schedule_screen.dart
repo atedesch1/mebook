@@ -13,7 +13,7 @@ class ScheduleScreen extends StatefulWidget {
 class _ScheduleScreenState extends State<ScheduleScreen> {
   DateTime focusedDate = DateTime.now();
 
-  void selectFilterDate(DateTime selectedDate) {
+  void setCurrentDate(DateTime selectedDate) {
     setState(() {
       focusedDate = selectedDate;
     });
@@ -53,7 +53,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       ),
                     ],
                   ),
-                  child: Calendar(),
+                  child: Calendar(updateMonth: setCurrentDate),
                 ),
                 Container(
                   child: FutureBuilder(
