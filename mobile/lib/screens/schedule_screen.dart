@@ -58,7 +58,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 Container(
                   child: FutureBuilder(
                     future:
-                        CalendarService(context).getMonthEvents(DateTime.now()),
+                        CalendarService(context).getMonthEvents(focusedDate),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         googleApis.Events events = snapshot.data;

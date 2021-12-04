@@ -6,8 +6,8 @@ final calendarFirstDay = DateTime(today.year, today.month - 2, 1);
 final calendarLastDay = DateTime(today.year, today.month + 6, 0);
 
 class Calendar extends StatefulWidget {
-  final Function updateMonth = (DateTime newMonth) {};
-  Calendar({@required updateMonth});
+  final Function updateMonth;
+  Calendar({@required this.updateMonth});
 
   @override
   _CalendarState createState() => _CalendarState();
