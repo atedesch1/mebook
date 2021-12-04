@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mebook/models/event_model.dart';
+import 'package:googleapis/calendar/v3.dart' as calendarApi;
 import 'package:mebook/widgets/misc/event_route.dart';
 import 'package:mebook/widgets/schedule/calendar_event_card.dart';
 import 'package:intl/intl.dart';
 
 class EventPreviewTile extends StatelessWidget {
-  final Event _event;
+  final calendarApi.Event event;
 
-  EventPreviewTile(this._event);
+  EventPreviewTile(this.event);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class EventPreviewTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _event.title,
+                        event.summary,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -39,7 +39,7 @@ class EventPreviewTile extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                        '${DateFormat('kk:mm').format(_event.startTime)} - ${DateFormat('kk:mm').format(_event.endTime)}',
+                        '${DateFormat('kk:mm').format(event.start.dateTime)} - ${DateFormat('kk:mm').format(event.end.dateTime)}',
                         style: TextStyle(
                           color: Colors.black54,
                         ),
