@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mebook/mock/events_mock.dart';
 import 'package:mebook/models/event_model.dart';
+import 'package:mebook/services/calendar_service.dart';
 import 'package:mebook/widgets/misc/overlay_app_bar.dart';
 import 'package:mebook/widgets/schedule/calendar.dart';
+import 'package:googleapis/calendar/v3.dart' as googleApis;
 import 'package:mebook/widgets/schedule/event_preview_tile.dart';
 
 class ScheduleScreen extends StatelessWidget {
@@ -39,6 +41,23 @@ class ScheduleScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Container(
+                  child: StreamBuilder(
+                    stream: CalendarService(context)
+                        .getEventsForMonth(DateTime.now()),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        print(snapshot.data);
+                        googleApis.Events events = snapshot.data;
+                        events.items.forEach((e) => print(e.created));
+                        return Text('LOADED');
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+                ),
                 Container(
                   margin: EdgeInsets.all(8),
                   decoration: BoxDecoration(

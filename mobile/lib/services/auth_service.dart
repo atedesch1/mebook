@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
+import 'package:googleapis_auth/googleapis_auth.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleAuth;
+  AuthClient client;
 
   AuthService(this._firebaseAuth, this._googleAuth);
 
   User get currentUser => _firebaseAuth.currentUser;
+
+  AuthClient get getClient => client;
 
   Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
 
@@ -78,6 +83,7 @@ class AuthService {
       final GoogleSignInAccount googleUser = await _googleAuth.signIn();
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
+      client = await _googleAuth.authenticatedClient();
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
