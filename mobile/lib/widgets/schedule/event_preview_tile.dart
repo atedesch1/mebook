@@ -7,10 +7,12 @@ import 'package:mebook/widgets/schedule/edit_event_card.dart';
 import 'package:intl/intl.dart';
 
 class EventPreviewTile extends StatelessWidget {
+  final CalendarService service;
   final calendarApi.Event event;
   final Function refreshCallBack;
 
   EventPreviewTile({
+    @required this.service,
     @required this.event,
     @required this.refreshCallBack,
   });
@@ -58,7 +60,7 @@ class EventPreviewTile extends StatelessWidget {
                         .push(ChangeEventRoute(builder: (context) {
                       return EditEventCard(
                         event: event,
-                        service: CalendarService(context),
+                        service: service,
                         refreshCallBack: refreshCallBack,
                       );
                     }))

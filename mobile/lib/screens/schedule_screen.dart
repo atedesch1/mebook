@@ -106,6 +106,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         return ListView.builder(
                           padding: EdgeInsets.all(0),
                           itemBuilder: (context, index) => EventPreviewTile(
+                            service: CalendarService(context),
                             event: events.items[index],
                             refreshCallBack: refreshEventList,
                           ),
