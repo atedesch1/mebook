@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:googleapis/calendar/v3.dart';
+import 'package:googleapis/calendar/v3.dart' as googleCalendar;
 import 'package:mebook/widgets/schedule/calendar_utils.dart';
 import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/services/auth_service.dart';
 import 'package:provider/src/provider.dart';
 
 class GoogleCalendarService extends AbstractCalendarService {
-  CalendarApi _api;
+  googleCalendar.CalendarApi _api;
 
   GoogleCalendarService(BuildContext context) {
-    _api = CalendarApi(context.read<AuthService>().client);
+    _api = googleCalendar.CalendarApi(context.read<AuthService>().client);
   }
 
   @override
-  Future<Events> getMonthEvents(DateTime chosenMonth) async {
+  Future<googleCalendar.Events> getMonthEvents(DateTime chosenMonth) async {
     var firstDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month, 1);
     var lastDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month + 1, 1)
         .subtract(Duration(seconds: 1));
 
-    Events events = await _api.events
+    googleCalendar.Events events = await _api.events
         .list('primary', timeMin: firstDayOfMonth, timeMax: lastDayOfMonth);
     events.items.map((e) => addTimeZone(e));
     return events;
   }
 
   @override
-  Future<Events> getDailyEvents(DateTime chosenDay) async {
+  Future<googleCalendar.Events> getDailyEvents(DateTime chosenDay) async {
     var firstTimeOfDay = DateTime(
         chosenDay.year,
         chosenDay.month,
@@ -33,7 +33,7 @@ class GoogleCalendarService extends AbstractCalendarService {
     );
     var lastTimeOfDay = firstTimeOfDay.add(Duration(days: 1));
 
-    Events events = await _api.events
+    googleCalendar.Events events = await _api.events
         .list('primary', timeMin: firstTimeOfDay, timeMax: lastTimeOfDay);
     events.items.map((e) => addTimeZone(e));
     return events;
@@ -41,10 +41,10 @@ class GoogleCalendarService extends AbstractCalendarService {
 
   @override
   Future<void> updateEvent({
-    @required Event event,
+    @required googleCalendar.Event event,
     String summary,
-    EventDateTime start,
-    EventDateTime end,
+    googleCalendar.EventDateTime start,
+    googleCalendar.EventDateTime end,
   }) {
     event.summary = summary;
     event.start = start;
@@ -57,10 +57,10 @@ class GoogleCalendarService extends AbstractCalendarService {
   @override
   Future<void> createEvent({
     @required String summary,
-    @required EventDateTime start,
-    @required EventDateTime end,
+    @required googleCalendar.EventDateTime start,
+    @required googleCalendar.EventDateTime end,
   }) {
-    Event event = Event(
+    googleCalendar.Event event = googleCalendar.Event(
       summary: summary,
       start: start,
       end: end,

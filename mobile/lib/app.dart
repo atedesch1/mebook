@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:googleapis/calendar/v3.dart';
+import 'package:googleapis/calendar/v3.dart' as googleCalendar;
 import 'package:provider/provider.dart';
 
 import 'package:mebook/res/theme.dart';
@@ -32,7 +32,7 @@ class _MebookAppState extends State<MebookApp> {
                   FirebaseAuth.instance,
                   GoogleSignIn(scopes: <String>[
                     'email',
-                    CalendarApi.calendarScope
+                    googleCalendar.CalendarApi.calendarScope
                   ]),
                 ),
               ),

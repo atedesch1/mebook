@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:googleapis/calendar/v3.dart' as calendarApi;
+import 'package:googleapis/calendar/v3.dart' as googleCalendar;
 import 'package:intl/intl.dart';
 
 class SimpleEventTile extends StatelessWidget {
-  final calendarApi.Event event;
+  final googleCalendar.Event event;
 
   SimpleEventTile({@required this.event});
 
