@@ -10,8 +10,6 @@ class CalendarService {
     _api = CalendarApi(context.read<AuthService>().client);
   }
 
-  Stream<Events> get getEvents => _api.events.list('primary').asStream();
-
   Future<Events> getMonthEvents(DateTime chosenMonth) {
     var firstDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month, 1);
     var lastDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month + 1, 1)
