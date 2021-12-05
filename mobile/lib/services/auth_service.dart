@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -5,6 +6,7 @@ import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sig
 import 'package:googleapis_auth/googleapis_auth.dart';
 
 class AuthService {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleAuth;
   AuthClient client;
@@ -16,6 +18,14 @@ class AuthService {
   AuthClient get getClient => client;
 
   Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
+
+  Future<String> get username async => await _db
+      .collection('users')
+      .doc(currentUser.uid)
+      .snapshots()
+      .first
+      .then((DocumentSnapshot<Map<String, dynamic>> value) =>
+          value.data()['username']);
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
@@ -58,6 +68,10 @@ class AuthService {
       trySignUp();
       userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+      await _db.collection('users').doc(userCredential.user.uid).set({
+        'email': email,
+        'username': username,
+      });
       return userCredential;
     } catch (err) {
       failedSignUp();
