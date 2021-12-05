@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:googleapis/calendar/v3.dart' as googleCalendar;
+
+import 'package:mebook/models/event_model.dart';
 
 abstract class AbstractCalendarService {
-  Future<googleCalendar.Events> getMonthEvents(DateTime chosenMonth);
+  Future<List<Event> > getMonthEvents(DateTime chosenMonth);
 
-  Future<googleCalendar.Events> getDailyEvents(DateTime chosenDay);
+  Future<List<Event> > getDailyEvents(DateTime chosenDay);
 
   Future<void> updateEvent({
-    @required googleCalendar.Event event,
+    @required Event event,
     String summary,
     DateTime start,
     DateTime end,

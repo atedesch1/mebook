@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:googleapis/calendar/v3.dart' as googleCalendar;
+
 import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/services/google_calendar_service.dart';
 import 'package:mebook/widgets/schedule/simple_event_tile.dart';
+import 'package:mebook/models/event_model.dart';
 
 class TodaysEventsSummary extends StatelessWidget {
   @override
@@ -14,7 +15,7 @@ class TodaysEventsSummary extends StatelessWidget {
           future: calendarService.getDailyEvents(DateTime.now()),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              googleCalendar.Events events = snapshot.data;
+              List<Event> events = snapshot.data;
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -23,8 +24,8 @@ class TodaysEventsSummary extends StatelessWidget {
                       shrinkWrap: true,
                       padding: EdgeInsets.all(0),
                       itemBuilder: (context, index) =>
-                          SimpleEventTile(event: events.items[index]),
-                      itemCount: events.items.length,
+                          SimpleEventTile(event: events[index]),
+                      itemCount: events.length,
                     ),
                   ),
                   SizedBox(

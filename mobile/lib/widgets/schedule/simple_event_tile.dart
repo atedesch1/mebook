@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:googleapis/calendar/v3.dart' as googleCalendar;
 import 'package:intl/intl.dart';
 
+import 'package:mebook/models/event_model.dart';
+
 class SimpleEventTile extends StatelessWidget {
-  final googleCalendar.Event event;
+  final Event event;
 
   SimpleEventTile({@required this.event});
 
@@ -30,7 +31,7 @@ class SimpleEventTile extends StatelessWidget {
                           Flexible(
                             child: Text(
                               DateFormat('M/d kk:mm')
-                                  .format(event.start.dateTime),
+                                  .format(event.startTime),
                               style: TextStyle(
                                 color: Colors.black87,
                               ),
@@ -39,7 +40,7 @@ class SimpleEventTile extends StatelessWidget {
                           Flexible(
                             child: Text(
                               DateFormat('M/d kk:mm')
-                                  .format(event.end.dateTime),
+                                  .format(event.endTime),
                               style: TextStyle(
                                 color: Colors.black54,
                               ),
@@ -63,7 +64,7 @@ class SimpleEventTile extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              event.summary,
+                              event.title,
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w500,
@@ -74,7 +75,7 @@ class SimpleEventTile extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                'Status: ${event.status}',
+                                'Status: confirmed',
                                 textAlign: TextAlign.right,
                                 style: TextStyle(fontSize: 12),
                               ),

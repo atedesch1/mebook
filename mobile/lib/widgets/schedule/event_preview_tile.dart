@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:googleapis/calendar/v3.dart' as googleCalendar;
+import 'package:intl/intl.dart';
+
 import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
 import 'package:mebook/widgets/schedule/edit_event_card.dart';
-import 'package:intl/intl.dart';
+import 'package:mebook/models/event_model.dart';
 
 class EventPreviewTile extends StatelessWidget {
   final AbstractCalendarService service;
-  final googleCalendar.Event event;
+  final Event event;
   final Function refreshCallBack;
 
   EventPreviewTile({
@@ -36,7 +37,7 @@ class EventPreviewTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        event.summary,
+                        event.title,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -46,7 +47,7 @@ class EventPreviewTile extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                        '${DateFormat('M/d kk:mm').format(event.start.dateTime)} - ${DateFormat('M/d kk:mm').format(event.end.dateTime)}',
+                        '${DateFormat('M/d kk:mm').format(event.startTime)} - ${DateFormat('M/d kk:mm').format(event.endTime)}',
                         style: TextStyle(
                           color: Colors.black54,
                         ),

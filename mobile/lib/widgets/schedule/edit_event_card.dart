@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:googleapis/calendar/v3.dart' as googleCalendar;
 
 import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/widgets/misc/popup_rect_tween.dart';
 import 'package:mebook/widgets/schedule/date_row.dart';
 import 'package:mebook/widgets/schedule/time_row.dart';
 import 'package:mebook/widgets/schedule/calendar_utils.dart';
+import 'package:mebook/models/event_model.dart';
 
 const String _CalendarEventPopUp = 'calendar-event-pop-up';
 
 class EditEventCard extends StatefulWidget {
   final AbstractCalendarService service;
-  final googleCalendar.Event event;
+  final Event event;
   final Function refreshCallBack;
 
   EditEventCard({
@@ -34,13 +34,13 @@ class _EditEventCardState extends State<EditEventCard> {
   @override
   void initState() {
     if (widget.event != null) {
-      _summaryController.text = widget.event.summary;
+      _summaryController.text = widget.event.title;
 
-      startDate = widget.event.start.dateTime;
-      endDate = widget.event.end.dateTime;
+      startDate = widget.event.startTime;
+      endDate = widget.event.endTime;
 
-      startTime = TimeOfDay.fromDateTime(widget.event.start.dateTime);
-      endTime = TimeOfDay.fromDateTime(widget.event.end.dateTime);
+      startTime = TimeOfDay.fromDateTime(widget.event.startTime);
+      endTime = TimeOfDay.fromDateTime(widget.event.endTime);
     } else {
       startDate = DateTime.now();
       endDate = DateTime.now();

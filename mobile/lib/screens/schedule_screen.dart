@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:mebook/services/google_calendar_service.dart';
 import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
 import 'package:mebook/widgets/misc/overlay_app_bar.dart';
 import 'package:mebook/widgets/schedule/calendar.dart';
 import 'package:mebook/widgets/schedule/calendar_utils.dart';
-import 'package:googleapis/calendar/v3.dart' as googleCalendar;
 import 'package:mebook/widgets/schedule/edit_event_card.dart';
 import 'package:mebook/widgets/schedule/event_preview_tile.dart';
+import 'package:mebook/models/event_model.dart';
 
 class ScheduleScreen extends StatefulWidget {
   @override
@@ -92,13 +93,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         calendarService.getDailyEvents(_selectedDate),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        googleCalendar.Events events = snapshot.data;
-                        events.items = events.items.map((e) => addTimeZone(e))
-                            .toList();
-                        events.items.sort((eventA, eventB) => eventA
-                            .start.dateTime
-                            .compareTo(eventB.start.dateTime));
-                        if (events.items.isEmpty)
+                        List<Event> events = snapshot.data;
+                        events.sort((eventA, eventB) => eventA
+                            .startTime
+                            .compareTo(eventB.startTime));
+                        if (events.isEmpty)
                           return Center(
                             child: Text(
                               'No events for the selected day',
@@ -109,10 +108,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           padding: EdgeInsets.all(0),
                           itemBuilder: (context, index) => EventPreviewTile(
                             service: calendarService,
-                            event: events.items[index],
+                            event: events[index],
                             refreshCallBack: refreshEventList,
                           ),
-                          itemCount: events.items.length,
+                          itemCount: events.length,
                         );
                       }
                       return Center(
