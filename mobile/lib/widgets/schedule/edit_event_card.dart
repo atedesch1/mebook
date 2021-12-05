@@ -59,10 +59,24 @@ class _EditEventCardState extends State<EditEventCard> {
       setState(() {
         if (isStartTime)
           startTime = newTime;
-        else
+        else {
           endTime = newTime;
+          if (constructDateTime(startDate, startTime)
+                  .compareTo(constructDateTime(endDate, endTime)) >
+              0) startTime = endTime;
+        }
       });
     }
+  }
+
+  DateTime constructDateTime(DateTime date, TimeOfDay timeOfDay) {
+    return DateTime(
+      date.year,
+      date.month,
+      date.day,
+      timeOfDay.hour + DateTime.now().timeZoneOffset.inHours,
+      timeOfDay.minute,
+    );
   }
 
   googleApis.EventDateTime toEventDateTime(DateTime date, TimeOfDay timeOfDay) {
@@ -84,8 +98,10 @@ class _EditEventCardState extends State<EditEventCard> {
       return;
     }
 
-    final start = toEventDateTime(startDate, startTime);
-    final end = toEventDateTime(endDate, endTime);
+    final start = googleApis.EventDateTime(
+        dateTime: constructDateTime(startDate, startTime));
+    final end =
+        googleApis.EventDateTime(dateTime: constructDateTime(endDate, endTime));
 
     if (widget.event == null)
       await widget.service
