@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:mebook/widgets/schedule/calendar_utils.dart';
+import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/services/auth_service.dart';
 import 'package:provider/src/provider.dart';
 
-class CalendarService {
+class CalendarService extends AbstractCalendarService {
   CalendarApi _api;
 
   CalendarService(BuildContext context) {
     _api = CalendarApi(context.read<AuthService>().client);
   }
 
+  @override
   Future<Events> getMonthEvents(DateTime chosenMonth) async {
     var firstDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month, 1);
     var lastDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month + 1, 1)
@@ -22,6 +24,7 @@ class CalendarService {
     return events;
   }
 
+  @override
   Future<Events> getDailyEvents(DateTime chosenDay) async {
     var firstTimeOfDay = DateTime(
         chosenDay.year,
@@ -36,6 +39,7 @@ class CalendarService {
     return events;
   }
 
+  @override
   Future<void> updateEvent({
     @required Event event,
     String summary,
@@ -50,6 +54,7 @@ class CalendarService {
     return _api.events.update(event, 'primary', event.id);
   }
 
+  @override
   Future<void> createEvent({
     @required String summary,
     @required EventDateTime start,
@@ -65,6 +70,7 @@ class CalendarService {
     return _api.events.insert(event, 'primary');
   }
 
+  @override
   Future<void> deleteEvent(String id) {
     return _api.events.delete('primary', id);
   }
