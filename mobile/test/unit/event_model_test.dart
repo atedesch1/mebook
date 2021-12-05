@@ -20,13 +20,11 @@ void main() {
         id: eventId,
         title: summary,
         startTime: startTime,
-        endTime: endTime,
-        notify: notify);
+        endTime: endTime);
 
     expect(calendarEvent.id, "0");
     expect(calendarEvent.title, "title");
     expect(calendarEvent.startTime, DateTime(2021, 11, 11, 10, 40));
     expect(calendarEvent.endTime, DateTime(2021, 11, 11, 11, 50));
-    expect(calendarEvent.notify, false);
   });
 }
