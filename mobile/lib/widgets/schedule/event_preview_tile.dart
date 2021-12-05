@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:googleapis/calendar/v3.dart' as calendarApi;
+import 'package:mebook/services/calendar_service.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
-import 'package:mebook/widgets/schedule/calendar_event_card.dart';
+import 'package:mebook/widgets/schedule/edit_event_card.dart';
 import 'package:intl/intl.dart';
 
 class EventPreviewTile extends StatelessWidget {
@@ -51,10 +52,18 @@ class EventPreviewTile extends StatelessWidget {
                   onPressed: () => {
                     Navigator.of(context)
                         .push(ChangeEventRoute(builder: (context) {
-                      return CalendarEventCard();
+                      return EditEventCard(
+                        event: event,
+                        service: CalendarService(context),
+                      );
                     }))
                   },
                   icon: Icon(Icons.edit),
+                ),
+                IconButton(
+                  onPressed: () =>
+                      CalendarService(context).deleteEvent(event.id),
+                  icon: Icon(Icons.delete),
                 ),
               ],
             ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mebook/services/calendar_service.dart';
+import 'package:mebook/widgets/misc/event_route.dart';
 import 'package:mebook/widgets/misc/overlay_app_bar.dart';
 import 'package:mebook/widgets/schedule/calendar.dart';
 import 'package:googleapis/calendar/v3.dart' as googleApis;
+import 'package:mebook/widgets/schedule/edit_event_card.dart';
 import 'package:mebook/widgets/schedule/event_preview_tile.dart';
 
 class ScheduleScreen extends StatefulWidget {
@@ -30,7 +32,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             title: 'Schedule',
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () => {
+                  Navigator.of(context)
+                      .push(ChangeEventRoute(builder: (context) {
+                    return EditEventCard(
+                      service: CalendarService(context),
+                    );
+                  }))
+                },
                 icon: Icon(Icons.add),
               ),
             ],
@@ -56,9 +65,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   child: Calendar(updateMonth: setCurrentDate),
                 ),
                 Container(
-                  child: FutureBuilder(
-                    future:
-                        CalendarService(context).getMonthEvents(focusedDate),
+                  child: StreamBuilder(
+                    stream:
+                        CalendarService(context).getEventsForMonth(focusedDate),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         googleApis.Events events = snapshot.data;
@@ -72,8 +81,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           ),
                         );
                       }
-                      return Center(
-                        child: CircularProgressIndicator(),
+                      return Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       );
                     },
                   ),
