@@ -39,7 +39,10 @@ class HomeScreen extends StatelessWidget {
                             strokeWidth: 25.0,
                           );
                         } else {
-                          return Center(child: CircularProgressIndicator());
+                          return Container(
+                            height: 100,
+                            child: Center(child: CircularProgressIndicator()),
+                          );
                         }
                       },
                     ),
