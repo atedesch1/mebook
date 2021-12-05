@@ -56,7 +56,10 @@ class FirebaseCalendarService extends AbstractCalendarService {
     DateTime start,
     DateTime end,
   }) {
-    var ref = _db.collection('notes').doc(_currentUser.uid).collection('items');
+    var ref = _db
+        .collection(_eventsCollectionName)
+        .doc(_currentUser.uid)
+        .collection(_userEventsCollectionName);
     Event e = Event(
       id: event.id,
       title: title,
@@ -65,7 +68,7 @@ class FirebaseCalendarService extends AbstractCalendarService {
     );
 
     return ref.doc(e.id).update(e.toJson()).whenComplete(
-      () => print('Note updated'),
+      () => print('Event updated'),
     ).catchError(
       (e) => print(e),
     );
@@ -76,7 +79,10 @@ class FirebaseCalendarService extends AbstractCalendarService {
     @required DateTime start,
     @required DateTime end,
   }) {
-    var ref = _db.collection('notes').doc(_currentUser.uid).collection('items');
+    var ref = _db
+        .collection(_eventsCollectionName)
+        .doc(_currentUser.uid)
+        .collection(_userEventsCollectionName);
     Event e = Event(
       id: '',
       title: title,
@@ -85,18 +91,20 @@ class FirebaseCalendarService extends AbstractCalendarService {
     );
 
     return ref.doc().set(e.toJson()).whenComplete(
-        () => print('Note created'),
+        () => print('Event created'),
     ).catchError(
         (e) => print(e),
     );
   }
 
   Future<void> deleteEvent(String id) {
-    var ref = _db.collection('notes')
-        .doc(_currentUser.uid).collection('items').doc(id);
+    var ref = _db
+        .collection(_eventsCollectionName)
+        .doc(_currentUser.uid)
+        .collection(_userEventsCollectionName).doc(id);
 
     return ref.delete().whenComplete(
-      () => print('Note deleted'),
+      () => print('Event deleted'),
     ).catchError(
         (e) => print(e),
     );
