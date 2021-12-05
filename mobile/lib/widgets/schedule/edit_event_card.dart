@@ -74,7 +74,7 @@ class _EditEventCardState extends State<EditEventCard> {
       date.year,
       date.month,
       date.day,
-      timeOfDay.hour + DateTime.now().timeZoneOffset.inHours,
+      timeOfDay.hour,
       timeOfDay.minute,
     );
   }
@@ -83,6 +83,9 @@ class _EditEventCardState extends State<EditEventCard> {
     final enteredSummary = _summaryController.text;
 
     if (enteredSummary.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Title missing!')),
+      );
       return;
     }
 

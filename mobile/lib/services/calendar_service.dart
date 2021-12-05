@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:googleapis/calendar/v3.dart';
+import 'package:mebook/widgets/schedule/calendar_utils.dart';
 import 'package:mebook/services/auth_service.dart';
 import 'package:provider/src/provider.dart';
 
@@ -10,16 +11,18 @@ class CalendarService {
     _api = CalendarApi(context.read<AuthService>().client);
   }
 
-  Future<Events> getMonthEvents(DateTime chosenMonth) {
+  Future<Events> getMonthEvents(DateTime chosenMonth) async {
     var firstDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month, 1);
     var lastDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month + 1, 1)
         .subtract(Duration(seconds: 1));
 
-    return _api.events
+    Events events = await _api.events
         .list('primary', timeMin: firstDayOfMonth, timeMax: lastDayOfMonth);
+    events.items.map((e) => addTimeZone(e));
+    return events;
   }
 
-  Future<Events> getDailyEvents(DateTime chosenDay) {
+  Future<Events> getDailyEvents(DateTime chosenDay) async {
     var firstTimeOfDay = DateTime(
         chosenDay.year,
         chosenDay.month,
@@ -27,8 +30,10 @@ class CalendarService {
     );
     var lastTimeOfDay = firstTimeOfDay.add(Duration(days: 1));
 
-    return _api.events
+    Events events = await _api.events
         .list('primary', timeMin: firstTimeOfDay, timeMax: lastTimeOfDay);
+    events.items.map((e) => addTimeZone(e));
+    return events;
   }
 
   Future<void> updateEvent({
@@ -40,6 +45,7 @@ class CalendarService {
     event.summary = summary;
     event.start = start;
     event.end = end;
+    event = removeTimeZone(event);
 
     return _api.events.update(event, 'primary', event.id);
   }
@@ -54,6 +60,8 @@ class CalendarService {
       start: start,
       end: end,
     );
+    event = removeTimeZone(event);
+
     return _api.events.insert(event, 'primary');
   }
 

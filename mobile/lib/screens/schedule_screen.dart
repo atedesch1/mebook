@@ -3,6 +3,7 @@ import 'package:mebook/services/calendar_service.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
 import 'package:mebook/widgets/misc/overlay_app_bar.dart';
 import 'package:mebook/widgets/schedule/calendar.dart';
+import 'package:mebook/widgets/schedule/calendar_utils.dart';
 import 'package:googleapis/calendar/v3.dart' as googleApis;
 import 'package:mebook/widgets/schedule/edit_event_card.dart';
 import 'package:mebook/widgets/schedule/event_preview_tile.dart';
@@ -90,6 +91,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         googleApis.Events events = snapshot.data;
+                        events.items = events.items.map((e) => addTimeZone(e))
+                            .toList();
                         events.items.sort((eventA, eventB) => eventA
                             .start.dateTime
                             .compareTo(eventB.start.dateTime));
