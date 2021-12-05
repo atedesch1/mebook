@@ -5,6 +5,7 @@ import 'package:mebook/widgets/finances/finances_summary.dart';
 import 'package:mebook/widgets/misc/home_card.dart';
 import 'package:mebook/widgets/misc/overlay_app_bar.dart';
 import 'package:mebook/widgets/news/news_list.dart';
+import 'package:mebook/widgets/schedule/todays_events_summary.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -21,6 +22,12 @@ class HomeScreen extends StatelessWidget {
           SliverList(
             delegate: SliverChildListDelegate(
               [
+                HomeCard(
+                  title: 'Today\'s Events',
+                  widgets: [
+                    TodaysEventsSummary(),
+                  ],
+                ),
                 HomeCard(
                   title: 'This Month\'s Spendings',
                   widgets: [
