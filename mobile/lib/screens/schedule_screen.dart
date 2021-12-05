@@ -80,6 +80,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         googleApis.Events events = snapshot.data;
+                        events.items.sort((eventA, eventB) => eventA
+                            .start.dateTime
+                            .compareTo(eventB.start.dateTime));
                         if (events.items.isEmpty)
                           return Center(
                             child: Text(
