@@ -13,12 +13,19 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  DateTime focusedDate = DateTime.now();
+  DateTime _focusedDate = DateTime.now();
+  DateTime _selectedDate = DateTime.now();
   bool hasUpdated = false;
+
+  void setCurrentMonth(DateTime focusedDate) {
+    setState(() {
+      _focusedDate = focusedDate;
+    });
+  }
 
   void setCurrentDate(DateTime selectedDate) {
     setState(() {
-      focusedDate = selectedDate;
+      _selectedDate = selectedDate;
     });
   }
 
@@ -71,12 +78,15 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       ),
                     ],
                   ),
-                  child: Calendar(updateMonth: setCurrentDate),
+                  child: Calendar(
+                      updateMonth: setCurrentMonth,
+                      updateDate: setCurrentDate
+                  ),
                 ),
                 Expanded(
                   child: FutureBuilder(
                     future:
-                        CalendarService(context).getMonthEvents(focusedDate),
+                        CalendarService(context).getDailyEvents(_selectedDate),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         googleApis.Events events = snapshot.data;

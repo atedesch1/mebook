@@ -7,7 +7,8 @@ final calendarLastDay = DateTime(today.year, today.month + 6, 0);
 
 class Calendar extends StatefulWidget {
   final Function updateMonth;
-  Calendar({@required this.updateMonth});
+  final Function updateDate;
+  Calendar({@required this.updateMonth, @required this.updateDate});
 
   @override
   _CalendarState createState() => _CalendarState();
@@ -16,7 +17,7 @@ class Calendar extends StatefulWidget {
 class _CalendarState extends State<Calendar> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = today;
-  DateTime _selectedDay;
+  DateTime _selectedDay = today;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +61,7 @@ class _CalendarState extends State<Calendar> {
           setState(() {
             _selectedDay = selectedDay;
             _focusedDay = focusedDay;
+            widget.updateDate(selectedDay);
           });
         }
       },

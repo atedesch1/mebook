@@ -12,9 +12,9 @@ class CalendarService {
 
   Stream<Events> get getEvents => _api.events.list('primary').asStream();
 
-  Stream<Events> getEventsForMonth(DateTime chosenDate) {
-    var firstDayOfMonth = DateTime(chosenDate.year, chosenDate.month, 1);
-    var lastDayOfMonth = DateTime(chosenDate.year, chosenDate.month + 1, 1)
+  Stream<Events> getEventsForMonth(DateTime chosenMonth) {
+    var firstDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month, 1);
+    var lastDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month + 1, 1)
         .subtract(Duration(seconds: 1));
 
     return _api.events
@@ -22,13 +22,25 @@ class CalendarService {
         .asStream();
   }
 
-  Future<Events> getMonthEvents(DateTime chosenDate) {
-    var firstDayOfMonth = DateTime(chosenDate.year, chosenDate.month, 1);
-    var lastDayOfMonth = DateTime(chosenDate.year, chosenDate.month + 1, 1)
+  Future<Events> getMonthEvents(DateTime chosenMonth) {
+    var firstDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month, 1);
+    var lastDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month + 1, 1)
         .subtract(Duration(seconds: 1));
 
     return _api.events
         .list('primary', timeMin: firstDayOfMonth, timeMax: lastDayOfMonth);
+  }
+
+  Future<Events> getDailyEvents(DateTime chosenDay) {
+    var firstTimeOfDay = DateTime(
+        chosenDay.year,
+        chosenDay.month,
+        chosenDay.day
+    );
+    var lastTimeOfDay = firstTimeOfDay.add(Duration(days: 1));
+
+    return _api.events
+        .list('primary', timeMin: firstTimeOfDay, timeMax: lastTimeOfDay);
   }
 
   Future<void> updateEvent({
