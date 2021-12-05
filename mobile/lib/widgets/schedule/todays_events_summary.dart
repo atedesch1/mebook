@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:googleapis/calendar/v3.dart';
-import 'package:mebook/services/calendar_service.dart';
+import 'package:mebook/services/abstract_calendar_service.dart';
+import 'package:mebook/services/google_calendar_service.dart';
 import 'package:mebook/widgets/schedule/simple_event_tile.dart';
 
 class TodaysEventsSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    AbstractCalendarService calendarService = GoogleCalendarService(context);
     return Container(
       constraints: BoxConstraints(minHeight: 100, maxHeight: 200),
       child: FutureBuilder(
-          future: CalendarService(context).getDailyEvents(DateTime.now()),
+          future: calendarService.getDailyEvents(DateTime.now()),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               Events events = snapshot.data;
