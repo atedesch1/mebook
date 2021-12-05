@@ -9,14 +9,14 @@ abstract class AbstractCalendarService {
   Future<void> updateEvent({
     @required googleCalendar.Event event,
     String summary,
-    googleCalendar.EventDateTime start,
-    googleCalendar.EventDateTime end,
+    DateTime start,
+    DateTime end,
   });
 
   Future<void> createEvent({
     @required String summary,
-    @required googleCalendar.EventDateTime start,
-    @required googleCalendar.EventDateTime end,
+    @required DateTime start,
+    @required DateTime end,
   });
 
   Future<void> deleteEvent(String id);

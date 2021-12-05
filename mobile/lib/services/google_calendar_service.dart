@@ -43,12 +43,12 @@ class GoogleCalendarService extends AbstractCalendarService {
   Future<void> updateEvent({
     @required googleCalendar.Event event,
     String summary,
-    googleCalendar.EventDateTime start,
-    googleCalendar.EventDateTime end,
+    DateTime start,
+    DateTime end,
   }) {
     event.summary = summary;
-    event.start = start;
-    event.end = end;
+    event.start = googleCalendar.EventDateTime(dateTime: start);
+    event.end = googleCalendar.EventDateTime(dateTime: end);
     event = removeTimeZone(event);
 
     return _api.events.update(event, 'primary', event.id);
@@ -57,13 +57,13 @@ class GoogleCalendarService extends AbstractCalendarService {
   @override
   Future<void> createEvent({
     @required String summary,
-    @required googleCalendar.EventDateTime start,
-    @required googleCalendar.EventDateTime end,
+    @required DateTime start,
+    @required DateTime end,
   }) {
     googleCalendar.Event event = googleCalendar.Event(
       summary: summary,
-      start: start,
-      end: end,
+      start: googleCalendar.EventDateTime(dateTime: start),
+      end: googleCalendar.EventDateTime(dateTime: end),
     );
     event = removeTimeZone(event);
 

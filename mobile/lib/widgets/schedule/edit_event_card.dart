@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:googleapis/calendar/v3.dart' as googleCalendar;
+
 import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/widgets/misc/popup_rect_tween.dart';
-import 'package:googleapis/calendar/v3.dart' as googleCalendar;
 import 'package:mebook/widgets/schedule/date_row.dart';
 import 'package:mebook/widgets/schedule/time_row.dart';
+import 'package:mebook/widgets/schedule/calendar_utils.dart';
 
 const String _CalendarEventPopUp = 'calendar-event-pop-up';
 
@@ -69,16 +71,6 @@ class _EditEventCardState extends State<EditEventCard> {
     }
   }
 
-  DateTime constructDateTime(DateTime date, TimeOfDay timeOfDay) {
-    return DateTime(
-      date.year,
-      date.month,
-      date.day,
-      timeOfDay.hour,
-      timeOfDay.minute,
-    );
-  }
-
   void _submitData() async {
     final enteredSummary = _summaryController.text;
 
@@ -89,20 +81,18 @@ class _EditEventCardState extends State<EditEventCard> {
       return;
     }
 
-    final start = googleCalendar.EventDateTime(
-        dateTime: constructDateTime(startDate, startTime));
-    final end =
-        googleCalendar.EventDateTime(dateTime: constructDateTime(endDate, endTime));
-
     if (widget.event == null)
-      await widget.service
-          .createEvent(summary: enteredSummary, start: start, end: end);
+      await widget.service.createEvent(
+        summary: enteredSummary,
+        start: constructDateTime(startDate, startTime),
+        end: constructDateTime(endDate, endTime),
+      );
     else
       await widget.service.updateEvent(
         event: widget.event,
         summary: enteredSummary,
-        start: start,
-        end: end,
+        start: constructDateTime(startDate, startTime),
+        end: constructDateTime(endDate, endTime),
       );
 
     widget.refreshCallBack();
