@@ -12,8 +12,6 @@ class ProfileScreen extends StatelessWidget {
     final profilePictureURL =
         context.read<AuthService>().currentUser.photoURL ?? null;
 
-    print(profilePictureURL);
-
     final circleAvatar = profilePictureURL != null
         ? CircleAvatar(
             radius: MediaQuery.of(context).size.width * 0.14,
@@ -24,6 +22,8 @@ class ProfileScreen extends StatelessWidget {
             color: Colors.black54,
             size: MediaQuery.of(context).size.width * 0.14 * 2,
           );
+
+    final displayName = context.read<AuthService>().currentUser.displayName;
 
     return Scaffold(
       body: CustomScrollView(
@@ -65,23 +65,27 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: FutureBuilder(
-                      future: context.read<AuthService>().username,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData)
-                          return Text(
-                            context
-                                    .read<AuthService>()
-                                    .currentUser
-                                    .displayName ??
+                  child: displayName == null
+                      ? FutureBuilder(
+                          future: context.read<AuthService>().username,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData)
+                              return Text(
                                 snapshot.data,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          );
-                        return CircularProgressIndicator();
-                      }),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            return CircularProgressIndicator();
+                          })
+                      : Text(
+                          displayName,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
               ],
             ),
