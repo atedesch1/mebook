@@ -10,9 +10,11 @@ const String _CalendarEventPopUp = 'calendar-event-pop-up';
 class EditEventCard extends StatefulWidget {
   final CalendarService service;
   final googleApis.Event event;
+  final Function refreshCallBack;
 
   EditEventCard({
     @required this.service,
+    @required this.refreshCallBack,
     this.event,
   });
 
@@ -96,6 +98,7 @@ class _EditEventCardState extends State<EditEventCard> {
         end: end,
       );
 
+    widget.refreshCallBack();
     Navigator.of(context).pop();
   }
 

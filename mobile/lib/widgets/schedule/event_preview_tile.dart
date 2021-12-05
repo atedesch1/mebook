@@ -8,8 +8,12 @@ import 'package:intl/intl.dart';
 
 class EventPreviewTile extends StatelessWidget {
   final calendarApi.Event event;
+  final Function refreshCallBack;
 
-  EventPreviewTile(this.event);
+  EventPreviewTile({
+    @required this.event,
+    @required this.refreshCallBack,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +59,17 @@ class EventPreviewTile extends StatelessWidget {
                       return EditEventCard(
                         event: event,
                         service: CalendarService(context),
+                        refreshCallBack: refreshCallBack,
                       );
                     }))
                   },
                   icon: Icon(Icons.edit),
                 ),
                 IconButton(
-                  onPressed: () =>
-                      CalendarService(context).deleteEvent(event.id),
+                  onPressed: () async {
+                    await CalendarService(context).deleteEvent(event.id);
+                    refreshCallBack();
+                  },
                   icon: Icon(Icons.delete),
                 ),
               ],

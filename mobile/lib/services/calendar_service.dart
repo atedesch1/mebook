@@ -13,7 +13,7 @@ class CalendarService {
   Stream<Events> get getEvents => _api.events.list('primary').asStream();
 
   Stream<Events> getEventsForMonth(DateTime chosenDate) {
-    var firstDayOfMonth = new DateTime(chosenDate.year, chosenDate.month, 1);
+    var firstDayOfMonth = DateTime(chosenDate.year, chosenDate.month, 1);
     var lastDayOfMonth = DateTime(chosenDate.year, chosenDate.month + 1, 1)
         .subtract(Duration(seconds: 1));
 

@@ -14,11 +14,19 @@ class ScheduleScreen extends StatefulWidget {
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
   DateTime focusedDate = DateTime.now();
+  bool hasUpdated = false;
 
   void setCurrentDate(DateTime selectedDate) {
     setState(() {
       focusedDate = selectedDate;
     });
+  }
+
+  void refreshEventList() {
+    setState(() {
+      hasUpdated = true;
+    });
+    hasUpdated = false;
   }
 
   @override
@@ -37,6 +45,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       .push(ChangeEventRoute(builder: (context) {
                     return EditEventCard(
                       service: CalendarService(context),
+                      refreshCallBack: refreshEventList,
                     );
                   }))
                 },
@@ -65,9 +74,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   child: Calendar(updateMonth: setCurrentDate),
                 ),
                 Container(
-                  child: StreamBuilder(
-                    stream:
-                        CalendarService(context).getEventsForMonth(focusedDate),
+                  child: FutureBuilder(
+                    future:
+                        CalendarService(context).getMonthEvents(focusedDate),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         googleApis.Events events = snapshot.data;
@@ -75,8 +84,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         return Expanded(
                           child: ListView.builder(
                             padding: EdgeInsets.all(0),
-                            itemBuilder: (context, index) =>
-                                EventPreviewTile(events.items[index]),
+                            itemBuilder: (context, index) => EventPreviewTile(
+                              event: events.items[index],
+                              refreshCallBack: refreshEventList,
+                            ),
                             itemCount: events.items.length,
                           ),
                         );
@@ -95,7 +106,5 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         ],
       ),
     );
-
-    // return Scaffold(body: Calendar());
   }
 }
