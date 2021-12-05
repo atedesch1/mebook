@@ -5,10 +5,10 @@ import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/services/auth_service.dart';
 import 'package:provider/src/provider.dart';
 
-class CalendarService extends AbstractCalendarService {
+class GoogleCalendarService extends AbstractCalendarService {
   CalendarApi _api;
 
-  CalendarService(BuildContext context) {
+  GoogleCalendarService(BuildContext context) {
     _api = CalendarApi(context.read<AuthService>().client);
   }
 

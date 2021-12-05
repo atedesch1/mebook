@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mebook/services/calendar_service.dart';
+import 'package:mebook/services/google_calendar_service.dart';
+import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
 import 'package:mebook/widgets/misc/overlay_app_bar.dart';
 import 'package:mebook/widgets/schedule/calendar.dart';
@@ -39,6 +40,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AbstractCalendarService calendarService = GoogleCalendarService(context);
     return Scaffold(
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(
@@ -52,7 +54,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   Navigator.of(context)
                       .push(ChangeEventRoute(builder: (context) {
                     return EditEventCard(
-                      service: CalendarService(context),
+                      service: calendarService,
                       refreshCallBack: refreshEventList,
                     );
                   }))
@@ -87,7 +89,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 Expanded(
                   child: FutureBuilder(
                     future:
-                        CalendarService(context).getDailyEvents(_selectedDate),
+                        calendarService.getDailyEvents(_selectedDate),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         googleApis.Events events = snapshot.data;
@@ -106,7 +108,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         return ListView.builder(
                           padding: EdgeInsets.all(0),
                           itemBuilder: (context, index) => EventPreviewTile(
-                            service: CalendarService(context),
+                            service: calendarService,
                             event: events.items[index],
                             refreshCallBack: refreshEventList,
                           ),

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:googleapis/calendar/v3.dart' as calendarApi;
-import 'package:mebook/services/calendar_service.dart';
+import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
 import 'package:mebook/widgets/schedule/edit_event_card.dart';
 import 'package:intl/intl.dart';
 
 class EventPreviewTile extends StatelessWidget {
-  final CalendarService service;
+  final AbstractCalendarService service;
   final calendarApi.Event event;
   final Function refreshCallBack;
 
@@ -69,7 +69,7 @@ class EventPreviewTile extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () async {
-                    await CalendarService(context).deleteEvent(event.id);
+                    service.deleteEvent(event.id);
                     refreshCallBack();
                   },
                   icon: Icon(Icons.delete),

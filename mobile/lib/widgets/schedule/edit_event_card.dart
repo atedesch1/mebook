@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mebook/services/calendar_service.dart';
+import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/widgets/misc/popup_rect_tween.dart';
 import 'package:googleapis/calendar/v3.dart' as googleApis;
 import 'package:mebook/widgets/schedule/date_row.dart';
@@ -8,7 +8,7 @@ import 'package:mebook/widgets/schedule/time_row.dart';
 const String _CalendarEventPopUp = 'calendar-event-pop-up';
 
 class EditEventCard extends StatefulWidget {
-  final CalendarService service;
+  final AbstractCalendarService service;
   final googleApis.Event event;
   final Function refreshCallBack;
 
