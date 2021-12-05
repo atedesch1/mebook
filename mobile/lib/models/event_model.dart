@@ -18,8 +18,8 @@ class Event {
     return Event(
         id: json['id'] as String,
         title: json['title'] as String,
-        startTime: json['startTime'] as DateTime,
-        endTime: json['endTime'] as DateTime,
+        startTime: DateTime.parse(json['startTime']),
+        endTime: DateTime.parse(json['endTime']),
     );
   }
 
@@ -40,9 +40,8 @@ class Event {
   );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
     'title': title,
-    'startTime': startTime,
-    'endTime': endTime,
+    'startTime': startTime.toString(),
+    'endTime': endTime.toString(),
   };
 }
