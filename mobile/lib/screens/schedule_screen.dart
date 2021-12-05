@@ -73,29 +73,31 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   ),
                   child: Calendar(updateMonth: setCurrentDate),
                 ),
-                Container(
+                Expanded(
                   child: FutureBuilder(
                     future:
                         CalendarService(context).getMonthEvents(focusedDate),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         googleApis.Events events = snapshot.data;
-
-                        return Expanded(
-                          child: ListView.builder(
-                            padding: EdgeInsets.all(0),
-                            itemBuilder: (context, index) => EventPreviewTile(
-                              event: events.items[index],
-                              refreshCallBack: refreshEventList,
+                        if (events.items.isEmpty)
+                          return Center(
+                            child: Text(
+                              'No events for the selected day',
+                              style: TextStyle(fontSize: 20),
                             ),
-                            itemCount: events.items.length,
+                          );
+                        return ListView.builder(
+                          padding: EdgeInsets.all(0),
+                          itemBuilder: (context, index) => EventPreviewTile(
+                            event: events.items[index],
+                            refreshCallBack: refreshEventList,
                           ),
+                          itemCount: events.items.length,
                         );
                       }
-                      return Expanded(
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                      return Center(
+                        child: CircularProgressIndicator(),
                       );
                     },
                   ),
