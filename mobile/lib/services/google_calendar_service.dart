@@ -48,12 +48,12 @@ class GoogleCalendarService extends AbstractCalendarService {
   @override
   Future<void> updateEvent({
     @required Event event,
-    String summary,
+    String title,
     DateTime start,
     DateTime end,
   }) {
     googleCalendar.Event googleEvent = googleCalendar.Event(
-      summary: summary,
+      summary: title,
       start: googleCalendar.EventDateTime(dateTime: start),
       end: googleCalendar.EventDateTime(dateTime: end),
     );
@@ -64,12 +64,12 @@ class GoogleCalendarService extends AbstractCalendarService {
 
   @override
   Future<void> createEvent({
-    @required String summary,
+    @required String title,
     @required DateTime start,
     @required DateTime end,
   }) {
     googleCalendar.Event event = googleCalendar.Event(
-      summary: summary,
+      summary: title,
       start: googleCalendar.EventDateTime(dateTime: start),
       end: googleCalendar.EventDateTime(dateTime: end),
     );

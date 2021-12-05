@@ -9,13 +9,13 @@ abstract class AbstractCalendarService {
 
   Future<void> updateEvent({
     @required Event event,
-    String summary,
+    String title,
     DateTime start,
     DateTime end,
   });
 
   Future<void> createEvent({
-    @required String summary,
+    @required String title,
     @required DateTime start,
     @required DateTime end,
   });

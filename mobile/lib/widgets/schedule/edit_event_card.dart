@@ -83,14 +83,14 @@ class _EditEventCardState extends State<EditEventCard> {
 
     if (widget.event == null)
       await widget.service.createEvent(
-        summary: enteredSummary,
+        title: enteredSummary,
         start: constructDateTime(startDate, startTime),
         end: constructDateTime(endDate, endTime),
       );
     else
       await widget.service.updateEvent(
         event: widget.event,
-        summary: enteredSummary,
+        title: enteredSummary,
         start: constructDateTime(startDate, startTime),
         end: constructDateTime(endDate, endTime),
       );
