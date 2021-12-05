@@ -12,16 +12,6 @@ class CalendarService {
 
   Stream<Events> get getEvents => _api.events.list('primary').asStream();
 
-  Stream<Events> getEventsForMonth(DateTime chosenMonth) {
-    var firstDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month, 1);
-    var lastDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month + 1, 1)
-        .subtract(Duration(seconds: 1));
-
-    return _api.events
-        .list('primary', timeMin: firstDayOfMonth, timeMax: lastDayOfMonth)
-        .asStream();
-  }
-
   Future<Events> getMonthEvents(DateTime chosenMonth) {
     var firstDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month, 1);
     var lastDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month + 1, 1)

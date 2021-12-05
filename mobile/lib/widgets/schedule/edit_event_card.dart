@@ -79,18 +79,6 @@ class _EditEventCardState extends State<EditEventCard> {
     );
   }
 
-  googleApis.EventDateTime toEventDateTime(DateTime date, TimeOfDay timeOfDay) {
-    return googleApis.EventDateTime(
-      dateTime: DateTime(
-        date.year,
-        date.month,
-        date.day,
-        timeOfDay.hour + DateTime.now().timeZoneOffset.inHours,
-        timeOfDay.minute,
-      ),
-    );
-  }
-
   void _submitData() async {
     final enteredSummary = _summaryController.text;
 
