@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 
 import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/services/google_calendar_service.dart';
+import 'package:mebook/services/firebase_calendar_service.dart';
+import 'package:mebook/services/auth_service.dart';
 import 'package:mebook/widgets/schedule/simple_event_tile.dart';
 import 'package:mebook/models/event_model.dart';
 
 class TodaysEventsSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    AbstractCalendarService calendarService = GoogleCalendarService(context);
+    AbstractCalendarService calendarService;
+    if (context.read<AuthService>()
+        .getAuthenticationMethod == Authentication.Google) {
+      calendarService = GoogleCalendarService(context);
+    } else {
+      calendarService = FirebaseCalendarService(context);
+    }
     return Container(
       constraints: BoxConstraints(minHeight: 100, maxHeight: 200),
       child: FutureBuilder(

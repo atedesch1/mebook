@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 
-import 'package:mebook/services/google_calendar_service.dart';
 import 'package:mebook/services/abstract_calendar_service.dart';
+import 'package:mebook/services/google_calendar_service.dart';
+import 'package:mebook/services/firebase_calendar_service.dart';
+import 'package:mebook/services/auth_service.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
 import 'package:mebook/widgets/misc/overlay_app_bar.dart';
 import 'package:mebook/widgets/schedule/calendar.dart';
-import 'package:mebook/widgets/schedule/calendar_utils.dart';
 import 'package:mebook/widgets/schedule/edit_event_card.dart';
 import 'package:mebook/widgets/schedule/event_preview_tile.dart';
 import 'package:mebook/models/event_model.dart';
@@ -41,7 +43,13 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AbstractCalendarService calendarService = GoogleCalendarService(context);
+    AbstractCalendarService calendarService;
+    if (context.read<AuthService>()
+        .getAuthenticationMethod == Authentication.Google) {
+      calendarService = GoogleCalendarService(context);
+    } else {
+      calendarService = FirebaseCalendarService(context);
+    }
     return Scaffold(
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(
