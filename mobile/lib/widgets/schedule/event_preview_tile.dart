@@ -6,6 +6,7 @@ import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
 import 'package:mebook/widgets/schedule/edit_event_card.dart';
 import 'package:mebook/models/event_model.dart';
+import 'package:mebook/widgets/schedule/calendar_utils.dart';
 
 class EventPreviewTile extends StatelessWidget {
   final String selectedCalendarId;
@@ -51,11 +52,11 @@ class EventPreviewTile extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            '${DateFormat('M/d kk:mm').format(event.startTime)} -',
+                            '${format(event.startTime)} -',
                             style: TextStyle(color: Colors.black87),
                           ),
                           Text(
-                            ' ${DateFormat('M/d kk:mm').format(event.endTime)}',
+                            ' ${format(event.endTime)}',
                             style: TextStyle(color: Colors.black54),
                           ),
                         ],

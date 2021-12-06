@@ -24,8 +24,16 @@ class TimeAggregate {
 }
 
 googleCalendar.Event addTimeZone(googleCalendar.Event e) {
-  e.start.dateTime = (e.start.dateTime ?? e.start.date).toLocal();
-  e.end.dateTime = (e.end.dateTime ?? e.end.date).toLocal();
+  e.start.dateTime = (
+      e.start.dateTime ?? joinDateTime(
+          e.start.date, TimeOfDay(hour: 0, minute: 0)
+      )
+  ).toLocal();
+  e.end.dateTime = (
+      e.end.dateTime ?? joinDateTime(
+          e.end.date, TimeOfDay(hour: 0, minute: 0)
+      )
+  ).toLocal();
   return e;
 }
 
@@ -51,6 +59,14 @@ DateTime extractDate(DateTime d) {
 
 TimeOfDay extractTimeOfDay(DateTime d) {
   return TimeOfDay.fromDateTime(d);
+}
+
+String format(DateTime d) {
+  return '${pad(d.month)}/${pad(d.day)} ${pad(d.hour)}:${pad(d.minute)}';
+}
+
+String pad(int x) {
+  return x.toString().padLeft(2, '0');
 }
 
 TimeAggregate adjustBeginToEnd(TimeAggregate agg) {
