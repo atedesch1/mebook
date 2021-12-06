@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mebook/widgets/schedule/select_calendar_card.dart';
 import 'package:provider/src/provider.dart';
 
 import 'package:mebook/services/abstract_calendar_service.dart';
@@ -20,6 +21,8 @@ class ScheduleScreen extends StatefulWidget {
 class _ScheduleScreenState extends State<ScheduleScreen> {
   DateTime _focusedDate = DateTime.now();
   DateTime _selectedDate = DateTime.now();
+  MapEntry<String, Map<String, dynamic>> selectedCalendar =
+      MapEntry('primary', {'name': 'Default', 'isPrimary': true});
   bool hasUpdated = false;
 
   void setCurrentMonth(DateTime focusedDate) {
@@ -44,8 +47,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   @override
   Widget build(BuildContext context) {
     AbstractCalendarService calendarService;
-    if (context.read<AuthService>()
-        .getAuthenticationMethod == Authentication.Google) {
+    if (context.read<AuthService>().getAuthenticationMethod ==
+        Authentication.Google) {
       calendarService = GoogleCalendarService(context);
     } else {
       calendarService = FirebaseCalendarService(context);
@@ -70,6 +73,35 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 },
                 icon: Icon(Icons.add),
               ),
+              FutureBuilder(
+                  future: calendarService.getCalendars(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      Map<String, Map<String, dynamic>> calendars =
+                          snapshot.data;
+                      calendars.remove(
+                          context.read<AuthService>().currentUser.email);
+                      calendars['primary'] = {
+                        'name': 'Default',
+                        'isPrimary': true
+                      };
+                      return IconButton(
+                        onPressed: () => Navigator.of(context)
+                            .push(ChangeEventRoute(builder: (context) {
+                          return SelectCalendarCard(
+                            previouslySelected: selectedCalendar,
+                            calendars: calendars,
+                            selectCalendarFunction: (calendar) => setState(() {
+                              selectedCalendar = calendar;
+                            }),
+                          );
+                        })),
+                        icon: Icon(Icons.more_vert),
+                      );
+                    }
+                    return IconButton(
+                        onPressed: () => {}, icon: Icon(Icons.more_vert));
+                  })
             ],
           ),
           SliverFillRemaining(
@@ -91,20 +123,16 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     ],
                   ),
                   child: Calendar(
-                      updateMonth: setCurrentMonth,
-                      updateDate: setCurrentDate
-                  ),
+                      updateMonth: setCurrentMonth, updateDate: setCurrentDate),
                 ),
                 Expanded(
                   child: FutureBuilder(
-                    future:
-                        calendarService.getDailyEvents(_selectedDate),
+                    future: calendarService.getDailyEvents(_selectedDate),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         List<Event> events = snapshot.data;
-                        events.sort((eventA, eventB) => eventA
-                            .startTime
-                            .compareTo(eventB.startTime));
+                        events.sort((eventA, eventB) =>
+                            eventA.startTime.compareTo(eventB.startTime));
                         if (events.isEmpty)
                           return Center(
                             child: Text(
