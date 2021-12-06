@@ -123,11 +123,16 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     ],
                   ),
                   child: Calendar(
-                      updateMonth: setCurrentMonth, updateDate: setCurrentDate),
+                      selectedCalendarId: selectedCalendar.key,
+                      updateMonth: setCurrentMonth,
+                      updateDate: setCurrentDate),
                 ),
                 Expanded(
                   child: FutureBuilder(
-                    future: calendarService.getDailyEvents(_selectedDate),
+                    future: calendarService.getDailyEvents(
+                      calendarId: selectedCalendar.key,
+                      chosenDay: _selectedDate,
+                    ),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         List<Event> events = snapshot.data;
@@ -143,6 +148,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         return ListView.builder(
                           padding: EdgeInsets.all(0),
                           itemBuilder: (context, index) => EventPreviewTile(
+                            selectedCalendarId: selectedCalendar.key,
                             service: calendarService,
                             event: events[index],
                             refreshCallBack: refreshEventList,

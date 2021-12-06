@@ -9,13 +9,19 @@ import 'package:provider/src/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 final today = DateTime.now();
-final calendarFirstDay = DateTime(today.year, today.month - 2, 1);
-final calendarLastDay = DateTime(today.year, today.month + 6, 0);
+final calendarFirstDay = DateTime(1950, 1, 1);
+final calendarLastDay = DateTime(2150, 1, 1);
 
 class Calendar extends StatefulWidget {
   final Function updateMonth;
   final Function updateDate;
-  Calendar({@required this.updateMonth, @required this.updateDate});
+  final String selectedCalendarId;
+
+  Calendar({
+    @required this.updateMonth,
+    @required this.updateDate,
+    @required this.selectedCalendarId,
+  });
 
   @override
   _CalendarState createState() => _CalendarState();
@@ -37,7 +43,10 @@ class _CalendarState extends State<Calendar> {
     }
 
     return FutureBuilder<List<Event>>(
-        future: calendarService.getMonthEvents(_focusedDay),
+        future: calendarService.getMonthEvents(
+          calendarId: widget.selectedCalendarId,
+          chosenMonth: _focusedDay,
+        ),
         builder: (context, snapshot) {
           Map<int, bool> dayHasEvent = {};
           if (snapshot.hasData) {

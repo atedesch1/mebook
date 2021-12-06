@@ -27,26 +27,32 @@ class GoogleCalendarService extends AbstractCalendarService {
   }
 
   @override
-  Future<List<Event>> getMonthEvents(DateTime chosenMonth) async {
+  Future<List<Event>> getMonthEvents({
+    String calendarId = 'primary',
+    @required DateTime chosenMonth,
+  }) async {
     var firstDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month, 1);
     var lastDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month + 1, 1)
         .subtract(Duration(seconds: 1));
 
     googleCalendar.Events events = await _api.events
-        .list('primary', timeMin: firstDayOfMonth, timeMax: lastDayOfMonth);
+        .list(calendarId, timeMin: firstDayOfMonth, timeMax: lastDayOfMonth);
     List<Event> eventModels =
         events.items.map((e) => Event.fromGoogle(addTimeZone(e))).toList();
     return eventModels;
   }
 
   @override
-  Future<List<Event>> getDailyEvents(DateTime chosenDay) async {
+  Future<List<Event>> getDailyEvents({
+    String calendarId = 'primary',
+    @required DateTime chosenDay,
+  }) async {
     var firstTimeOfDay =
         DateTime(chosenDay.year, chosenDay.month, chosenDay.day);
     var lastTimeOfDay = firstTimeOfDay.add(Duration(days: 1));
 
     googleCalendar.Events events = await _api.events
-        .list('primary', timeMin: firstTimeOfDay, timeMax: lastTimeOfDay);
+        .list(calendarId, timeMin: firstTimeOfDay, timeMax: lastTimeOfDay);
     List<Event> eventModels =
         events.items.map((e) => Event.fromGoogle(addTimeZone(e))).toList();
     return eventModels;
@@ -54,6 +60,7 @@ class GoogleCalendarService extends AbstractCalendarService {
 
   @override
   Future<void> updateEvent({
+    String calendarId = 'primary',
     @required Event event,
     String title,
     DateTime start,
@@ -66,11 +73,12 @@ class GoogleCalendarService extends AbstractCalendarService {
     );
     googleEvent = removeTimeZone(googleEvent);
 
-    return _api.events.update(googleEvent, 'primary', event.id);
+    return _api.events.update(googleEvent, calendarId, event.id);
   }
 
   @override
   Future<void> createEvent({
+    String calendarId = 'primary',
     @required String title,
     @required DateTime start,
     @required DateTime end,
@@ -82,11 +90,14 @@ class GoogleCalendarService extends AbstractCalendarService {
     );
     event = removeTimeZone(event);
 
-    return _api.events.insert(event, 'primary');
+    return _api.events.insert(event, calendarId);
   }
 
   @override
-  Future<void> deleteEvent(String id) {
-    return _api.events.delete('primary', id);
+  Future<void> deleteEvent({
+    String calendarId = 'primary',
+    @required String eventId,
+  }) {
+    return _api.events.delete(calendarId, eventId);
   }
 }

@@ -18,10 +18,14 @@ class TodaysEventsSummary extends StatelessWidget {
     } else {
       calendarService = FirebaseCalendarService(context);
     }
+
     return Container(
       constraints: BoxConstraints(minHeight: 100, maxHeight: 200),
       child: FutureBuilder(
-          future: calendarService.getDailyEvents(DateTime.now()),
+          future: calendarService.getDailyEvents(
+            calendarId: 'primary',
+            chosenDay: DateTime.now(),
+          ),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<Event> events = snapshot.data;

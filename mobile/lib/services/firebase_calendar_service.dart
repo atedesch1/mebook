@@ -25,7 +25,10 @@ class FirebaseCalendarService extends AbstractCalendarService {
   }
 
   @override
-  Future<List<Event>> getMonthEvents(DateTime chosenMonth) async {
+  Future<List<Event>> getMonthEvents({
+    String calendarId = 'primary',
+    @required DateTime chosenMonth,
+  }) async {
     var firstDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month, 1);
     var lastDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month + 1, 1)
         .subtract(Duration(seconds: 1));
@@ -41,7 +44,10 @@ class FirebaseCalendarService extends AbstractCalendarService {
   }
 
   @override
-  Future<List<Event>> getDailyEvents(DateTime chosenDay) async {
+  Future<List<Event>> getDailyEvents({
+    String calendarId = 'primary',
+    DateTime chosenDay,
+  }) async {
     var firstTimeOfDay =
         DateTime(chosenDay.year, chosenDay.month, chosenDay.day);
     var lastTimeOfDay = firstTimeOfDay.add(Duration(days: 1));
@@ -58,6 +64,7 @@ class FirebaseCalendarService extends AbstractCalendarService {
 
   @override
   Future<void> updateEvent({
+    String calendarId = 'primary',
     @required Event event,
     String title,
     DateTime start,
@@ -87,6 +94,7 @@ class FirebaseCalendarService extends AbstractCalendarService {
 
   @override
   Future<void> createEvent({
+    String calendarId = 'primary',
     @required String title,
     @required DateTime start,
     @required DateTime end,
@@ -114,12 +122,13 @@ class FirebaseCalendarService extends AbstractCalendarService {
   }
 
   @override
-  Future<void> deleteEvent(String id) {
+  Future<void> deleteEvent(
+      {String calendarId = 'primary', @required String eventId}) {
     var ref = _db
         .collection(_eventsCollectionName)
         .doc(_currentUser.uid)
         .collection(_userEventsCollectionName)
-        .doc(id);
+        .doc(eventId);
 
     return ref
         .delete()

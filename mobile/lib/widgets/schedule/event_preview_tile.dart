@@ -8,11 +8,13 @@ import 'package:mebook/widgets/schedule/edit_event_card.dart';
 import 'package:mebook/models/event_model.dart';
 
 class EventPreviewTile extends StatelessWidget {
+  final String selectedCalendarId;
   final AbstractCalendarService service;
   final Event event;
   final Function refreshCallBack;
 
   EventPreviewTile({
+    @required this.selectedCalendarId,
     @required this.service,
     @required this.event,
     @required this.refreshCallBack,
@@ -76,7 +78,10 @@ class EventPreviewTile extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () async {
-                    service.deleteEvent(event.id);
+                    service.deleteEvent(
+                      calendarId: selectedCalendarId,
+                      eventId: event.id,
+                    );
                     refreshCallBack();
                   },
                   icon: Icon(Icons.delete),
