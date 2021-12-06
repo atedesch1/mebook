@@ -11,6 +11,14 @@ class SimpleEventTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Duration timeUntilEvent = event.startTime.difference(DateTime.now());
+    String formattedTimeUntilEvent = '';
+    if (timeUntilEvent.inHours > 0)
+      formattedTimeUntilEvent =
+          '${timeUntilEvent.inHours} h ${timeUntilEvent.inMinutes.remainder(60)} m';
+    else
+      formattedTimeUntilEvent = '${timeUntilEvent.inMinutes} m';
+
     return Container(
       height: 60,
       child: Column(
@@ -30,8 +38,7 @@ class SimpleEventTile extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              DateFormat('M/d kk:mm')
-                                  .format(event.startTime),
+                              DateFormat('M/d kk:mm').format(event.startTime),
                               style: TextStyle(
                                 color: Colors.black87,
                               ),
@@ -39,8 +46,7 @@ class SimpleEventTile extends StatelessWidget {
                           ),
                           Flexible(
                             child: Text(
-                              DateFormat('M/d kk:mm')
-                                  .format(event.endTime),
+                              DateFormat('M/d kk:mm').format(event.endTime),
                               style: TextStyle(
                                 color: Colors.black54,
                               ),
@@ -54,7 +60,7 @@ class SimpleEventTile extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     width: 3,
                     height: 60,
-                    color: Colors.cyan,
+                    color: Theme.of(context).backgroundColor,
                   ),
                   Expanded(
                     child: Padding(
@@ -75,7 +81,9 @@ class SimpleEventTile extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                'Status: confirmed',
+                                timeUntilEvent.isNegative
+                                    ? 'Event has started'
+                                    : 'Event starts in $formattedTimeUntilEvent',
                                 textAlign: TextAlign.right,
                                 style: TextStyle(fontSize: 12),
                               ),

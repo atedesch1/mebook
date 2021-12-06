@@ -12,8 +12,8 @@ class TodaysEventsSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AbstractCalendarService calendarService;
-    if (context.read<AuthService>()
-        .getAuthenticationMethod == Authentication.Google) {
+    if (context.read<AuthService>().getAuthenticationMethod ==
+        Authentication.Google) {
       calendarService = GoogleCalendarService(context);
     } else {
       calendarService = FirebaseCalendarService(context);
@@ -25,6 +25,8 @@ class TodaysEventsSummary extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<Event> events = snapshot.data;
+              events.sort((eventA, eventB) =>
+                  eventA.startTime.compareTo(eventB.startTime));
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
