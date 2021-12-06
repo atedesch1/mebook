@@ -13,12 +13,23 @@ class EditEventCard extends StatefulWidget {
   final AbstractCalendarService service;
   final Event event;
   final Function refreshCallBack;
+  Map<Scope, Function> adjustFunc;
+  // Map<Scope, Function> picker;
 
   EditEventCard({
     @required this.service,
     @required this.refreshCallBack,
     this.event,
-  });
+  }) {
+    adjustFunc = new Map();
+    adjustFunc[Scope.StartDate] = adjustFunc[Scope.StartTime] = adjustEndToBegin;
+    adjustFunc[Scope.EndDate] = adjustFunc[Scope.EndTime] = adjustBeginToEnd;
+
+    // picker = new Map();
+    // adjustFunc[Scope.StartDate] = adjustFunc[Scope.EndDate] = (context, v) => {
+
+    // };
+  }
 
   @override
   _EditEventCardState createState() => _EditEventCardState();
@@ -53,13 +64,13 @@ class _EditEventCardState extends State<EditEventCard> {
   void _selectStartTime() async {
     final TimeOfDay newTime = await showTimePicker(
       context: context,
-      initialTime: timeAgg.startTime,
+      initialTime: timeAgg.m[Scope.StartTime],
     );
 
     if (newTime != null) {
       setState(() {
-        timeAgg.startTime = newTime;
-        timeAgg = adjustEndToBegin(timeAgg);
+        timeAgg.m[Scope.StartTime] = newTime;
+        timeAgg = widget.adjustFunc[Scope.StartTime](timeAgg);
       });
     }
   }
@@ -67,7 +78,7 @@ class _EditEventCardState extends State<EditEventCard> {
   void _selectEndTime() async {
     final TimeOfDay newTime = await showTimePicker(
       context: context,
-      initialTime: timeAgg.endTime,
+      initialTime: timeAgg.m[Scope.EndTime],
     );
 
     if (newTime == null) {
@@ -75,7 +86,7 @@ class _EditEventCardState extends State<EditEventCard> {
     }
     if (newTime != null) {
       setState(() {
-        timeAgg.endTime = newTime;
+        timeAgg.m[Scope.EndTime] = newTime;
         timeAgg = adjustBeginToEnd(timeAgg);
       });
     }
@@ -84,7 +95,7 @@ class _EditEventCardState extends State<EditEventCard> {
   void _selectStartDate() async {
     final DateTime newDate = await showDatePicker(
       context: context,
-      initialDate: timeAgg.startDate,
+      initialDate: timeAgg.m[Scope.StartDate],
       firstDate: DateTime.parse("2000-01-01 00:00:00Z"),
       lastDate: DateTime.parse("3000-01-01 00:00:00Z"),
     );
@@ -93,7 +104,7 @@ class _EditEventCardState extends State<EditEventCard> {
       return;
     }
     setState(() {
-      timeAgg.startDate = newDate;
+      timeAgg.m[Scope.StartDate] = newDate;
       timeAgg = adjustEndToBegin(timeAgg);
     });
   }
@@ -101,7 +112,7 @@ class _EditEventCardState extends State<EditEventCard> {
   void _selectEndDate() async {
     final DateTime newDate = await showDatePicker(
       context: context,
-      initialDate: timeAgg.endDate,
+      initialDate: timeAgg.m[Scope.EndDate],
       firstDate: DateTime.parse("2000-01-01 00:00:00Z"),
       lastDate: DateTime.parse("3000-01-01 00:00:00Z"),
     );
@@ -110,7 +121,7 @@ class _EditEventCardState extends State<EditEventCard> {
       return;
     }
     setState(() {
-      timeAgg.endDate = newDate;
+      timeAgg.m[Scope.EndDate] = newDate;
       timeAgg = adjustBeginToEnd(timeAgg);
     });
   }
@@ -128,15 +139,15 @@ class _EditEventCardState extends State<EditEventCard> {
     if (widget.event == null)
       await widget.service.createEvent(
         title: enteredSummary,
-        start: joinDateTime(timeAgg.startDate, timeAgg.startTime),
-        end: joinDateTime(timeAgg.endDate, timeAgg.endTime),
+        start: joinDateTime(timeAgg.m[Scope.StartDate], timeAgg.m[Scope.StartTime]),
+        end: joinDateTime(timeAgg.m[Scope.EndDate], timeAgg.m[Scope.EndTime]),
       );
     else
       await widget.service.updateEvent(
         event: widget.event,
         title: enteredSummary,
-        start: joinDateTime(timeAgg.startDate, timeAgg.startTime),
-        end: joinDateTime(timeAgg.endDate, timeAgg.endTime),
+        start: joinDateTime(timeAgg.m[Scope.StartDate], timeAgg.m[Scope.StartTime]),
+        end: joinDateTime(timeAgg.m[Scope.EndDate], timeAgg.m[Scope.EndTime]),
       );
 
     widget.refreshCallBack();
@@ -196,25 +207,25 @@ class _EditEventCardState extends State<EditEventCard> {
                       iconColor: Colors.green,
                       dateText: 'Start Day',
                       selectDate: () => _selectStartDate(),
-                      date: timeAgg.startDate,
+                      date: timeAgg.m[Scope.StartDate],
                     ),
                     TimeRow(
                       iconColor: Colors.green,
                       timeText: 'Start Time',
                       selectTime: () => _selectStartTime(),
-                      time: timeAgg.startTime,
+                      time: timeAgg.m[Scope.StartTime],
                     ),
                     DateRow(
                       iconColor: Colors.red,
                       dateText: 'End Day',
                       selectDate: () => _selectEndDate(),
-                      date: timeAgg.endDate,
+                      date: timeAgg.m[Scope.EndDate],
                     ),
                     TimeRow(
                       iconColor: Colors.redAccent,
                       timeText: 'End Time',
                       selectTime: () => _selectEndTime(),
-                      time: timeAgg.endTime,
+                      time: timeAgg.m[Scope.EndTime],
                     ),
                     IconButton(
                       onPressed: _submitData,

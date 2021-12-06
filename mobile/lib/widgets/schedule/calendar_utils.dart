@@ -1,12 +1,23 @@
 import 'package:googleapis/calendar/v3.dart' as googleCalendar;
 import 'package:flutter/material.dart';
 
+enum Scope {
+  StartDate,
+  StartTime,
+  EndDate,
+  EndTime
+}
+
 class TimeAggregate {
-  DateTime startDate;
-  TimeOfDay startTime;
-  DateTime endDate;
-  TimeOfDay endTime;
-  TimeAggregate(this.startDate, this.startTime, this.endDate, this.endTime);
+  Map<Scope, dynamic> m;
+  TimeAggregate(startDate, startTime, endDate, endTime) {
+    m = <Scope, dynamic>{
+      Scope.StartDate: startDate,
+      Scope.StartTime: startTime,
+      Scope.EndDate: endDate,
+      Scope.EndTime: endTime,
+    };
+  }
 }
 
 googleCalendar.Event addTimeZone(googleCalendar.Event e) {
@@ -39,26 +50,29 @@ TimeOfDay extractTimeOfDay(DateTime d) {
   return TimeOfDay.fromDateTime(d);
 }
 
-TimeAggregate adjustBeginToEnd(TimeAggregate timeAgg) {
-  DateTime begin = joinDateTime(timeAgg.startDate, timeAgg.startTime);
-  DateTime end = joinDateTime(timeAgg.endDate, timeAgg.endTime);
+TimeAggregate adjustBeginToEnd(TimeAggregate agg) {
+  DateTime begin = joinDateTime(
+      agg.m[Scope.StartDate],
+      agg.m[Scope.StartTime]
+  );
+  DateTime end = joinDateTime(agg.m[Scope.EndDate], agg.m[Scope.EndTime]);
   if (begin.isBefore(end)) {
-    return timeAgg;
+    return agg;
   }
   DateTime adjustedBegin = end.subtract(Duration(hours: 1));
-  timeAgg.startDate = extractDate(adjustedBegin);
-  timeAgg.startTime = extractTimeOfDay(adjustedBegin);
-  return timeAgg;
+  agg.m[Scope.StartDate] = extractDate(adjustedBegin);
+  agg.m[Scope.StartTime] = extractTimeOfDay(adjustedBegin);
+  return agg;
 }
 
-TimeAggregate adjustEndToBegin(TimeAggregate timeAgg) {
-  DateTime begin = joinDateTime(timeAgg.startDate, timeAgg.startTime);
-  DateTime end = joinDateTime(timeAgg.endDate, timeAgg.endTime);
+TimeAggregate adjustEndToBegin(TimeAggregate agg) {
+  DateTime begin = joinDateTime(agg.m[Scope.StartDate], agg.m[Scope.StartTime]);
+  DateTime end = joinDateTime(agg.m[Scope.EndDate], agg.m[Scope.EndTime]);
   if (begin.isBefore(end)) {
-    return timeAgg;
+    return agg;
   }
   DateTime adjustedEnd = begin.add(Duration(hours: 1));
-  timeAgg.endDate = extractDate(adjustedEnd);
-  timeAgg.endTime = extractTimeOfDay(adjustedEnd);
-  return timeAgg;
+  agg.m[Scope.EndDate] = extractDate(adjustedEnd);
+  agg.m[Scope.EndTime] = extractTimeOfDay(adjustedEnd);
+  return agg;
 }
