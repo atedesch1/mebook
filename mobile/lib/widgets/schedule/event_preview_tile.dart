@@ -46,11 +46,17 @@ class EventPreviewTile extends StatelessWidget {
                       SizedBox(
                         height: 10,
                       ),
-                      Text(
-                        '${DateFormat('M/d kk:mm').format(event.startTime)} - ${DateFormat('M/d kk:mm').format(event.endTime)}',
-                        style: TextStyle(
-                          color: Colors.black54,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            '${DateFormat('M/d kk:mm').format(event.startTime)} -',
+                            style: TextStyle(color: Colors.black87),
+                          ),
+                          Text(
+                            ' ${DateFormat('M/d kk:mm').format(event.endTime)}',
+                            style: TextStyle(color: Colors.black54),
+                          ),
+                        ],
                       ),
                     ],
                   ),
