@@ -26,49 +26,90 @@ class EditEventCard extends StatefulWidget {
 
 class _EditEventCardState extends State<EditEventCard> {
   final _summaryController = TextEditingController();
-  DateTime startDate;
-  DateTime endDate;
-  TimeOfDay startTime;
-  TimeOfDay endTime;
+  TimeAggregate timeAgg;
 
   @override
   void initState() {
     if (widget.event != null) {
       _summaryController.text = widget.event.title;
 
-      startDate = widget.event.startTime;
-      endDate = widget.event.endTime;
-
-      startTime = TimeOfDay.fromDateTime(widget.event.startTime);
-      endTime = TimeOfDay.fromDateTime(widget.event.endTime);
+      timeAgg = TimeAggregate(
+        extractDate(widget.event.startTime),
+        extractTimeOfDay(widget.event.startTime),
+        extractDate(widget.event.endTime),
+        extractTimeOfDay(widget.event.endTime),
+      );
     } else {
-      startDate = DateTime.now();
-      endDate = DateTime.now();
-
-      startTime = TimeOfDay(hour: 0, minute: 0);
-      endTime = TimeOfDay(hour: 0, minute: 0);
+      timeAgg = TimeAggregate(
+        extractDate(DateTime.now()),
+        TimeOfDay(hour: 0, minute: 0),
+        extractDate(widget.event.endTime),
+        TimeOfDay(hour: 0, minute: 0),
+      );
     }
     super.initState();
   }
 
-  void _selectTime(bool isStartTime) async {
+  void _selectStartTime() async {
     final TimeOfDay newTime = await showTimePicker(
       context: context,
-      initialTime: isStartTime ? startTime : endTime,
+      initialTime: timeAgg.startTime,
     );
 
     if (newTime != null) {
       setState(() {
-        if (isStartTime)
-          startTime = newTime;
-        else {
-          endTime = newTime;
-          if (constructDateTime(startDate, startTime)
-                  .compareTo(constructDateTime(endDate, endTime)) >
-              0) startTime = endTime;
-        }
+        timeAgg.startTime = newTime;
+        timeAgg = adjustEndToBegin(timeAgg);
       });
     }
+  }
+
+  void _selectEndTime() async {
+    final TimeOfDay newTime = await showTimePicker(
+      context: context,
+      initialTime: timeAgg.endTime,
+    );
+
+    if (newTime != null) {
+      setState(() {
+        timeAgg.endTime = newTime;
+        timeAgg = adjustBeginToEnd(timeAgg);
+      });
+    }
+  }
+
+  void _selectStartDate() async {
+    final DateTime newDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.parse("2000-01-01 00:00:00Z"),
+      lastDate: DateTime.parse("3000-01-01 00:00:00Z"),
+    );
+
+    if (newDate == null) {
+      return;
+    }
+    setState(() {
+      timeAgg.startDate = newDate;
+      timeAgg = adjustEndToBegin(timeAgg);
+    });
+  }
+
+  void _selectEndDate() async {
+    final DateTime newDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.parse("2000-01-01 00:00:00Z"),
+      lastDate: DateTime.parse("3000-01-01 00:00:00Z"),
+    );
+
+    if (newDate == null) {
+      return;
+    }
+    setState(() {
+      timeAgg.endDate = newDate;
+      timeAgg = adjustBeginToEnd(timeAgg);
+    });
   }
 
   void _submitData() async {
@@ -84,38 +125,19 @@ class _EditEventCardState extends State<EditEventCard> {
     if (widget.event == null)
       await widget.service.createEvent(
         title: enteredSummary,
-        start: constructDateTime(startDate, startTime),
-        end: constructDateTime(endDate, endTime),
+        start: joinDateTime(timeAgg.startDate, timeAgg.startTime),
+        end: joinDateTime(timeAgg.endDate, timeAgg.endTime),
       );
     else
       await widget.service.updateEvent(
         event: widget.event,
         title: enteredSummary,
-        start: constructDateTime(startDate, startTime),
-        end: constructDateTime(endDate, endTime),
+        start: joinDateTime(timeAgg.startDate, timeAgg.startTime),
+        end: joinDateTime(timeAgg.endDate, timeAgg.endTime),
       );
 
     widget.refreshCallBack();
     Navigator.of(context).pop();
-  }
-
-  void _presentDatePicker(bool isStartDate) {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.parse("2000-01-01 00:00:00Z"),
-      lastDate: DateTime.parse("3000-01-01 00:00:00Z"),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      setState(() {
-        if (isStartDate)
-          startDate = pickedDate;
-        else
-          endDate = pickedDate;
-      });
-    });
   }
 
   @override
@@ -170,26 +192,26 @@ class _EditEventCardState extends State<EditEventCard> {
                     DateRow(
                       iconColor: Colors.green,
                       dateText: 'Start Day',
-                      selectDate: () => _presentDatePicker(true),
-                      date: startDate,
+                      selectDate: () => _selectStartDate(),
+                      date: timeAgg.startDate,
                     ),
                     TimeRow(
                       iconColor: Colors.green,
                       timeText: 'Start Time',
-                      selectTime: () => _selectTime(true),
-                      time: startTime,
+                      selectTime: () => _selectStartTime(),
+                      time: timeAgg.startTime,
                     ),
                     DateRow(
                       iconColor: Colors.red,
                       dateText: 'End Day',
-                      selectDate: () => _presentDatePicker(false),
-                      date: endDate,
+                      selectDate: () => _selectEndDate(),
+                      date: timeAgg.endDate,
                     ),
                     TimeRow(
                       iconColor: Colors.redAccent,
                       timeText: 'End Time',
-                      selectTime: () => _selectTime(false),
-                      time: endTime,
+                      selectTime: () => _selectEndTime(),
+                      time: timeAgg.endTime,
                     ),
                     IconButton(
                       onPressed: _submitData,
