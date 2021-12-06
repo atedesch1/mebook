@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:googleapis/calendar/v3.dart' as googleCalendar;
 
 class Event {
@@ -14,12 +15,13 @@ class Event {
     @required this.endTime,
   });
 
-  factory Event.fromJson(Map<String, dynamic> json) {
+  factory Event.fromFirestore(DocumentSnapshot doc) {
+    Map data = doc.data();
     return Event(
-        id: json['id'] as String,
-        title: json['title'] as String,
-        startTime: DateTime.parse(json['startTime']),
-        endTime: DateTime.parse(json['endTime']),
+        id: doc.id,
+        title: data['title'] as String,
+        startTime: DateTime.parse(data['startTime']),
+        endTime: DateTime.parse(data['endTime']),
     );
   }
 
@@ -39,7 +41,7 @@ class Event {
     end: googleCalendar.EventDateTime(dateTime: endTime),
   );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toFirestore() => {
     'title': title,
     'startTime': startTime.toString(),
     'endTime': endTime.toString(),

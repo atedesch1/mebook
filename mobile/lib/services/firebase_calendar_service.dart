@@ -29,7 +29,7 @@ class FirebaseCalendarService extends AbstractCalendarService {
         .where('endTime', isLessThan: lastDayOfMonth.toString())
         .get();
 
-    return querySnap.docs.map((doc) => Event.fromJson(doc.data())).toList();
+    return querySnap.docs.map((doc) => Event.fromFirestore(doc)).toList();
   }
 
   Future<List<Event> > getDailyEvents(DateTime chosenDay) async {
@@ -43,11 +43,9 @@ class FirebaseCalendarService extends AbstractCalendarService {
         .collection(_eventsCollectionName)
         .doc(_currentUser.uid)
         .collection(_userEventsCollectionName)
-        .where('startTime', isGreaterThan: firstTimeOfDay.toString())
-        .where('endTime', isLessThan: lastTimeOfDay.toString())
         .get();
 
-    return querySnap.docs.map((doc) => Event.fromJson(doc.data())).toList();
+    return querySnap.docs.map((doc) => Event.fromFirestore(doc)).toList();
   }
 
   Future<void> updateEvent({
@@ -67,7 +65,7 @@ class FirebaseCalendarService extends AbstractCalendarService {
       endTime: end,
     );
 
-    return ref.doc(e.id).update(e.toJson()).whenComplete(
+    return ref.doc(e.id).update(e.toFirestore()).whenComplete(
       () => print('Event updated'),
     ).catchError(
       (e) => print(e),
@@ -90,7 +88,7 @@ class FirebaseCalendarService extends AbstractCalendarService {
       endTime: end,
     );
 
-    return ref.doc().set(e.toJson()).whenComplete(
+    return ref.doc().set(e.toFirestore()).whenComplete(
         () => print('Event created'),
     ).catchError(
         (e) => print(e),
