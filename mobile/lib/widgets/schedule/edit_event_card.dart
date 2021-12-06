@@ -43,7 +43,7 @@ class _EditEventCardState extends State<EditEventCard> {
       timeAgg = TimeAggregate(
         extractDate(DateTime.now()),
         TimeOfDay(hour: 0, minute: 0),
-        extractDate(widget.event.endTime),
+        extractDate(DateTime.now()),
         TimeOfDay(hour: 0, minute: 0),
       );
     }
@@ -70,6 +70,9 @@ class _EditEventCardState extends State<EditEventCard> {
       initialTime: timeAgg.endTime,
     );
 
+    if (newTime == null) {
+      return;
+    }
     if (newTime != null) {
       setState(() {
         timeAgg.endTime = newTime;
@@ -81,7 +84,7 @@ class _EditEventCardState extends State<EditEventCard> {
   void _selectStartDate() async {
     final DateTime newDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: timeAgg.startDate,
       firstDate: DateTime.parse("2000-01-01 00:00:00Z"),
       lastDate: DateTime.parse("3000-01-01 00:00:00Z"),
     );
@@ -98,7 +101,7 @@ class _EditEventCardState extends State<EditEventCard> {
   void _selectEndDate() async {
     final DateTime newDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: timeAgg.endDate,
       firstDate: DateTime.parse("2000-01-01 00:00:00Z"),
       lastDate: DateTime.parse("3000-01-01 00:00:00Z"),
     );
