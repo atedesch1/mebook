@@ -26,7 +26,7 @@ class FirebaseCalendarService extends AbstractCalendarService {
         .doc(_currentUser.uid)
         .collection(_userEventsCollectionName)
         .where('startTime', isGreaterThan: firstDayOfMonth.toString())
-        .where('endTime', isLessThan: lastDayOfMonth.toString())
+        .where('startTime', isLessThan: lastDayOfMonth.toString())
         .get();
 
     return querySnap.docs.map((doc) => Event.fromFirestore(doc)).toList();
@@ -43,6 +43,8 @@ class FirebaseCalendarService extends AbstractCalendarService {
         .collection(_eventsCollectionName)
         .doc(_currentUser.uid)
         .collection(_userEventsCollectionName)
+        .where('startTime', isGreaterThan: firstTimeOfDay.toString())
+        .where('startTime', isLessThan: lastTimeOfDay.toString())
         .get();
 
     return querySnap.docs.map((doc) => Event.fromFirestore(doc)).toList();
