@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:mebook/models/event_model.dart';
 
 abstract class AbstractCalendarService {
-  Future<List<Event> > getMonthEvents(DateTime chosenMonth);
+  Future<Map<String, Map<String, dynamic>>> getCalendars();
 
-  Future<List<Event> > getDailyEvents(DateTime chosenDay);
+  Future<List<Event>> getMonthEvents(DateTime chosenMonth);
+
+  Future<List<Event>> getDailyEvents(DateTime chosenDay);
 
   Future<void> updateEvent({
     @required Event event,

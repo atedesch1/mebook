@@ -15,33 +15,40 @@ class GoogleCalendarService extends AbstractCalendarService {
   }
 
   @override
-  Future<List<Event> > getMonthEvents(DateTime chosenMonth) async {
+  Future<Map<String, Map<String, dynamic>>> getCalendars() async {
+    googleCalendar.CalendarList calendarList = await _api.calendarList.list();
+    return {
+      for (var calendar in calendarList.items)
+        calendar.id: {
+          'name': calendar.summary,
+          'isPrimary': calendar.primary ?? false
+        }
+    };
+  }
+
+  @override
+  Future<List<Event>> getMonthEvents(DateTime chosenMonth) async {
     var firstDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month, 1);
     var lastDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month + 1, 1)
         .subtract(Duration(seconds: 1));
 
     googleCalendar.Events events = await _api.events
         .list('primary', timeMin: firstDayOfMonth, timeMax: lastDayOfMonth);
-    List<Event> eventModels = events.items.map(
-        (e) => Event.fromGoogle(addTimeZone(e))
-    ).toList();
+    List<Event> eventModels =
+        events.items.map((e) => Event.fromGoogle(addTimeZone(e))).toList();
     return eventModels;
   }
 
   @override
-  Future<List<Event> > getDailyEvents(DateTime chosenDay) async {
-    var firstTimeOfDay = DateTime(
-        chosenDay.year,
-        chosenDay.month,
-        chosenDay.day
-    );
+  Future<List<Event>> getDailyEvents(DateTime chosenDay) async {
+    var firstTimeOfDay =
+        DateTime(chosenDay.year, chosenDay.month, chosenDay.day);
     var lastTimeOfDay = firstTimeOfDay.add(Duration(days: 1));
 
     googleCalendar.Events events = await _api.events
         .list('primary', timeMin: firstTimeOfDay, timeMax: lastTimeOfDay);
-    List<Event> eventModels = events.items.map(
-        (e) => Event.fromGoogle(addTimeZone(e))
-    ).toList();
+    List<Event> eventModels =
+        events.items.map((e) => Event.fromGoogle(addTimeZone(e))).toList();
     return eventModels;
   }
 

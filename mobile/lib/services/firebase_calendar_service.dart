@@ -17,7 +17,15 @@ class FirebaseCalendarService extends AbstractCalendarService {
     this._currentUser = context.read<AuthService>().currentUser;
   }
 
-  Future<List<Event> > getMonthEvents(DateTime chosenMonth) async {
+  @override
+  Future<Map<String, Map<String, dynamic>>> getCalendars() async {
+    return {
+      'primary': {'name': 'Default', 'isPrimary': true}
+    };
+  }
+
+  @override
+  Future<List<Event>> getMonthEvents(DateTime chosenMonth) async {
     var firstDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month, 1);
     var lastDayOfMonth = DateTime(chosenMonth.year, chosenMonth.month + 1, 1)
         .subtract(Duration(seconds: 1));
@@ -32,12 +40,10 @@ class FirebaseCalendarService extends AbstractCalendarService {
     return querySnap.docs.map((doc) => Event.fromFirestore(doc)).toList();
   }
 
-  Future<List<Event> > getDailyEvents(DateTime chosenDay) async {
-    var firstTimeOfDay = DateTime(
-        chosenDay.year,
-        chosenDay.month,
-        chosenDay.day
-    );
+  @override
+  Future<List<Event>> getDailyEvents(DateTime chosenDay) async {
+    var firstTimeOfDay =
+        DateTime(chosenDay.year, chosenDay.month, chosenDay.day);
     var lastTimeOfDay = firstTimeOfDay.add(Duration(days: 1));
     var querySnap = await _db
         .collection(_eventsCollectionName)
@@ -50,6 +56,7 @@ class FirebaseCalendarService extends AbstractCalendarService {
     return querySnap.docs.map((doc) => Event.fromFirestore(doc)).toList();
   }
 
+  @override
   Future<void> updateEvent({
     @required Event event,
     String title,
@@ -67,13 +74,18 @@ class FirebaseCalendarService extends AbstractCalendarService {
       endTime: end,
     );
 
-    return ref.doc(e.id).update(e.toFirestore()).whenComplete(
-      () => print('Event updated'),
-    ).catchError(
-      (e) => print(e),
-    );
+    return ref
+        .doc(e.id)
+        .update(e.toFirestore())
+        .whenComplete(
+          () => print('Event updated'),
+        )
+        .catchError(
+          (e) => print(e),
+        );
   }
 
+  @override
   Future<void> createEvent({
     @required String title,
     @required DateTime start,
@@ -90,23 +102,32 @@ class FirebaseCalendarService extends AbstractCalendarService {
       endTime: end,
     );
 
-    return ref.doc().set(e.toFirestore()).whenComplete(
-        () => print('Event created'),
-    ).catchError(
-        (e) => print(e),
-    );
+    return ref
+        .doc()
+        .set(e.toFirestore())
+        .whenComplete(
+          () => print('Event created'),
+        )
+        .catchError(
+          (e) => print(e),
+        );
   }
 
+  @override
   Future<void> deleteEvent(String id) {
     var ref = _db
         .collection(_eventsCollectionName)
         .doc(_currentUser.uid)
-        .collection(_userEventsCollectionName).doc(id);
+        .collection(_userEventsCollectionName)
+        .doc(id);
 
-    return ref.delete().whenComplete(
-      () => print('Event deleted'),
-    ).catchError(
-        (e) => print(e),
-    );
+    return ref
+        .delete()
+        .whenComplete(
+          () => print('Event deleted'),
+        )
+        .catchError(
+          (e) => print(e),
+        );
   }
 }
