@@ -9,27 +9,41 @@ import 'package:mebook/models/event_model.dart';
 
 const String _CalendarEventPopUp = 'calendar-event-pop-up';
 
+Future<TimeOfDay> _showTimePicker(BuildContext context, TimeOfDay t) {
+  return showTimePicker(context: context, initialTime: t);
+}
+
+Future<DateTime> _showDatePicker(BuildContext context, DateTime d) {
+  return showDatePicker(
+      context: context,
+      initialDate: d,
+      firstDate: past,
+      lastDate: future
+  );
+}
+
 class EditEventCard extends StatefulWidget {
   final AbstractCalendarService service;
   final Event event;
   final Function refreshCallBack;
-  Map<Scope, Function> adjustFunc;
-  // Map<Scope, Function> picker;
+  final Map<Scope, Function> adjuster = <Scope, Function>{
+    Scope.StartDate: adjustEndToBegin,
+    Scope.StartTime: adjustEndToBegin,
+    Scope.EndDate: adjustBeginToEnd,
+    Scope.EndTime: adjustBeginToEnd,
+  };
+  final Map<Scope, Function> picker = <Scope, Function>{
+    Scope.StartDate: _showDatePicker,
+    Scope.StartTime: _showTimePicker,
+    Scope.EndDate: _showDatePicker,
+    Scope.EndTime: _showTimePicker,
+  };
 
   EditEventCard({
     @required this.service,
     @required this.refreshCallBack,
     this.event,
-  }) {
-    adjustFunc = new Map();
-    adjustFunc[Scope.StartDate] = adjustFunc[Scope.StartTime] = adjustEndToBegin;
-    adjustFunc[Scope.EndDate] = adjustFunc[Scope.EndTime] = adjustBeginToEnd;
-
-    // picker = new Map();
-    // adjustFunc[Scope.StartDate] = adjustFunc[Scope.EndDate] = (context, v) => {
-
-    // };
-  }
+  });
 
   @override
   _EditEventCardState createState() => _EditEventCardState();
@@ -61,69 +75,14 @@ class _EditEventCardState extends State<EditEventCard> {
     super.initState();
   }
 
-  void _selectStartTime() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: timeAgg.m[Scope.StartTime],
-    );
-
-    if (newTime != null) {
+  void _selectScopeValue(Scope s) async {
+    final dynamic newScope = await widget.picker[s](context, timeAgg.m[s]);
+    if (newScope != null) {
       setState(() {
-        timeAgg.m[Scope.StartTime] = newTime;
-        timeAgg = widget.adjustFunc[Scope.StartTime](timeAgg);
+        timeAgg.m[s] = newScope;
+        timeAgg = widget.adjuster[s](timeAgg);
       });
     }
-  }
-
-  void _selectEndTime() async {
-    final TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: timeAgg.m[Scope.EndTime],
-    );
-
-    if (newTime == null) {
-      return;
-    }
-    if (newTime != null) {
-      setState(() {
-        timeAgg.m[Scope.EndTime] = newTime;
-        timeAgg = adjustBeginToEnd(timeAgg);
-      });
-    }
-  }
-
-  void _selectStartDate() async {
-    final DateTime newDate = await showDatePicker(
-      context: context,
-      initialDate: timeAgg.m[Scope.StartDate],
-      firstDate: DateTime.parse("2000-01-01 00:00:00Z"),
-      lastDate: DateTime.parse("3000-01-01 00:00:00Z"),
-    );
-
-    if (newDate == null) {
-      return;
-    }
-    setState(() {
-      timeAgg.m[Scope.StartDate] = newDate;
-      timeAgg = adjustEndToBegin(timeAgg);
-    });
-  }
-
-  void _selectEndDate() async {
-    final DateTime newDate = await showDatePicker(
-      context: context,
-      initialDate: timeAgg.m[Scope.EndDate],
-      firstDate: DateTime.parse("2000-01-01 00:00:00Z"),
-      lastDate: DateTime.parse("3000-01-01 00:00:00Z"),
-    );
-
-    if (newDate == null) {
-      return;
-    }
-    setState(() {
-      timeAgg.m[Scope.EndDate] = newDate;
-      timeAgg = adjustBeginToEnd(timeAgg);
-    });
   }
 
   void _submitData() async {
@@ -206,25 +165,25 @@ class _EditEventCardState extends State<EditEventCard> {
                     DateRow(
                       iconColor: Colors.green,
                       dateText: 'Start Day',
-                      selectDate: () => _selectStartDate(),
+                      selectDate: () => _selectScopeValue(Scope.StartDate),
                       date: timeAgg.m[Scope.StartDate],
                     ),
                     TimeRow(
                       iconColor: Colors.green,
                       timeText: 'Start Time',
-                      selectTime: () => _selectStartTime(),
+                      selectTime: () => _selectScopeValue(Scope.StartTime),
                       time: timeAgg.m[Scope.StartTime],
                     ),
                     DateRow(
                       iconColor: Colors.red,
                       dateText: 'End Day',
-                      selectDate: () => _selectEndDate(),
+                      selectDate: () => _selectScopeValue(Scope.EndDate),
                       date: timeAgg.m[Scope.EndDate],
                     ),
                     TimeRow(
                       iconColor: Colors.redAccent,
                       timeText: 'End Time',
-                      selectTime: () => _selectEndTime(),
+                      selectTime: () => _selectScopeValue(Scope.EndTime),
                       time: timeAgg.m[Scope.EndTime],
                     ),
                     IconButton(

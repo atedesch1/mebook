@@ -1,6 +1,9 @@
 import 'package:googleapis/calendar/v3.dart' as googleCalendar;
 import 'package:flutter/material.dart';
 
+DateTime past = DateTime.parse("2000-01-01 00:00:00Z");
+DateTime future = DateTime.parse("3000-01-01 00:00:00Z");
+
 enum Scope {
   StartDate,
   StartTime,
