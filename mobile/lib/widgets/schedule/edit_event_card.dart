@@ -165,7 +165,7 @@ class _EditEventCardState extends State<EditEventCard> {
                         hintText: 'Event Name',
                       ),
                       controller: _summaryController,
-                      onSubmitted: (_) => _submitData(),
+                      onSubmitted: (_) => TextInputAction.previous,
                     ),
                     DateRow(
                       iconColor: Colors.green,
