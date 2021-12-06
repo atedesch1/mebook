@@ -25,6 +25,12 @@ class TodaysEventsSummary extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<Event> events = snapshot.data;
+              if (events.isEmpty)
+                return Center(
+                    child: Text(
+                  'No events today!',
+                  style: TextStyle(fontSize: 20),
+                ));
               events.sort((eventA, eventB) =>
                   eventA.startTime.compareTo(eventB.startTime));
               return Column(
