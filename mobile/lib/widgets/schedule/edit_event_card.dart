@@ -58,8 +58,7 @@ class _EditEventCardState extends State<EditEventCard> {
 
     if (newTime != null) {
       setState(() {
-        timeAgg.startTime = newTime;
-        timeAgg = adjustEndToBegin(timeAgg);
+        timeAgg.adjustEndToBegin();
       });
     }
   }
@@ -72,8 +71,7 @@ class _EditEventCardState extends State<EditEventCard> {
 
     if (newTime != null) {
       setState(() {
-        timeAgg.endTime = newTime;
-        timeAgg = adjustBeginToEnd(timeAgg);
+        timeAgg.adjustBeginToEnd();
       });
     }
   }
@@ -90,8 +88,7 @@ class _EditEventCardState extends State<EditEventCard> {
       return;
     }
     setState(() {
-      timeAgg.startDate = newDate;
-      timeAgg = adjustEndToBegin(timeAgg);
+      timeAgg.adjustEndToBegin();
     });
   }
 
@@ -107,8 +104,7 @@ class _EditEventCardState extends State<EditEventCard> {
       return;
     }
     setState(() {
-      timeAgg.endDate = newDate;
-      timeAgg = adjustBeginToEnd(timeAgg);
+      timeAgg.adjustBeginToEnd();
     });
   }
 

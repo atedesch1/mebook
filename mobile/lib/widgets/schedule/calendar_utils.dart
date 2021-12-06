@@ -7,6 +7,28 @@ class TimeAggregate {
   DateTime endDate;
   TimeOfDay endTime;
   TimeAggregate(this.startDate, this.startTime, this.endDate, this.endTime);
+
+  void adjustBeginToEnd() {
+    DateTime begin = joinDateTime(startDate, startTime);
+    DateTime end = joinDateTime(endDate, endTime);
+    if (begin.isBefore(end)) {
+      return;
+    }
+    DateTime adjustedBegin = end.subtract(Duration(hours: 1));
+    startDate = extractDate(adjustedBegin);
+    startTime = extractTimeOfDay(adjustedBegin);
+  }
+
+  void adjustEndToBegin() {
+    DateTime begin = joinDateTime(startDate, startTime);
+    DateTime end = joinDateTime(endDate, endTime);
+    if (begin.isBefore(end)) {
+      return;
+    }
+    DateTime adjustedEnd = begin.add(Duration(hours: 1));
+    endDate = extractDate(adjustedEnd);
+    endTime = extractTimeOfDay(adjustedEnd);
+  }
 }
 
 googleCalendar.Event addTimeZone(googleCalendar.Event e) {
@@ -37,28 +59,4 @@ DateTime extractDate(DateTime d) {
 
 TimeOfDay extractTimeOfDay(DateTime d) {
   return TimeOfDay.fromDateTime(d);
-}
-
-TimeAggregate adjustBeginToEnd(TimeAggregate timeAgg) {
-  DateTime begin = joinDateTime(timeAgg.startDate, timeAgg.startTime);
-  DateTime end = joinDateTime(timeAgg.endDate, timeAgg.endTime);
-  if (begin.isBefore(end)) {
-    return timeAgg;
-  }
-  DateTime adjustedBegin = end.subtract(Duration(hours: 1));
-  timeAgg.startDate = extractDate(adjustedBegin);
-  timeAgg.startTime = extractTimeOfDay(adjustedBegin);
-  return timeAgg;
-}
-
-TimeAggregate adjustEndToBegin(TimeAggregate timeAgg) {
-  DateTime begin = joinDateTime(timeAgg.startDate, timeAgg.startTime);
-  DateTime end = joinDateTime(timeAgg.endDate, timeAgg.endTime);
-  if (begin.isBefore(end)) {
-    return timeAgg;
-  }
-  DateTime adjustedEnd = begin.add(Duration(hours: 1));
-  timeAgg.endDate = extractDate(adjustedEnd);
-  timeAgg.endTime = extractTimeOfDay(adjustedEnd);
-  return timeAgg;
 }
