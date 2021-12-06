@@ -8,7 +8,7 @@ enum Scope {
   StartDate,
   StartTime,
   EndDate,
-  EndTime
+  EndTime,
 }
 
 class TimeAggregate {
@@ -24,8 +24,8 @@ class TimeAggregate {
 }
 
 googleCalendar.Event addTimeZone(googleCalendar.Event e) {
-  e.start.dateTime = e.start.dateTime.toLocal();
-  e.end.dateTime = e.end.dateTime.toLocal();
+  e.start.dateTime = (e.start.dateTime ?? e.start.date).toLocal();
+  e.end.dateTime = (e.end.dateTime ?? e.end.date).toLocal();
   return e;
 }
 
@@ -54,10 +54,7 @@ TimeOfDay extractTimeOfDay(DateTime d) {
 }
 
 TimeAggregate adjustBeginToEnd(TimeAggregate agg) {
-  DateTime begin = joinDateTime(
-      agg.m[Scope.StartDate],
-      agg.m[Scope.StartTime]
-  );
+  DateTime begin = joinDateTime(agg.m[Scope.StartDate], agg.m[Scope.StartTime]);
   DateTime end = joinDateTime(agg.m[Scope.EndDate], agg.m[Scope.EndTime]);
   if (begin.isBefore(end)) {
     return agg;
