@@ -42,7 +42,16 @@ class _CalendarState extends State<Calendar> {
           Map<int, bool> dayHasEvent = {};
           if (snapshot.hasData) {
             List<Event> events = snapshot.data;
-            dayHasEvent = {for (var event in events) event.startTime.day: true};
+            dayHasEvent = {
+              for (var event in events)
+                for (var day in [
+                  for (var day = event.startTime.day;
+                      day <= event.endTime.day;
+                      day++)
+                    day
+                ])
+                  day: true
+            };
           }
           return TableCalendar(
             firstDay: calendarFirstDay,
