@@ -33,11 +33,7 @@ class HomeScreen extends StatelessWidget {
                               month: DateTime.now().month);
                           transactions
                               .sort((t1, t2) => t2.date.compareTo(t1.date));
-                          return FinancesSummary(
-                            transactions: transactions,
-                            diameter: MediaQuery.of(context).size.width * 0.45,
-                            strokeWidth: 25.0,
-                          );
+                          return FinancesSummary(transactions: transactions);
                         } else {
                           return Center(child: CircularProgressIndicator());
                         }

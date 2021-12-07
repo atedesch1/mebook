@@ -89,11 +89,7 @@ class _FinancesScreenState extends State<FinancesScreen> {
                               ),
                             ],
                           ),
-                          child: FinancesSummary(
-                            transactions: transactions,
-                            diameter: MediaQuery.of(context).size.width * 0.45,
-                            strokeWidth: 25.0,
-                          ),
+                          child: FinancesSummary(transactions: transactions),
                         ),
                         FilterByMonthSlider(
                           emitSelectedMonth: updateMonthFilter,

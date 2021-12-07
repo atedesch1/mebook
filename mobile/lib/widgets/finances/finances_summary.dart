@@ -8,13 +8,13 @@ import 'package:mebook/widgets/misc/semi_circle.dart';
 
 class FinancesSummary extends StatelessWidget {
   final List<Transaction> transactions;
-  final double diameter;
-  final double strokeWidth;
+  double diameter;
+  double strokeWidth;
 
   FinancesSummary({
     @required this.transactions,
-    @required this.diameter,
-    @required this.strokeWidth,
+    this.diameter,
+    this.strokeWidth,
   });
 
   List<Widget> getWheelWidgets(List<Transaction> transactions) {
@@ -67,25 +67,30 @@ class FinancesSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool supportsCategoryCards = MediaQuery.of(context).size.width * 0.55 > 160;
+    if (strokeWidth == null) strokeWidth = 25.0;
+    if (diameter == null) {
+      if (MediaQuery.of(context).size.width * 0.4 > 230)
+        diameter = MediaQuery.of(context).size.width * 0.6;
+      else
+        diameter = MediaQuery.of(context).size.width - 230;
+    }
+
     Map<String, double> expenseByCategory =
         TransactionCategories.getExpenseByCategory(transactions);
     List<Widget> wheelWidgets = getWheelWidgets(transactions);
     List<Widget> categoryTiles = [];
-    if (supportsCategoryCards)
-      expenseByCategory
-          .forEach((category, expense) => categoryTiles.add(CategoryTile(
-                category: category,
-                categoryColor: TransactionCategories.categoryColor[category],
-                expense: expense,
-              )));
+    expenseByCategory
+        .forEach((category, expense) => categoryTiles.add(CategoryTile(
+              category: category,
+              categoryColor: TransactionCategories.categoryColor[category],
+              expense: expense,
+            )));
 
     return Container(
+      constraints: BoxConstraints(minHeight: 100),
       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       child: Row(
-        mainAxisAlignment: supportsCategoryCards
-            ? MainAxisAlignment.start
-            : MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
             width: diameter + strokeWidth,
@@ -118,20 +123,17 @@ class FinancesSummary extends StatelessWidget {
               ],
             ),
           ),
-          if (categoryTiles.isNotEmpty &&
-              MediaQuery.of(context).size.width * 0.55 > 160) ...[
-            Expanded(
-              child: Container(
-                height: diameter + strokeWidth,
-                child: ListWheelScrollView(
-                  perspective: 0.0015,
-                  itemExtent: 70,
-                  squeeze: .9,
-                  children: categoryTiles,
-                ),
+          Expanded(
+            child: Container(
+              height: diameter + strokeWidth,
+              child: ListWheelScrollView(
+                perspective: 0.0015,
+                itemExtent: 70,
+                squeeze: .9,
+                children: categoryTiles,
               ),
             ),
-          ]
+          ),
         ],
       ),
     );
