@@ -41,14 +41,39 @@ class ProfileScreen extends StatelessWidget {
           ),
           SliverFillRemaining(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(10.0),
+                  child: circleAvatar,
+                ),
+                displayName == null
+                    ? FutureBuilder(
+                        future: context.read<AuthService>().username,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData)
+                            return Text(
+                              snapshot.data,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          return CircularProgressIndicator();
+                        })
+                    : Text(
+                        displayName,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 20.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      circleAvatar,
                       Expanded(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -62,30 +87,6 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: displayName == null
-                      ? FutureBuilder(
-                          future: context.read<AuthService>().username,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData)
-                              return Text(
-                                snapshot.data,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            return CircularProgressIndicator();
-                          })
-                      : Text(
-                          displayName,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                 ),
               ],
             ),
