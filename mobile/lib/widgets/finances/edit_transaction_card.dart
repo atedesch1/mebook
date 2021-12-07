@@ -43,9 +43,35 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
   }
 
   void _submitData() {
-    if (_titleController.text.isEmpty ||
-        _amountController.text.isEmpty ||
-        _selectedCategory == null) return;
+    TextInputAction.done;
+
+    if (_titleController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Title missing!')),
+      );
+      return;
+    }
+
+    if (_selectedCategory == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Select a category first!')),
+      );
+      return;
+    }
+
+    if (_amountController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Amount spent missing!')),
+      );
+      return;
+    }
+
+    if (_selectedDate == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Select a date first!')),
+      );
+      return;
+    }
 
     final enteredTitle = toBeginningOfSentenceCase(_titleController.text);
     final enteredAmount = double.parse(_amountController.text);
