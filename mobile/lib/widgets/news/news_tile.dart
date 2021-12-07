@@ -31,27 +31,10 @@ class _NewsTileState extends State<NewsTile> {
                 InkWell(
                   onTap: _expandTile,
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    height: 130,
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                    height: 140,
                     child: Row(
                       children: [
-                        SizedBox(
-                          width: 15,
-                        ),
-                        // Padding(
-                        //   padding: const EdgeInsets.symmetric(horizontal: 15),
-                        //   child: Container(
-                        //     height: 30,
-                        //     width: 30,
-                        //     decoration: BoxDecoration(
-                        //       image: DecorationImage(
-                        //         image: NetworkImage(widget._article.urlToImage),
-                        //       ),
-                        //       borderRadius:
-                        //           BorderRadius.all(Radius.circular(5)),
-                        //     ),
-                        //   ),
-                        // ),
                         Expanded(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -81,12 +64,12 @@ class _NewsTileState extends State<NewsTile> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Icon(_isExpanded
-                              ? Icons.expand_less
-                              : Icons.expand_more),
+                        SizedBox(
+                          width: 4,
                         ),
+                        Icon(_isExpanded
+                            ? Icons.expand_less
+                            : Icons.expand_more),
                       ],
                     ),
                   ),
@@ -94,7 +77,6 @@ class _NewsTileState extends State<NewsTile> {
                 if (_isExpanded)
                   Container(
                     color: Colors.grey[50],
-                    // constraints: BoxConstraints(maxHeight: 300),
                     padding: EdgeInsets.all(8),
                     child: SingleChildScrollView(
                       physics: BouncingScrollPhysics(),
