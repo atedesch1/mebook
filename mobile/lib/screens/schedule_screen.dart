@@ -66,6 +66,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   Navigator.of(context)
                       .push(ChangeEventRoute(builder: (context) {
                     return EditEventCard(
+                      selectedCalendarId: selectedCalendar.key,
                       service: calendarService,
                       refreshCallBack: refreshEventList,
                     );
