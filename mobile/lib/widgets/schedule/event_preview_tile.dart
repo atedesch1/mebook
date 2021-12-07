@@ -78,6 +78,7 @@ class EventPreviewTile extends StatelessWidget {
                   icon: Icon(Icons.edit),
                 ),
                 IconButton(
+                  key: ValueKey('deleteEventButton'),
                   onPressed: () async {
                     service.deleteEvent(
                       calendarId: selectedCalendarId,

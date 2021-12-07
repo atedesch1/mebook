@@ -6,8 +6,9 @@ class DateRow extends StatelessWidget {
   final String dateText;
   final Function selectDate;
   final DateTime date;
+  final String keyPrefix;
 
-  DateRow({this.iconColor, this.selectDate, this.dateText, this.date});
+  DateRow({this.keyPrefix, this.iconColor, this.selectDate, this.dateText, this.date});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +30,7 @@ class DateRow extends StatelessWidget {
           ),
         ),
         TextButton(
+          key: ValueKey('${keyPrefix}Button'),
           style: ButtonStyle(
             minimumSize: MaterialStateProperty.all<Size>(Size(100, 0)),
             elevation: MaterialStateProperty.all<double>(2),

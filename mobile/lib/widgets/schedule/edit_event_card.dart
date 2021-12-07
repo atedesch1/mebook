@@ -67,9 +67,9 @@ class _EditEventCardState extends State<EditEventCard> {
     } else {
       timeAgg = TimeAggregate(
         extractDate(DateTime.now()),
-        TimeOfDay(hour: 0, minute: 0),
-        extractDate(DateTime.now()),
-        TimeOfDay(hour: 0, minute: 0),
+        TimeOfDay(hour: 12, minute: 0),
+        extractDate(DateTime.now().add(Duration(days: 1))),
+        TimeOfDay(hour: 13, minute: 0),
       );
     }
     super.initState();
@@ -151,6 +151,7 @@ class _EditEventCardState extends State<EditEventCard> {
                       ],
                     ),
                     TextField(
+                      key: ValueKey('editEventTitle'),
                       style: TextStyle(
                         fontSize: 20,
                       ),
@@ -163,30 +164,35 @@ class _EditEventCardState extends State<EditEventCard> {
                       onSubmitted: (_) => TextInputAction.previous,
                     ),
                     DateRow(
+                      keyPrefix: 'editEventStartDay',
                       iconColor: Colors.green,
                       dateText: 'Start Day',
                       selectDate: () => _selectScopeValue(Scope.StartDate),
                       date: timeAgg.m[Scope.StartDate],
                     ),
                     TimeRow(
+                      keyPrefix: 'editEventStartTime',
                       iconColor: Colors.green,
                       timeText: 'Start Time',
                       selectTime: () => _selectScopeValue(Scope.StartTime),
                       time: timeAgg.m[Scope.StartTime],
                     ),
                     DateRow(
+                      keyPrefix: 'editEventEndDay',
                       iconColor: Colors.red,
                       dateText: 'End Day',
                       selectDate: () => _selectScopeValue(Scope.EndDate),
                       date: timeAgg.m[Scope.EndDate],
                     ),
                     TimeRow(
+                      keyPrefix: 'editEventEndTime',
                       iconColor: Colors.redAccent,
                       timeText: 'End Time',
                       selectTime: () => _selectScopeValue(Scope.EndTime),
                       time: timeAgg.m[Scope.EndTime],
                     ),
                     IconButton(
+                      key: ValueKey('finishEventEditButton'),
                       onPressed: _submitData,
                       icon: Icon(
                         Icons.check,
