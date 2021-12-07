@@ -22,7 +22,6 @@ void main() {
     });
 
     test('Authenticate with firebase', () async {
-      await driver.waitFor(find.text('Welcome'));
       await driver.waitFor(find.text('Sign In'));
       await driver.waitFor(find.text('Sign Up'));
 
@@ -75,33 +74,36 @@ void main() {
       await driver.tap(find.text('OK'));
 
       await driver.waitFor(find.text('Walk with dog'));
+      await driver.tap(find.byValueKey('editEventEndDayButton'));
+      await driver.waitFor(find.text('SELECT DATE'));
+      await driver.tap(find.text('7'));
+      await driver.tap(find.text('OK'));
+
+      await driver.waitFor(find.text('Walk with dog'));
       await driver.tap(find.byValueKey('editEventEndTimeButton'));
       await driver.waitFor(find.text('SELECT TIME'));
       await driver.scroll(
           find.byValueKey('time-picker-dial'),
           15*cos(angle),
           15*sin(angle),
-          Duration(seconds: 1)
+          Duration(milliseconds: 400)
       );
       angle = 6*(360/24)*pi/180; // 30 minutes direction
       await driver.scroll(
         find.byValueKey('time-picker-dial'),
         15*cos(angle),
         15*sin(angle),
-        Duration(seconds: 1),
+        Duration(milliseconds: 400),
       );
       await driver.tap(find.text('OK'));
 
       await driver.waitFor(find.text('Walk with dog'));
       await driver.tap(find.byValueKey('finishEventEditButton'));
 
+      await driver.waitFor(find.byValueKey('eventEditButton'));
+      await driver.tap(find.text('Walk with dog'));
       await driver.waitFor(find.byValueKey('deleteEventButton'));
       await driver.tap(find.byValueKey('deleteEventButton'));
-
-      // sign out from application
-      await driver.waitFor(find.byValueKey('bottomNavigationBar'));
-      await driver.tap(find.text('Profile'));
-      await driver.tap(find.byValueKey("signOutButton"));
     });
   });
 }

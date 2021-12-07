@@ -42,7 +42,10 @@ class HomeScreen extends StatelessWidget {
                               .sort((t1, t2) => t2.date.compareTo(t1.date));
                           return FinancesSummary(transactions: transactions);
                         } else {
-                          return Center(child: CircularProgressIndicator());
+                          return Container(
+                            height: 100,
+                            child: Center(child: CircularProgressIndicator()),
+                          );
                         }
                       },
                     ),
@@ -50,26 +53,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 HomeCard(
                   height: 450,
-                  header: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Today\'s News',
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Material(
-                        color: Colors.white,
-                        child: IconButton(
-                          constraints: BoxConstraints.tightFor(height: 24),
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          onPressed: () {},
-                          icon: Icon(Icons.more_vert),
-                        ),
-                      ),
-                    ],
-                  ),
+                  title: 'Today\'s News',
                   widgets: [
                     NewsList(),
                     SizedBox(

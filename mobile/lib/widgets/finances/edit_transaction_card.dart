@@ -43,9 +43,35 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
   }
 
   void _submitData() {
-    if (_titleController.text.isEmpty ||
-        _amountController.text.isEmpty ||
-        _selectedCategory == null) return;
+    TextInputAction.done;
+
+    if (_titleController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Title missing!')),
+      );
+      return;
+    }
+
+    if (_selectedCategory == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Select a category first!')),
+      );
+      return;
+    }
+
+    if (_amountController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Amount spent missing!')),
+      );
+      return;
+    }
+
+    if (_selectedDate == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Select a date first!')),
+      );
+      return;
+    }
 
     final enteredTitle = toBeginningOfSentenceCase(_titleController.text);
     final enteredAmount = double.parse(_amountController.text);
@@ -142,6 +168,8 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
                   ),
                   TextField(
                     decoration: InputDecoration(
+                      prefixText: '\$',
+                      prefixStyle: TextStyle(color: Colors.black),
                       contentPadding: EdgeInsets.all(0),
                       filled: false,
                       hintText: 'Amount',
@@ -178,39 +206,27 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
                     height: 24,
                   ),
                   Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.green)),
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
                           onPressed: _submitData,
-                          child: Text(
-                            widget.id == null ? 'Add' : 'Edit',
+                          icon: Icon(
+                            Icons.check,
+                            color: Colors.green,
                           ),
                         ),
-                      ),
-                      if (widget.id != null) ...[
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.red)),
-                            onPressed: () {
-                              widget.deleteTransaction(widget.id);
+                        if (widget.id != null)
+                          IconButton(
+                            onPressed: () async {
+                              await widget.deleteTransaction(widget.id);
                               Navigator.of(context).pop();
                             },
-                            child: Text(
-                              'Delete',
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.red,
                             ),
                           ),
-                        ),
-                      ]
-                    ],
-                  ),
+                      ]),
                 ],
               ),
             ),

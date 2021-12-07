@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 
 import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
@@ -25,76 +24,64 @@ class EventPreviewTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.white,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              top: 8,
-              bottom: 8,
-              left: 20,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        event.title,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
+      child: InkWell(
+        onTap: () =>
+            Navigator.of(context).push(ChangeEventRoute(builder: (context) {
+          return EditEventCard(
+            selectedCalendarId: selectedCalendarId,
+            event: event,
+            service: service,
+            refreshCallBack: refreshCallBack,
+          );
+        })),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: 20,
+              ),
+              child: Row(
+                key: ValueKey('eventEditButton'),
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          event.title,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            '${format(event.startTime)} -',
-                            style: TextStyle(color: Colors.black87),
-                          ),
-                          Text(
-                            ' ${format(event.endTime)}',
-                            style: TextStyle(color: Colors.black54),
-                          ),
-                        ],
-                      ),
-                    ],
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              '${format(event.startTime)} -',
+                              style: TextStyle(color: Colors.black87),
+                            ),
+                            Text(
+                              ' ${format(event.endTime)}',
+                              style: TextStyle(color: Colors.black54),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () => {
-                    Navigator.of(context)
-                        .push(ChangeEventRoute(builder: (context) {
-                      return EditEventCard(
-                        event: event,
-                        service: service,
-                        refreshCallBack: refreshCallBack,
-                      );
-                    }))
-                  },
-                  icon: Icon(Icons.edit),
-                ),
-                IconButton(
-                  key: ValueKey('deleteEventButton'),
-                  onPressed: () async {
-                    service.deleteEvent(
-                      calendarId: selectedCalendarId,
-                      eventId: event.id,
-                    );
-                    refreshCallBack();
-                  },
-                  icon: Icon(Icons.delete),
-                ),
-              ],
+                  Icon(Icons.edit),
+                ],
+              ),
             ),
-          ),
-          Divider(
-            height: 1,
-          ),
-        ],
+            Divider(
+              height: 1,
+            ),
+          ],
+        ),
       ),
     );
   }

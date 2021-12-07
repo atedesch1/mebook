@@ -35,7 +35,7 @@ class SelectCalendarCard extends StatelessWidget {
                   style: TextStyle(
                     color:
                         calendars.keys.toList()[index] == previouslySelected.key
-                            ? Colors.purple
+                            ? Colors.deepPurple
                             : Colors.black,
                   ),
                 ),

@@ -52,7 +52,7 @@ class _NotesScreenState extends State<NotesScreen> {
           notesService: notesService,
           context: context,
         ),
-        backgroundColor: Colors.cyan,
+        backgroundColor: Theme.of(context).backgroundColor,
         child: Icon(Icons.add),
       ),
       body: CustomScrollView(

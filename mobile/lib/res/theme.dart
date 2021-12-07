@@ -4,9 +4,10 @@ class MebookTheme {
   ThemeData get themeData => ThemeData(
         primaryColor: Colors.white,
         accentColor: Colors.grey,
-        primarySwatch: Colors.cyan,
-        backgroundColor: Colors.cyan,
+        primarySwatch: Colors.deepPurple,
+        backgroundColor: Colors.deepPurpleAccent,
         fontFamily: 'TruenoRound',
+        appBarTheme: AppBarTheme(foregroundColor: Colors.black),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             padding: MaterialStateProperty.all<EdgeInsets>(

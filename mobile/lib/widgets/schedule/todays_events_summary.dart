@@ -41,6 +41,7 @@ class TodaysEventsSummary extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
+                    flex: events.length > 2 ? 1 : 0,
                     child: ListView.builder(
                       shrinkWrap: true,
                       padding: EdgeInsets.all(0),

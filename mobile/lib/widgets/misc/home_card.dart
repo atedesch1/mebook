@@ -42,12 +42,12 @@ class HomeCard extends StatelessWidget {
               ),
             ),
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: header != null
                 ? header
                 : Text(
                     title,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
           ),
           ...widgets,

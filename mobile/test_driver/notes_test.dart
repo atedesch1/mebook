@@ -19,7 +19,6 @@ void main() {
 
     test('Verify notes screen operations and connection with firebase',
         () async {
-      await driver.waitFor(find.text('Welcome'));
       await driver.waitFor(find.text('Sign In'));
       await driver.waitFor(find.text('Sign Up'));
 

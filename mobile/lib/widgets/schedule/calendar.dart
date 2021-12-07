@@ -8,7 +8,6 @@ import 'package:mebook/widgets/schedule/day_container.dart';
 import 'package:provider/src/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-final today = DateTime.now();
 final calendarFirstDay = DateTime(1950, 1, 1);
 final calendarLastDay = DateTime(2150, 1, 1);
 
@@ -29,8 +28,8 @@ class Calendar extends StatefulWidget {
 
 class _CalendarState extends State<Calendar> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _focusedDay = today;
-  DateTime _selectedDay = today;
+  DateTime _focusedDay = DateTime.now();
+  DateTime _selectedDay = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +90,7 @@ class _CalendarState extends State<Calendar> {
                 hasEvents: snapshot.hasData
                     ? dayHasEvent.containsKey(date.day)
                     : false,
-                color: Theme.of(context).backgroundColor,
+                color: Colors.deepPurpleAccent,
                 textColor: Colors.white,
                 content: date.day.toString(),
               ),
@@ -99,7 +98,8 @@ class _CalendarState extends State<Calendar> {
                 hasEvents: snapshot.hasData
                     ? dayHasEvent.containsKey(date.day)
                     : false,
-                color: Colors.cyan[100],
+                textColor: Colors.white,
+                color: Colors.deepPurpleAccent[100],
                 content: date.day.toString(),
               ),
             ),

@@ -15,16 +15,13 @@ Future<TimeOfDay> _showTimePicker(BuildContext context, TimeOfDay t) {
 
 Future<DateTime> _showDatePicker(BuildContext context, DateTime d) {
   return showDatePicker(
-      context: context,
-      initialDate: d,
-      firstDate: past,
-      lastDate: future
-  );
+      context: context, initialDate: d, firstDate: past, lastDate: future);
 }
 
 class EditEventCard extends StatefulWidget {
   final AbstractCalendarService service;
   final Event event;
+  final String selectedCalendarId;
   final Function refreshCallBack;
   final Map<Scope, Function> adjuster = <Scope, Function>{
     Scope.StartDate: adjustEndToBegin,
@@ -40,6 +37,7 @@ class EditEventCard extends StatefulWidget {
   };
 
   EditEventCard({
+    @required this.selectedCalendarId,
     @required this.service,
     @required this.refreshCallBack,
     this.event,
@@ -97,15 +95,19 @@ class _EditEventCardState extends State<EditEventCard> {
 
     if (widget.event == null)
       await widget.service.createEvent(
+        calendarId: widget.selectedCalendarId,
         title: enteredSummary,
-        start: joinDateTime(timeAgg.m[Scope.StartDate], timeAgg.m[Scope.StartTime]),
+        start: joinDateTime(
+            timeAgg.m[Scope.StartDate], timeAgg.m[Scope.StartTime]),
         end: joinDateTime(timeAgg.m[Scope.EndDate], timeAgg.m[Scope.EndTime]),
       );
     else
       await widget.service.updateEvent(
+        calendarId: widget.selectedCalendarId,
         event: widget.event,
         title: enteredSummary,
-        start: joinDateTime(timeAgg.m[Scope.StartDate], timeAgg.m[Scope.StartTime]),
+        start: joinDateTime(
+            timeAgg.m[Scope.StartDate], timeAgg.m[Scope.StartTime]),
         end: joinDateTime(timeAgg.m[Scope.EndDate], timeAgg.m[Scope.EndTime]),
       );
 
@@ -191,13 +193,34 @@ class _EditEventCardState extends State<EditEventCard> {
                       selectTime: () => _selectScopeValue(Scope.EndTime),
                       time: timeAgg.m[Scope.EndTime],
                     ),
-                    IconButton(
-                      key: ValueKey('finishEventEditButton'),
-                      onPressed: _submitData,
-                      icon: Icon(
-                        Icons.check,
-                        color: Colors.green,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                          key: ValueKey('finishEventEditButton'),
+                          onPressed: _submitData,
+                          icon: Icon(
+                            Icons.check,
+                            color: Colors.green,
+                          ),
+                        ),
+                        if (widget.event != null)
+                          IconButton(
+                            key: ValueKey('deleteEventButton'),
+                            onPressed: () async {
+                              await widget.service.deleteEvent(
+                                calendarId: widget.selectedCalendarId,
+                                eventId: widget.event.id,
+                              );
+                              widget.refreshCallBack();
+                              Navigator.of(context).pop();
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                          ),
+                      ],
                     ),
                   ],
                 ),
