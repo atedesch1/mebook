@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mebook/models/event_model.dart';
-import 'package:mebook/widgets/misc/event_route.dart';
-import 'package:mebook/widgets/schedule/calendar_event_card.dart';
 import 'package:intl/intl.dart';
 
-class EventPreviewTile extends StatelessWidget {
-  final Event _event;
+import 'package:mebook/services/abstract_calendar_service.dart';
+import 'package:mebook/widgets/misc/event_route.dart';
+import 'package:mebook/widgets/schedule/edit_event_card.dart';
+import 'package:mebook/models/event_model.dart';
+import 'package:mebook/widgets/schedule/calendar_utils.dart';
 
-  EventPreviewTile(this._event);
+class EventPreviewTile extends StatelessWidget {
+  final String selectedCalendarId;
+  final AbstractCalendarService service;
+  final Event event;
+  final Function refreshCallBack;
+
+  EventPreviewTile({
+    @required this.selectedCalendarId,
+    @required this.service,
+    @required this.event,
+    @required this.refreshCallBack,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +40,7 @@ class EventPreviewTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _event.title,
+                        event.title,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -38,11 +49,17 @@ class EventPreviewTile extends StatelessWidget {
                       SizedBox(
                         height: 10,
                       ),
-                      Text(
-                        '${DateFormat('kk:mm').format(_event.startTime)} - ${DateFormat('kk:mm').format(_event.endTime)}',
-                        style: TextStyle(
-                          color: Colors.black54,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            '${format(event.startTime)} -',
+                            style: TextStyle(color: Colors.black87),
+                          ),
+                          Text(
+                            ' ${format(event.endTime)}',
+                            style: TextStyle(color: Colors.black54),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -51,10 +68,24 @@ class EventPreviewTile extends StatelessWidget {
                   onPressed: () => {
                     Navigator.of(context)
                         .push(ChangeEventRoute(builder: (context) {
-                      return CalendarEventCard();
+                      return EditEventCard(
+                        event: event,
+                        service: service,
+                        refreshCallBack: refreshCallBack,
+                      );
                     }))
                   },
                   icon: Icon(Icons.edit),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    service.deleteEvent(
+                      calendarId: selectedCalendarId,
+                      eventId: event.id,
+                    );
+                    refreshCallBack();
+                  },
+                  icon: Icon(Icons.delete),
                 ),
               ],
             ),
