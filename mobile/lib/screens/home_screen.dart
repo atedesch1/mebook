@@ -50,26 +50,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 HomeCard(
                   height: 450,
-                  header: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Today\'s News',
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      // Material(
-                      //   color: Colors.white,
-                      //   child: IconButton(
-                      //     constraints: BoxConstraints.tightFor(height: 24),
-                      //     padding: EdgeInsets.symmetric(horizontal: 8),
-                      //     onPressed: () {},
-                      //     icon: Icon(Icons.more_vert),
-                      //   ),
-                      // ),
-                    ],
-                  ),
+                  title: 'Today\'s News',
                   widgets: [
                     NewsList(),
                     SizedBox(
