@@ -12,6 +12,7 @@ class SimpleEventTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Duration timeUntilEvent = event.startTime.difference(DateTime.now());
+    Duration timeAfterEvent = event.endTime.difference(DateTime.now());
     String formattedTimeUntilEvent = '';
     if (timeUntilEvent.inHours > 0)
       formattedTimeUntilEvent =
@@ -20,7 +21,7 @@ class SimpleEventTile extends StatelessWidget {
       formattedTimeUntilEvent = '${timeUntilEvent.inMinutes} m';
 
     return Container(
-      height: 60,
+      height: 70,
       child: Column(
         children: [
           Expanded(
@@ -30,7 +31,7 @@ class SimpleEventTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 60,
+                    width: 80,
                     child: Center(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +60,7 @@ class SimpleEventTile extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     width: 3,
-                    height: 60,
+                    height: 70,
                     color: Theme.of(context).backgroundColor,
                   ),
                   Expanded(
@@ -72,7 +73,7 @@ class SimpleEventTile extends StatelessWidget {
                             child: Text(
                               event.title,
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -82,7 +83,9 @@ class SimpleEventTile extends StatelessWidget {
                             children: [
                               Text(
                                 timeUntilEvent.isNegative
-                                    ? 'Event has started'
+                                    ? timeAfterEvent.isNegative
+                                        ? 'Event has ended'
+                                        : 'Event has started'
                                     : 'Event starts in $formattedTimeUntilEvent',
                                 textAlign: TextAlign.right,
                                 style: TextStyle(fontSize: 12),
