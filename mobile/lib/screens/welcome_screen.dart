@@ -25,7 +25,7 @@ class WelcomeScreen extends StatelessWidget {
                     child: FittedBox(
                       fit: BoxFit.fitWidth,
                       child: Text(
-                        'Welcome',
+                        'mebook',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -36,7 +36,7 @@ class WelcomeScreen extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    'This app is supposed to be very good, if you don\'t like it then you can go flutter yourself!',
+                    'This is your new hub of information\nWhere all your needs are met',
                   ),
                   SizedBox(
                     height: 30,
