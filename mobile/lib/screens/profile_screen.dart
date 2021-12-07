@@ -73,6 +73,7 @@ class ProfileScreen extends StatelessWidget {
                             return Text(
                               snapshot.data,
                               style: TextStyle(
+                                color: Colors.black87,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -82,13 +83,21 @@ class ProfileScreen extends StatelessWidget {
                     : Text(
                         displayName,
                         style: TextStyle(
+                          color: Colors.black87,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'This Month\'s Statistics',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0, vertical: 20.0),
+                      horizontal: 10.0, vertical: 20),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
