@@ -21,8 +21,11 @@ class NewsList extends StatelessWidget {
                     return NewsTile(news[index]);
                   });
             } else {
-              return Center(
-                child: CircularProgressIndicator(),
+              return Container(
+                height: 100,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
             }
           },
