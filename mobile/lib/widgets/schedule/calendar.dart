@@ -82,7 +82,7 @@ class _CalendarState extends State<Calendar> {
                 hasEvents: snapshot.hasData
                     ? dayHasEvent.containsKey(date.day)
                     : false,
-                color: Theme.of(context).backgroundColor,
+                color: Colors.deepPurpleAccent,
                 textColor: Colors.white,
                 content: date.day.toString(),
               ),
@@ -90,7 +90,8 @@ class _CalendarState extends State<Calendar> {
                 hasEvents: snapshot.hasData
                     ? dayHasEvent.containsKey(date.day)
                     : false,
-                color: Colors.cyan[100],
+                textColor: Colors.white,
+                color: Colors.deepPurpleAccent[100],
                 content: date.day.toString(),
               ),
             ),

@@ -114,7 +114,9 @@ class _FilterByMonthSliderState extends State<FilterByMonthSlider> {
                 getText(monthsAbbr, index),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: index == _selectedMonth ? Colors.cyan : Colors.black54,
+                  color: index == _selectedMonth
+                      ? Theme.of(context).backgroundColor
+                      : Colors.black54,
                 ),
               ),
       );

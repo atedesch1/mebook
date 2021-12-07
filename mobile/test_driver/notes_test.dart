@@ -2,7 +2,7 @@ import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Mebook', () {
+  group('Notes', () {
     FlutterDriver driver;
 
     // connect to the Flutter driver before running any tests
@@ -19,7 +19,6 @@ void main() {
 
     test('Verify notes screen operations and connection with firebase',
         () async {
-      await driver.waitFor(find.text('Welcome'));
       await driver.waitFor(find.text('Sign In'));
       await driver.waitFor(find.text('Sign Up'));
 

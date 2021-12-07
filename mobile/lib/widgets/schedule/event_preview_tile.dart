@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 
 import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
@@ -43,6 +42,7 @@ class EventPreviewTile extends StatelessWidget {
                 horizontal: 20,
               ),
               child: Row(
+                key: ValueKey('eventEditButton'),
                 children: [
                   Expanded(
                     child: Column(

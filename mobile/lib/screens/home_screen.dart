@@ -42,7 +42,10 @@ class HomeScreen extends StatelessWidget {
                               .sort((t1, t2) => t2.date.compareTo(t1.date));
                           return FinancesSummary(transactions: transactions);
                         } else {
-                          return Center(child: CircularProgressIndicator());
+                          return Container(
+                            height: 100,
+                            child: Center(child: CircularProgressIndicator()),
+                          );
                         }
                       },
                     ),
