@@ -38,7 +38,12 @@ class _MebookAppState extends State<MebookApp> {
               ),
               StreamProvider(
                 create: (context) =>
-                    context.read<AuthService>().authStateChanges,
+                    context.read<AuthService>().firebaseAuthStateChanges,
+                initialData: null,
+              ),
+              StreamProvider(
+                create: (context) =>
+                    context.read<AuthService>().googleAuthStateChanges,
                 initialData: null,
               ),
             ],
@@ -84,10 +89,17 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
+    final hasAuthentication =
+        context.read<AuthService>().getAuthenticationMethod !=
+            Authentication.Undefined;
 
     if (Navigator.of(context).canPop()) popScreens(context);
 
-    if (firebaseUser != null) {
+    if (!hasAuthentication) {
+      context.read<AuthService>().signOut();
+    }
+
+    if (hasAuthentication && firebaseUser != null) {
       return NavigationOverlay();
     }
 
