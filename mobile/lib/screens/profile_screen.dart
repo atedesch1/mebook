@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mebook/models/note_model.dart';
+import 'package:mebook/models/transaction_model.dart';
+import 'package:mebook/services/calendar_service.dart';
+import 'package:mebook/services/finances_service.dart';
+import 'package:mebook/services/notes_service.dart';
 import 'package:mebook/widgets/misc/overlay_app_bar.dart';
 import 'package:mebook/widgets/profile/simple_count_statistic.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +29,8 @@ class ProfileScreen extends StatelessWidget {
           );
 
     final displayName = context.read<AuthService>().currentUser.displayName;
+
+    final today = DateTime.now();
 
     return Scaffold(
       body: CustomScrollView(
@@ -78,10 +85,36 @@ class ProfileScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            SimpleCountStatistic(name: 'Notes', count: 32),
-                            SimpleCountStatistic(
-                                name: 'Transactions', count: 12),
-                            SimpleCountStatistic(name: 'Events', count: 140),
+                            StreamBuilder<List<Note>>(
+                                stream: NotesService(context).getNotes(),
+                                builder: (context, snapshot) {
+                                  var count = snapshot.hasData
+                                      ? snapshot.data
+                                          .where((note) => !note.time
+                                              .difference(DateTime(
+                                                  today.year, today.month, 1))
+                                              .isNegative)
+                                          .toList()
+                                          .length
+                                      : 0;
+                                  return SimpleCountStatistic(
+                                      name: 'Notes', count: count);
+                                }),
+                            StreamBuilder<List<Transaction>>(
+                                stream:
+                                    FinancesService(context).getTransactions(),
+                                builder: (context, snapshot) {
+                                  return SimpleCountStatistic(
+                                      name: 'Transactions',
+                                      count: snapshot.hasData
+                                          ? Transaction.filter(
+                                                  transactions: snapshot.data,
+                                                  month: today.month,
+                                                  year: today.year)
+                                              .length
+                                          : 0);
+                                }),
+                            SimpleCountStatistic(name: 'Events', count: 0),
                           ],
                         ),
                       ),
