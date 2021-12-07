@@ -59,15 +59,15 @@ class HomeScreen extends StatelessWidget {
                               fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Material(
-                        color: Colors.white,
-                        child: IconButton(
-                          constraints: BoxConstraints.tightFor(height: 24),
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          onPressed: () {},
-                          icon: Icon(Icons.more_vert),
-                        ),
-                      ),
+                      // Material(
+                      //   color: Colors.white,
+                      //   child: IconButton(
+                      //     constraints: BoxConstraints.tightFor(height: 24),
+                      //     padding: EdgeInsets.symmetric(horizontal: 8),
+                      //     onPressed: () {},
+                      //     icon: Icon(Icons.more_vert),
+                      //   ),
+                      // ),
                     ],
                   ),
                   widgets: [
