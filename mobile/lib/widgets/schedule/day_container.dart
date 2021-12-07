@@ -31,7 +31,7 @@ class DayContainer extends StatelessWidget {
             margin: EdgeInsets.only(top: 20),
             width: 3.5,
             decoration: BoxDecoration(
-              color: Colors.deepPurpleAccent,
+              color: Colors.purpleAccent,
               shape: BoxShape.circle,
             ),
           )
