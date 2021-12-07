@@ -31,7 +31,7 @@ googleCalendar.Event addTimeZone(googleCalendar.Event e) {
   ).toLocal();
   e.end.dateTime = (
       e.end.dateTime ?? joinDateTime(
-          e.end.date, TimeOfDay(hour: 0, minute: 0)
+          e.start.date, TimeOfDay(hour: 23, minute: 59)
       )
   ).toLocal();
   return e;
