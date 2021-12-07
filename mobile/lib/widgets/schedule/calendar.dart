@@ -7,6 +7,7 @@ import 'package:mebook/services/google_calendar_service.dart';
 import 'package:mebook/widgets/schedule/day_container.dart';
 import 'package:provider/src/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:mebook/widgets/schedule/calendar_utils.dart';
 
 final calendarFirstDay = DateTime(1950, 1, 1);
 final calendarLastDay = DateTime(2150, 1, 1);
@@ -50,16 +51,7 @@ class _CalendarState extends State<Calendar> {
           Map<int, bool> dayHasEvent = {};
           if (snapshot.hasData) {
             List<Event> events = snapshot.data;
-            dayHasEvent = {
-              for (var event in events)
-                for (var day in [
-                  for (var day = event.startTime.day;
-                      day <= event.endTime.day;
-                      day++)
-                    day
-                ])
-                  day: true
-            };
+            dayHasEvent = findDays(events);
           }
           return TableCalendar(
             firstDay: calendarFirstDay,
