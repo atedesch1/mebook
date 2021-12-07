@@ -10,12 +10,13 @@ class HomeCard extends StatelessWidget {
     this.height,
     this.title,
     this.header,
-    this.widgets,
+    @required this.widgets,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: BoxConstraints(minHeight: 150),
       height: height,
       margin: EdgeInsets.all(8),
       decoration: BoxDecoration(
