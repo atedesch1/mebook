@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mebook/models/note_model.dart';
 import 'package:mebook/models/transaction_model.dart';
-import 'package:mebook/services/calendar_service.dart';
 import 'package:mebook/services/finances_service.dart';
 import 'package:mebook/services/notes_service.dart';
 import 'package:mebook/widgets/misc/overlay_app_bar.dart';

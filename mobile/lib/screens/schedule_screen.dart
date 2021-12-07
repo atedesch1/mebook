@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:mebook/services/calendar_service.dart';
+import 'package:mebook/widgets/schedule/select_calendar_card.dart';
+import 'package:provider/src/provider.dart';
+
+import 'package:mebook/services/abstract_calendar_service.dart';
+import 'package:mebook/services/google_calendar_service.dart';
+import 'package:mebook/services/firebase_calendar_service.dart';
+import 'package:mebook/services/auth_service.dart';
 import 'package:mebook/widgets/misc/event_route.dart';
 import 'package:mebook/widgets/misc/overlay_app_bar.dart';
 import 'package:mebook/widgets/schedule/calendar.dart';
-import 'package:googleapis/calendar/v3.dart' as googleApis;
 import 'package:mebook/widgets/schedule/edit_event_card.dart';
 import 'package:mebook/widgets/schedule/event_preview_tile.dart';
+import 'package:mebook/models/event_model.dart';
 
 class ScheduleScreen extends StatefulWidget {
   @override
@@ -13,12 +19,21 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  DateTime focusedDate = DateTime.now();
+  DateTime _focusedDate = DateTime.now();
+  DateTime _selectedDate = DateTime.now();
+  MapEntry<String, Map<String, dynamic>> selectedCalendar =
+      MapEntry('primary', {'name': 'Default', 'isPrimary': true});
   bool hasUpdated = false;
+
+  void setCurrentMonth(DateTime focusedDate) {
+    setState(() {
+      _focusedDate = focusedDate;
+    });
+  }
 
   void setCurrentDate(DateTime selectedDate) {
     setState(() {
-      focusedDate = selectedDate;
+      _selectedDate = selectedDate;
     });
   }
 
@@ -31,6 +46,13 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AbstractCalendarService calendarService;
+    if (context.read<AuthService>().getAuthenticationMethod ==
+        Authentication.Google) {
+      calendarService = GoogleCalendarService(context);
+    } else {
+      calendarService = FirebaseCalendarService(context);
+    }
     return Scaffold(
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(
@@ -44,13 +66,43 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   Navigator.of(context)
                       .push(ChangeEventRoute(builder: (context) {
                     return EditEventCard(
-                      service: CalendarService(context),
+                      selectedCalendarId: selectedCalendar.key,
+                      service: calendarService,
                       refreshCallBack: refreshEventList,
                     );
                   }))
                 },
                 icon: Icon(Icons.add),
               ),
+              FutureBuilder(
+                  future: calendarService.getCalendars(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      Map<String, Map<String, dynamic>> calendars =
+                          snapshot.data;
+                      calendars.remove(
+                          context.read<AuthService>().currentUser.email);
+                      calendars['primary'] = {
+                        'name': 'Default',
+                        'isPrimary': true
+                      };
+                      return IconButton(
+                        onPressed: () => Navigator.of(context)
+                            .push(ChangeEventRoute(builder: (context) {
+                          return SelectCalendarCard(
+                            previouslySelected: selectedCalendar,
+                            calendars: calendars,
+                            selectCalendarFunction: (calendar) => setState(() {
+                              selectedCalendar = calendar;
+                            }),
+                          );
+                        })),
+                        icon: Icon(Icons.more_vert),
+                      );
+                    }
+                    return IconButton(
+                        onPressed: () => {}, icon: Icon(Icons.more_vert));
+                  })
             ],
           ),
           SliverFillRemaining(
@@ -71,19 +123,23 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       ),
                     ],
                   ),
-                  child: Calendar(updateMonth: setCurrentDate),
+                  child: Calendar(
+                      selectedCalendarId: selectedCalendar.key,
+                      updateMonth: setCurrentMonth,
+                      updateDate: setCurrentDate),
                 ),
                 Expanded(
                   child: FutureBuilder(
-                    future:
-                        CalendarService(context).getMonthEvents(focusedDate),
+                    future: calendarService.getDailyEvents(
+                      calendarId: selectedCalendar.key,
+                      chosenDay: _selectedDate,
+                    ),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        googleApis.Events events = snapshot.data;
-                        events.items.sort((eventA, eventB) => eventA
-                            .start.dateTime
-                            .compareTo(eventB.start.dateTime));
-                        if (events.items.isEmpty)
+                        List<Event> events = snapshot.data;
+                        events.sort((eventA, eventB) =>
+                            eventA.startTime.compareTo(eventB.startTime));
+                        if (events.isEmpty)
                           return Center(
                             child: Text(
                               'No events for the selected day',
@@ -93,10 +149,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         return ListView.builder(
                           padding: EdgeInsets.all(0),
                           itemBuilder: (context, index) => EventPreviewTile(
-                            event: events.items[index],
+                            selectedCalendarId: selectedCalendar.key,
+                            service: calendarService,
+                            event: events[index],
                             refreshCallBack: refreshEventList,
                           ),
-                          itemCount: events.items.length,
+                          itemCount: events.length,
                         );
                       }
                       return Center(

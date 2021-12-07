@@ -45,13 +45,13 @@ class TransactionsOverviewCard extends StatelessWidget {
                 Expanded(
                     child: Text('Transactions',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ))),
                 Text(
                   selectedYear.toString(),
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

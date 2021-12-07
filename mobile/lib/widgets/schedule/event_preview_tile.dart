@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:googleapis/calendar/v3.dart' as calendarApi;
-import 'package:mebook/services/calendar_service.dart';
-import 'package:mebook/widgets/misc/event_route.dart';
-import 'package:mebook/widgets/schedule/edit_event_card.dart';
 import 'package:intl/intl.dart';
 
+import 'package:mebook/services/abstract_calendar_service.dart';
+import 'package:mebook/widgets/misc/event_route.dart';
+import 'package:mebook/widgets/schedule/edit_event_card.dart';
+import 'package:mebook/models/event_model.dart';
+import 'package:mebook/widgets/schedule/calendar_utils.dart';
+
 class EventPreviewTile extends StatelessWidget {
-  final calendarApi.Event event;
+  final String selectedCalendarId;
+  final AbstractCalendarService service;
+  final Event event;
   final Function refreshCallBack;
 
   EventPreviewTile({
+    @required this.selectedCalendarId,
+    @required this.service,
     @required this.event,
     @required this.refreshCallBack,
   });
@@ -19,66 +25,63 @@ class EventPreviewTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.white,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              top: 8,
-              bottom: 8,
-              left: 20,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        event.summary,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
+      child: InkWell(
+        onTap: () =>
+            Navigator.of(context).push(ChangeEventRoute(builder: (context) {
+          return EditEventCard(
+            selectedCalendarId: selectedCalendarId,
+            event: event,
+            service: service,
+            refreshCallBack: refreshCallBack,
+          );
+        })),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: 20,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          event.title,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        '${DateFormat('kk:mm').format(event.start.dateTime)} - ${DateFormat('kk:mm').format(event.end.dateTime)}',
-                        style: TextStyle(
-                          color: Colors.black54,
+                        SizedBox(
+                          height: 10,
                         ),
-                      ),
-                    ],
+                        Row(
+                          children: [
+                            Text(
+                              '${format(event.startTime)} -',
+                              style: TextStyle(color: Colors.black87),
+                            ),
+                            Text(
+                              ' ${format(event.endTime)}',
+                              style: TextStyle(color: Colors.black54),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () => {
-                    Navigator.of(context)
-                        .push(ChangeEventRoute(builder: (context) {
-                      return EditEventCard(
-                        event: event,
-                        service: CalendarService(context),
-                        refreshCallBack: refreshCallBack,
-                      );
-                    }))
-                  },
-                  icon: Icon(Icons.edit),
-                ),
-                IconButton(
-                  onPressed: () async {
-                    await CalendarService(context).deleteEvent(event.id);
-                    refreshCallBack();
-                  },
-                  icon: Icon(Icons.delete),
-                ),
-              ],
+                  Icon(Icons.edit),
+                ],
+              ),
             ),
-          ),
-          Divider(
-            height: 1,
-          ),
-        ],
+            Divider(
+              height: 1,
+            ),
+          ],
+        ),
       ),
     );
   }

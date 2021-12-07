@@ -5,11 +5,15 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
 
+enum Authentication { Google, Firebase, Undefined }
+
 class AuthService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleAuth;
   AuthClient client;
+
+  Authentication _authenticationMethod = Authentication.Undefined;
 
   AuthService(this._firebaseAuth, this._googleAuth);
 
@@ -17,7 +21,12 @@ class AuthService {
 
   AuthClient get getClient => client;
 
-  Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
+  Stream<User> get firebaseAuthStateChanges => _firebaseAuth.authStateChanges();
+
+  Stream<GoogleSignInAccount> get googleAuthStateChanges =>
+      _googleAuth.onCurrentUserChanged;
+
+  Authentication get getAuthenticationMethod => _authenticationMethod;
 
   Future<String> get username async => await _db
       .collection('users')
@@ -29,6 +38,8 @@ class AuthService {
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
+    if (_authenticationMethod == Authentication.Google)
+      await _googleAuth.signOut();
   }
 
   Future<UserCredential> emailSignIn(
@@ -42,6 +53,7 @@ class AuthService {
       trySignIn();
       userCredential = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+      _authenticationMethod = Authentication.Firebase;
       return userCredential;
     } catch (err) {
       failedSignIn();
@@ -72,6 +84,7 @@ class AuthService {
         'email': email,
         'username': username,
       });
+      _authenticationMethod = Authentication.Firebase;
       return userCredential;
     } catch (err) {
       failedSignUp();
@@ -103,6 +116,7 @@ class AuthService {
         idToken: googleAuth.idToken,
       );
       userCredential = await _firebaseAuth.signInWithCredential(credential);
+      _authenticationMethod = Authentication.Google;
       return userCredential;
     } catch (err) {
       failedSignIn();

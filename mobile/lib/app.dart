@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:googleapis/calendar/v3.dart';
+import 'package:googleapis/calendar/v3.dart' as googleCalendar;
 import 'package:provider/provider.dart';
 
 import 'package:mebook/res/theme.dart';
@@ -32,13 +32,18 @@ class _MebookAppState extends State<MebookApp> {
                   FirebaseAuth.instance,
                   GoogleSignIn(scopes: <String>[
                     'email',
-                    CalendarApi.calendarScope
+                    googleCalendar.CalendarApi.calendarScope
                   ]),
                 ),
               ),
               StreamProvider(
                 create: (context) =>
-                    context.read<AuthService>().authStateChanges,
+                    context.read<AuthService>().firebaseAuthStateChanges,
+                initialData: null,
+              ),
+              StreamProvider(
+                create: (context) =>
+                    context.read<AuthService>().googleAuthStateChanges,
                 initialData: null,
               ),
             ],
@@ -84,10 +89,17 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
+    final hasAuthentication =
+        context.read<AuthService>().getAuthenticationMethod !=
+            Authentication.Undefined;
 
     if (Navigator.of(context).canPop()) popScreens(context);
 
-    if (firebaseUser != null) {
+    if (!hasAuthentication) {
+      context.read<AuthService>().signOut();
+    }
+
+    if (hasAuthentication && firebaseUser != null) {
       return NavigationOverlay();
     }
 

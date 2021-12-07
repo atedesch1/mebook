@@ -5,6 +5,7 @@ import 'package:mebook/widgets/finances/finances_summary.dart';
 import 'package:mebook/widgets/misc/home_card.dart';
 import 'package:mebook/widgets/misc/overlay_app_bar.dart';
 import 'package:mebook/widgets/news/news_list.dart';
+import 'package:mebook/widgets/schedule/todays_events_summary.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -22,6 +23,12 @@ class HomeScreen extends StatelessWidget {
             delegate: SliverChildListDelegate(
               [
                 HomeCard(
+                  title: 'Today\'s Events',
+                  widgets: [
+                    TodaysEventsSummary(),
+                  ],
+                ),
+                HomeCard(
                   title: 'This Month\'s Spendings',
                   widgets: [
                     StreamBuilder<List<Transaction>>(
@@ -33,11 +40,7 @@ class HomeScreen extends StatelessWidget {
                               month: DateTime.now().month);
                           transactions
                               .sort((t1, t2) => t2.date.compareTo(t1.date));
-                          return FinancesSummary(
-                            transactions: transactions,
-                            diameter: MediaQuery.of(context).size.width * 0.45,
-                            strokeWidth: 25.0,
-                          );
+                          return FinancesSummary(transactions: transactions);
                         } else {
                           return Container(
                             height: 100,
@@ -50,26 +53,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 HomeCard(
                   height: 450,
-                  header: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Today\'s News',
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Material(
-                        color: Colors.white,
-                        child: IconButton(
-                          constraints: BoxConstraints.tightFor(height: 24),
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          onPressed: () {},
-                          icon: Icon(Icons.more_vert),
-                        ),
-                      ),
-                    ],
-                  ),
+                  title: 'Today\'s News',
                   widgets: [
                     NewsList(),
                     SizedBox(
