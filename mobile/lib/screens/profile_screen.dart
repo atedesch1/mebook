@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mebook/models/event_model.dart';
 import 'package:mebook/models/note_model.dart';
 import 'package:mebook/models/transaction_model.dart';
+import 'package:mebook/services/abstract_calendar_service.dart';
 import 'package:mebook/services/finances_service.dart';
+import 'package:mebook/services/firebase_calendar_service.dart';
+import 'package:mebook/services/google_calendar_service.dart';
 import 'package:mebook/services/notes_service.dart';
 import 'package:mebook/widgets/misc/overlay_app_bar.dart';
 import 'package:mebook/widgets/profile/simple_count_statistic.dart';
@@ -13,6 +17,14 @@ import 'package:mebook/services/auth_service.dart';
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    AbstractCalendarService calendarService;
+    if (context.read<AuthService>().getAuthenticationMethod ==
+        Authentication.Google) {
+      calendarService = GoogleCalendarService(context);
+    } else {
+      calendarService = FirebaseCalendarService(context);
+    }
+
     final profilePictureURL =
         context.read<AuthService>().currentUser.photoURL ?? null;
 
@@ -113,7 +125,18 @@ class ProfileScreen extends StatelessWidget {
                                               .length
                                           : 0);
                                 }),
-                            SimpleCountStatistic(name: 'Events', count: 0),
+                            FutureBuilder<List<Event>>(
+                              future: calendarService.getMonthEvents(
+                                calendarId: 'primary',
+                                chosenMonth: today,
+                              ),
+                              builder: (context, snapshot) =>
+                                  SimpleCountStatistic(
+                                      name: 'Events',
+                                      count: snapshot.hasData
+                                          ? snapshot.data.length
+                                          : 0),
+                            ),
                           ],
                         ),
                       ),
