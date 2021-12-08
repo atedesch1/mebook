@@ -32,6 +32,12 @@ dev_dependencies:
     sdk: flutter
   test: ^1.16.0
   mockito: ^5.0.16
+  flutter_launcher_icons: ^0.9.2
+
+flutter_icons:
+  image_path: assets/mebook_logo.jpg
+  android: true
+  ios: true
 
 flutter:
   uses-material-design: true
