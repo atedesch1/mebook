@@ -50,6 +50,7 @@ class _MebookAppState extends State<MebookApp> {
             child: MaterialApp(
               title: 'Mebook App',
               theme: MebookTheme().themeData,
+              debugShowCheckedModeBanner: false,
               home: AuthWrapper(),
               routes: {
                 '/auth': (ctx) => AuthScreen(),

@@ -37,6 +37,9 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   Text(
                     'This is your new hub of information\nWhere all your needs are met',
+                    style: TextStyle(
+                      letterSpacing: 0.5,
+                    ),
                   ),
                   SizedBox(
                     height: 30,

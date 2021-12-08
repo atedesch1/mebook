@@ -14,7 +14,8 @@ class MebookLogo extends StatelessWidget {
       child: FittedBox(
         fit: BoxFit.fitWidth,
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 2),
+          margin: EdgeInsets.symmetric(horizontal: 4),
+          padding: EdgeInsets.only(bottom: 2),
           child: Text(
             'me',
             textAlign: TextAlign.center,
