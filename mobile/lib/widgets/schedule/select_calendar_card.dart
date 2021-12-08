@@ -31,16 +31,17 @@ class SelectCalendarCard extends StatelessWidget {
               padding: EdgeInsets.all(0),
               itemBuilder: (context, index) => ListTile(
                 title: Text(
-                  calendars.values.toList()[index]['name'],
+                  calendars.values.toList().reversed.toList()[index]['name'],
                   style: TextStyle(
-                    color:
-                        calendars.keys.toList()[index] == previouslySelected.key
-                            ? Colors.deepPurple
-                            : Colors.black,
+                    color: calendars.keys.toList().reversed.toList()[index] ==
+                            previouslySelected.key
+                        ? Colors.deepPurple
+                        : Colors.black,
                   ),
                 ),
                 onTap: () {
-                  selectCalendarFunction(calendars.entries.toList()[index]);
+                  selectCalendarFunction(
+                      calendars.entries.toList().reversed.toList()[index]);
                   Navigator.of(context).pop();
                 },
               ),

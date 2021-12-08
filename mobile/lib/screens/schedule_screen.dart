@@ -81,8 +81,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     if (snapshot.hasData) {
                       Map<String, Map<String, dynamic>> calendars =
                           snapshot.data;
-                      calendars.remove(
-                          context.read<AuthService>().currentUser.email);
+                      var primaryKey =
+                          context.read<AuthService>().currentUser.email;
+                      calendars.remove(primaryKey);
                       calendars['primary'] = {
                         'name': 'Default',
                         'isPrimary': true
