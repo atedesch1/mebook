@@ -12,6 +12,7 @@ class NotesScreen extends StatefulWidget {
 
 class _NotesScreenState extends State<NotesScreen> {
   final List<String> _selectedToDelete = [];
+  bool isLoading = false;
 
   void _pushAddNotePage({
     NotesService notesService,
@@ -34,12 +35,21 @@ class _NotesScreenState extends State<NotesScreen> {
     });
   }
 
-  void _deleteNotes(NotesService notesService) {
-    for (var id in _selectedToDelete) notesService.deleteNote(id);
-
-    setState(() {
-      _selectedToDelete.clear();
-    });
+  void _deleteNotes(NotesService notesService) async {
+    if (!isLoading) {
+      isLoading = true;
+      try {
+        for (var id in _selectedToDelete) await notesService.deleteNote(id);
+        setState(() {
+          _selectedToDelete.clear();
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: ${e}')),
+        );
+      }
+      isLoading = false;
+    }
   }
 
   @override

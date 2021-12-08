@@ -50,6 +50,7 @@ class EditEventCard extends StatefulWidget {
 class _EditEventCardState extends State<EditEventCard> {
   final _summaryController = TextEditingController();
   TimeAggregate timeAgg;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -84,35 +85,49 @@ class _EditEventCardState extends State<EditEventCard> {
   }
 
   void _submitData() async {
-    final enteredSummary = _summaryController.text;
+    if (!isLoading) {
+      isLoading = true;
 
-    if (enteredSummary.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Title missing!')),
-      );
-      return;
+      final enteredSummary = _summaryController.text;
+
+      if (enteredSummary.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Title missing!')),
+        );
+        isLoading = false;
+        return;
+      }
+
+      try {
+        if (widget.event == null)
+          await widget.service.createEvent(
+            calendarId: widget.selectedCalendarId,
+            title: enteredSummary,
+            start: joinDateTime(
+                timeAgg.m[Scope.StartDate], timeAgg.m[Scope.StartTime]),
+            end: joinDateTime(
+                timeAgg.m[Scope.EndDate], timeAgg.m[Scope.EndTime]),
+          );
+        else
+          await widget.service.updateEvent(
+            calendarId: widget.selectedCalendarId,
+            event: widget.event,
+            title: enteredSummary,
+            start: joinDateTime(
+                timeAgg.m[Scope.StartDate], timeAgg.m[Scope.StartTime]),
+            end: joinDateTime(
+                timeAgg.m[Scope.EndDate], timeAgg.m[Scope.EndTime]),
+          );
+
+        widget.refreshCallBack();
+        await Navigator.of(context).pop();
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: ${e}')),
+        );
+      }
+      isLoading = false;
     }
-
-    if (widget.event == null)
-      await widget.service.createEvent(
-        calendarId: widget.selectedCalendarId,
-        title: enteredSummary,
-        start: joinDateTime(
-            timeAgg.m[Scope.StartDate], timeAgg.m[Scope.StartTime]),
-        end: joinDateTime(timeAgg.m[Scope.EndDate], timeAgg.m[Scope.EndTime]),
-      );
-    else
-      await widget.service.updateEvent(
-        calendarId: widget.selectedCalendarId,
-        event: widget.event,
-        title: enteredSummary,
-        start: joinDateTime(
-            timeAgg.m[Scope.StartDate], timeAgg.m[Scope.StartTime]),
-        end: joinDateTime(timeAgg.m[Scope.EndDate], timeAgg.m[Scope.EndTime]),
-      );
-
-    widget.refreshCallBack();
-    Navigator.of(context).pop();
   }
 
   @override
@@ -201,12 +216,22 @@ class _EditEventCardState extends State<EditEventCard> {
                         if (widget.event != null)
                           IconButton(
                             onPressed: () async {
-                              await widget.service.deleteEvent(
-                                calendarId: widget.selectedCalendarId,
-                                eventId: widget.event.id,
-                              );
-                              widget.refreshCallBack();
-                              Navigator.of(context).pop();
+                              if (!isLoading) {
+                                isLoading = true;
+                                try {
+                                  await widget.service.deleteEvent(
+                                    calendarId: widget.selectedCalendarId,
+                                    eventId: widget.event.id,
+                                  );
+                                  widget.refreshCallBack();
+                                  await Navigator.of(context).pop();
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Error: ${e}')),
+                                  );
+                                }
+                                isLoading = false;
+                              }
                             },
                             icon: Icon(
                               Icons.delete,

@@ -31,6 +31,7 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
   final _amountController = TextEditingController();
   String _selectedCategory;
   DateTime _selectedDate;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -42,49 +43,64 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
     super.initState();
   }
 
-  void _submitData() {
-    TextInputAction.done;
+  void _submitData() async {
+    if (!isLoading) {
+      isLoading = true;
 
-    if (_titleController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Title missing!')),
-      );
-      return;
+      TextInputAction.done;
+
+      if (_titleController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Title missing!')),
+        );
+        isLoading = false;
+        return;
+      }
+
+      if (_selectedCategory == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Select a category first!')),
+        );
+        isLoading = false;
+        return;
+      }
+
+      if (_amountController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Amount spent missing!')),
+        );
+        isLoading = false;
+        return;
+      }
+
+      if (_selectedDate == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Select a date first!')),
+        );
+        isLoading = false;
+        return;
+      }
+
+      final enteredTitle = toBeginningOfSentenceCase(_titleController.text);
+      final enteredAmount = double.parse(_amountController.text);
+
+      try {
+        await widget.editTransaction(
+          docId: widget.id,
+          title: enteredTitle,
+          category: _selectedCategory,
+          date: _selectedDate,
+          amount: enteredAmount,
+        );
+
+        await Navigator.of(context).pop();
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: ${e}')),
+        );
+      }
+      isLoading = false;
     }
-
-    if (_selectedCategory == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Select a category first!')),
-      );
-      return;
-    }
-
-    if (_amountController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Amount spent missing!')),
-      );
-      return;
-    }
-
-    if (_selectedDate == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Select a date first!')),
-      );
-      return;
-    }
-
-    final enteredTitle = toBeginningOfSentenceCase(_titleController.text);
-    final enteredAmount = double.parse(_amountController.text);
-
-    widget.editTransaction(
-      docId: widget.id,
-      title: enteredTitle,
-      category: _selectedCategory,
-      date: _selectedDate,
-      amount: enteredAmount,
-    );
-
-    Navigator.of(context).pop();
   }
 
   void _presentDatePicker() {
@@ -218,8 +234,18 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
                         if (widget.id != null)
                           IconButton(
                             onPressed: () async {
-                              await widget.deleteTransaction(widget.id);
-                              Navigator.of(context).pop();
+                              if (!isLoading) {
+                                isLoading = true;
+                                try {
+                                  await widget.deleteTransaction(widget.id);
+                                  await Navigator.of(context).pop();
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Error: ${e}')),
+                                  );
+                                }
+                                isLoading = false;
+                              }
                             },
                             icon: Icon(
                               Icons.delete,

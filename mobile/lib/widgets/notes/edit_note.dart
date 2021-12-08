@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mebook/services/notes_service.dart';
 
 class EditNote extends StatefulWidget {
   final String id;
@@ -23,6 +22,7 @@ class EditNote extends StatefulWidget {
 class _EditNoteState extends State<EditNote> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -31,21 +31,32 @@ class _EditNoteState extends State<EditNote> {
     super.initState();
   }
 
-  void _submitData() {
-    final enteredTitle = _titleController.text;
-    final enteredContent = _contentController.text;
+  void _submitData() async {
+    if (!isLoading) {
+      isLoading = true;
 
-    if (enteredTitle.isEmpty || enteredContent.isEmpty) {
-      return;
+      final enteredTitle = _titleController.text;
+      final enteredContent = _contentController.text;
+
+      if (enteredTitle.isEmpty || enteredContent.isEmpty) {
+        isLoading = false;
+        return;
+      }
+
+      try {
+        await widget.editNote(
+          docId: widget.id,
+          title: enteredTitle,
+          content: enteredContent,
+        );
+        await Navigator.of(context).pop();
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: ${e}')),
+        );
+      }
+      isLoading = false;
     }
-
-    widget.editNote(
-      docId: widget.id,
-      title: enteredTitle,
-      content: enteredContent,
-    );
-
-    Navigator.of(context).pop();
   }
 
   @override
@@ -84,9 +95,19 @@ class _EditNoteState extends State<EditNote> {
             actions: [
               if (widget.id != null)
                 IconButton(
-                  onPressed: () => {
-                    widget.deleteNote(widget.id),
-                    Navigator.of(context).pop(),
+                  onPressed: () async {
+                    if (!isLoading) {
+                      isLoading = true;
+                      try {
+                        await widget.deleteNote(widget.id);
+                        await Navigator.of(context).pop();
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Error: ${e}')),
+                        );
+                      }
+                      isLoading = false;
+                    }
                   },
                   icon: Icon(Icons.delete),
                 ),
