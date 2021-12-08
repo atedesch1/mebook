@@ -62,6 +62,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             title: 'Schedule',
             actions: [
               IconButton(
+                key: ValueKey('addEventButton'),
                 onPressed: () => {
                   Navigator.of(context)
                       .push(ChangeEventRoute(builder: (context) {
@@ -158,7 +159,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         );
                       }
                       return Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          key: ValueKey('scheduleScreenLoading'),
+                        ),
                       );
                     },
                   ),

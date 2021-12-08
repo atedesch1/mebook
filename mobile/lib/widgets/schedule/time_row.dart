@@ -5,8 +5,9 @@ class TimeRow extends StatelessWidget {
   final String timeText;
   final Function selectTime;
   final TimeOfDay time;
+  final String keyPrefix;
 
-  TimeRow({this.iconColor, this.selectTime, this.timeText, this.time});
+  TimeRow({this.keyPrefix, this.iconColor, this.selectTime, this.timeText, this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class TimeRow extends StatelessWidget {
           ),
         ),
         TextButton(
+          key: ValueKey('${keyPrefix}Button'),
           style: ButtonStyle(
             minimumSize: MaterialStateProperty.all<Size>(Size(100, 0)),
             elevation: MaterialStateProperty.all<double>(2),

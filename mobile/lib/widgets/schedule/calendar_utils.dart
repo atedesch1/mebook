@@ -1,5 +1,6 @@
 import 'package:googleapis/calendar/v3.dart' as googleCalendar;
 import 'package:flutter/material.dart';
+import 'package:mebook/models/event_model.dart';
 
 DateTime past = DateTime.parse("2000-01-01 00:00:00Z");
 DateTime future = DateTime.parse("3000-01-01 00:00:00Z");
@@ -24,16 +25,12 @@ class TimeAggregate {
 }
 
 googleCalendar.Event addTimeZone(googleCalendar.Event e) {
-  e.start.dateTime = (
-      e.start.dateTime ?? joinDateTime(
-          e.start.date, TimeOfDay(hour: 0, minute: 0)
-      )
-  ).toLocal();
-  e.end.dateTime = (
-      e.end.dateTime ?? joinDateTime(
-          e.start.date, TimeOfDay(hour: 23, minute: 59)
-      )
-  ).toLocal();
+  e.start.dateTime = (e.start.dateTime ??
+          joinDateTime(e.start.date, TimeOfDay(hour: 0, minute: 0)))
+      .toLocal();
+  e.end.dateTime = (e.end.dateTime ??
+          joinDateTime(e.start.date, TimeOfDay(hour: 23, minute: 59)))
+      .toLocal();
   return e;
 }
 
@@ -91,4 +88,18 @@ TimeAggregate adjustEndToBegin(TimeAggregate agg) {
   agg.m[Scope.EndDate] = extractDate(adjustedEnd);
   agg.m[Scope.EndTime] = extractTimeOfDay(adjustedEnd);
   return agg;
+}
+
+Map<int, bool> findDays(List<Event> events) {
+  Map<int, bool> dayHasEvent = {};
+
+  dayHasEvent = {
+    for (var event in events)
+      for (var day in [
+        for (var day = event.startTime.day; day <= event.endTime.day; day++) day
+      ])
+        day: true
+  };
+
+  return dayHasEvent;
 }
