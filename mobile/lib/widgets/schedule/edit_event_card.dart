@@ -178,7 +178,6 @@ class _EditEventCardState extends State<EditEventCard> {
                         hintText: 'Event Name',
                       ),
                       controller: _summaryController,
-                      onSubmitted: (_) => TextInputAction.previous,
                     ),
                     DateRow(
                       keyPrefix: 'editEventStartDay',

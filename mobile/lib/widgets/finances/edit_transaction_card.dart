@@ -27,6 +27,11 @@ class EditTransactionCard extends StatefulWidget {
 }
 
 class _EditTransactionCardState extends State<EditTransactionCard> {
+  final FocusNode _titleNode = FocusNode();
+  final FocusNode _categoryNode = FocusNode();
+  final FocusNode _amountNode = FocusNode();
+  final FocusNode _dateNode = FocusNode();
+
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   String _selectedCategory;
@@ -44,10 +49,9 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
   }
 
   void _submitData() async {
+    TextInputAction.done;
     if (!isLoading) {
       isLoading = true;
-
-      TextInputAction.done;
 
       if (_titleController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -166,9 +170,13 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
                     ),
                     style: TextStyle(fontSize: 20),
                     controller: _titleController,
-                    onSubmitted: (_) => _submitData(),
+                    focusNode: _titleNode,
+                    onSubmitted: (_) =>
+                        FocusScope.of(context).requestFocus(_categoryNode),
                   ),
                   DropdownButton(
+                    autofocus: false,
+                    focusNode: _categoryNode,
                     items: TransactionCategories.categories
                         .map((e) => DropdownMenuItem(child: Text(e), value: e))
                         .toList(),
@@ -180,9 +188,11 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
                       setState(() {
                         _selectedCategory = category;
                       });
+                      FocusScope.of(context).requestFocus(_amountNode);
                     },
                   ),
                   TextField(
+                    focusNode: _amountNode,
                     decoration: InputDecoration(
                       prefixText: '\$',
                       prefixStyle: TextStyle(color: Colors.black),
@@ -192,7 +202,8 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
                     ),
                     controller: _amountController,
                     keyboardType: TextInputType.number,
-                    onSubmitted: (_) => _submitData(),
+                    onSubmitted: (_) =>
+                        FocusScope.of(context).requestFocus(_dateNode),
                   ),
                   Row(
                     children: [
@@ -213,6 +224,7 @@ class _EditTransactionCardState extends State<EditTransactionCard> {
                               ),
                       ),
                       IconButton(
+                        focusNode: _dateNode,
                         onPressed: _presentDatePicker,
                         icon: Icon(Icons.today),
                       ),

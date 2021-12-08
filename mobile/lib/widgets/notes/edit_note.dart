@@ -20,6 +20,9 @@ class EditNote extends StatefulWidget {
 }
 
 class _EditNoteState extends State<EditNote> {
+  final FocusNode _titleNode = FocusNode();
+  final FocusNode _contentNode = FocusNode();
+
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
   bool isLoading = false;
@@ -84,7 +87,8 @@ class _EditNoteState extends State<EditNote> {
                   hintText: 'Title',
                 ),
                 controller: _titleController,
-                onSubmitted: (_) => _submitData(),
+                onSubmitted: (_) =>
+                    FocusScope.of(context).requestFocus(_contentNode),
               ),
             ),
             expandedHeight: 150,
